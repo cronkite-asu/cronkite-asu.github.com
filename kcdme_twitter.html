@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>KCDME twitter examples</title>
+        <!-- USE YOUR OWN API KEY HERE --><script src="http://www.google.com/jsapi?key=ABQIAAAARLoA22nEYHR0NvOy5PhlABRjjD520xWd_5VswApQupxDPkLCEBTPF_s0TXIeZ4rFVfLX02gJDeJVGA" type="text/javascript"></script> 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <!-- USE YOUR OWN API KEY HERE --><script src="http://platform.twitter.com/anywhere.js?id=3MEEInoAOj2yJ9PoOzcbmA&amp;v=1">
+        </script>
+    </head>
+    <body id="twitter">
+        <h1>KCDME Twitter Examples</h1>
+        <p>Use your browsers "view source" capability in order to see the code and how you can change it.  In Firefox, you can get to this via the view menu, then page source.  In safari, view, then view source.  In chrome, view, developer, view source.</p>
+        <p>These examples use Javascript and jQuery.  Javascript runs in a users browser, rather than on a server.  <a href="http://jquery.com/">jQuery</a> is a piece of code that makes javascript significantly easier to work with.  We will also be using the official twitter javascript API client, "Anywhere" for some of our examples.</p>
+        <p>Make sure you understand the difference between <a href="http://en.wikipedia.org/wiki/JavaScript">Javascript</a> and <a href="http://en.wikipedia.org/wiki/Java_(programming_language)">Java</a>.</p>
+        <h2>Using the twitter search API.</h2>
+        <p>The twitter search API provides an endpoint where you can GET recent tweets on any search term.  You can then incorporate this content into your content or site.</p>
+        <p>The twitter search API does not require an API key.</p>
+        <ul id="knightsearch">
+        </ul>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                /* Your search term goes in the section with "q".  If you want to test search terms, go to http://search.twitter.com/ */
+                $.getJSON('http://search.twitter.com/search.json?callback=?', {q: 'kcdme'}, function(json, textStatus) {
+                    for (var i = json.results.length - 1; i >= 0; i--){
+                        tweet = json.results[i];
+                        /* Any line with "console.log" in it can and should be removed from your final work.  These lines help you understand
+                           how the code works when you use developer tools or firebug */
+                        console.log("Search tweets follow");
+                        console.log(tweet); /* these tweets will appear in your "developer tools" console. You can explore them to see what you can extract from them */
+                        /*  you can change the HTML that is output into the unordered list by changing the string below */
+                        tweet_html = '<li><a href="http://twitter.com/'+ tweet.from_user +'">'+ tweet.from_user +'</a>, '+ tweet.text +'</li>'; 
+                        /* the CSS selector below can be changed so that you can append the tweets you want to a different HTML element */
+                        $('ul#knightsearch').append($(tweet_html));
+                    };
+                });
+            });
+        </script>
+        
+        <h2>Authenticating a user via twitter</h2>
+        <p>The <a href="http://dev.twitter.com/anywhere">twitter "anywhere"</a> javascript API client allows you to authenticate twitter users without any server-side (i.e PHP, Java, .NET, Ruby, Python) code.  Once users are authenticated, it means that they can perform actions (tweets, retweets, follows, etc) on twitter directly from your webpages, using small pieces of Javascript code.</p>
+        <p>Any code that posts information to twitter, or performs interactions with twitter will require an API key. <a href="http://dev.twitter.com/anywhere/apps/new">Go and get one</a>.  You will need to be a twitter user in order to get an API key.  When you have that key, replace the key with the ID at the top of this file (the one that looks like<code> &lt;!-- USE YOUR OWN API KEY HERE --&gt;&lt;script src=&quot;http://platform.twitter.com/anywhere.js?id=n12n12yooUpSscjeqlHc1Q&amp;amp;v=1&quot;&gt;</code>)</p>
+        <div id="login">
+            
+        </div>
+        <script type="text/javascript" charset="utf-8">
+            twttr.anywhere(function (T) {
+                /* You can change the CSS selector below in order to change where the connect button appears */
+                T("#login").connectButton();
+            });
+        </script>
+        
+        <h2>Following a user via twitter</h2>
+        <p>Once </p>
+        <span id="follow-placeholder"></span>
+          <script type="text/javascript">
+              twttr.anywhere(function (T) {
+                  T("#follow-placeholder").followButton('anywhere');
+              });
+          </script>        
+    </body>
+</html>
