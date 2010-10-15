@@ -51,12 +51,33 @@
         </script>
         
         <h2>Following a user via twitter</h2>
-        <p>Once </p>
-        <span id="follow-placeholder"></span>
+        <p>Once a user is authenticated, you can have them perform actions on twitter using anywhere.  Let's try getting users to follow you.</p>
+        <span id="cjcornell-placeholder"></span>
+        <span id="dangillmor-placeholder"></span>
+        <span id="startupmedia-placeholder"></span>
+        <span id="markng-placeholder"></span>
           <script type="text/javascript">
               twttr.anywhere(function (T) {
-                  T("#follow-placeholder").followButton('anywhere');
+                  /* for each of these buttons, you can change both the CSS selector and the person for whom the button refers */
+                  T("#cjcornell-placeholder").followButton('cjcornell');
+                  T("#dangillmor-placeholder").followButton('dangillmor');
+                  T("#startupmedia-placeholder").followButton('startupmedia');
+                  T("#markng-placeholder").followButton('markng');
               });
-          </script>        
+          </script>
+          
+        <h2>Retweeting a tweet</h2>
+        <p>You can also have users interact with tweets, as well as users.  In order to do this, you'll need to know what the id number of the tweet you want them to interact with is.  You can get this by visiting the page of the tweet on twitter (click on the time in the tweet, which is linked) and note the number at the end of the URL.</p>
+        <div id="retweet-button">
+            
+        </div>
+        <script type="text/javascript" charset="utf-8">
+            
+            twttr.anywhere(function (T) { 
+                var tweet_id = 27482332840;
+                console.log('Follow single tweet');
+                console.log(T.Status.find(tweet_id));
+            });
+        </script>
     </body>
 </html>
