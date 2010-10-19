@@ -68,16 +68,35 @@
           
         <h2>Retweeting a tweet</h2>
         <p>You can also have users interact with tweets, as well as users.  In order to do this, you'll need to know what the id number of the tweet you want them to interact with is.  You can get this by visiting the page of the tweet on twitter (click on the time in the tweet, which is linked) and note the number at the end of the URL.</p>
-        <div id="retweet-button">
+        <div id="retweet">
             
         </div>
         <script type="text/javascript" charset="utf-8">
-            
-            twttr.anywhere(function (T) { 
-                var tweet_id = 27482332840;
-                console.log('Follow single tweet');
-                console.log(T.Status.find(tweet_id));
+            var tweet_id = 27482332840;
+            /* show the tweet */
+            jQuery(document).ready(function($) {
+                $.getJSON('http://api.twitter.com/1/statuses/show/'+tweet_id+'.json?callback=?', {}, function(tweet, textStatus) {
+                        /* Any line with "console.log" in it can and should be removed from your final work.  These lines help you understand
+                           how the code works when you use developer tools or firebug */
+                        console.log("Tweet follows");
+                        console.log(tweet); /* these tweets will appear in your "developer tools" console. You can explore them to see what you can extract from them */
+                        /*  you can change the HTML that is output into the unordered list by changing the string below */
+                        console.log(tweet.text);
+                        console.log(tweet.user.screen_name);
+                        var tweet_html = '<p><a href="http://twitter.com/'+ tweet.user.screen_name +'">'+ tweet.user.screen_name +'</a>, '+ tweet.text +'</p>'; 
+                        console.log(tweet_html);
+                        /* the CSS selector below can be changed so that you can append the tweets you want to a different HTML element */
+                        $('div#retweet').append($(tweet_html));
+                        twttr.anywhere(function (T) { 
+                            $('div#retweet').append($('<a class="retweet" id="retweet'+tweet_id+'" href="#">Retweet this!</a>'));
+                            $('a#retweet'+tweet_id).click(function(e){
+                                T.Status.find(tweet_id).retweet();
+                                e.preventDefault();
+                            });
+                        });
+                });
             });
+            
         </script>
     </body>
 </html>
