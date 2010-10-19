@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+    <html>
+        <head>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+            <title>API</title>
+        </head>
+        <body>
+            <h1>KCDME API material</h1>
+            <h2>What is an API ?</h2>
+            <p>APIs allow programs to talk to each other via defined interfaces.</p>
+            <h2>What can I do with an API?</h2>
+            <p>APIs on the web are generally used to either retrieve information from other applications on the web to use in your applications, or to perform actions in a web application without the user accessing the website itself. For example :</p>
+            <ul>
+                <li><a href="http://wiki.wunderground.com/index.php/API_-_XML">Find information about the weather</a></li>
+                <li><a href="http://code.google.com/apis/maps/documentation/geocoding/">Find a precise location from an address</a></li>
+                <li><a href="http://www.yelp.com/developers/getting_started">Find reviews of businesses in an area</a></li>
+                <li><a href="http://dev.twitter.com/">Send a tweet</a></li>
+                <li><a href="http://www.twilio.com/docs/">Receive Phone calls and interact with voice callers</a></li>
+                <li><a href="http://code.google.com/apis/maps/index.html">Create custom maps</a></li>
+                <li><a href="https://developer.paypal.com/">Receive and make payments</a></li>
+                <li><a href="http://developers.facebook.com/docs/reference/plugins/like">Spread your content via facebook</a></li>
+                <li><a href="http://www.sfmta.com/cms/asite/nextmunidata.htm">Find out when the next bus is due</a></li>
+                <li><a href="http://code.google.com/apis/chart/">Create charts easily</a></li>
+            </ul>
+            <h2>SOAP? REST? XML? JSON?</h2>
+            <p>The terms &quot;SOAP&quot; and &quot;REST&quot; describe two popular methods for accessing APIs.  For simple APIs, REST is significantly easier to work with.  Where you have an option, you should choose to work with REST apis.</p>
+            <p>The terms &quot;XML&quot; and &quot;JSON&quot; describe two popular formats for transferring information between web apis.  JSON is easier to work with than XML.</p>
+            <p>An example of XML:</p>
+            <code><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; 
+		&lt;location type=&quot;CITY&quot;&gt; 
+		&lt;termsofservice link=&quot;http://www.wunderground.com/members/tos.asp#api&quot; /&gt; 
+		&lt;country&gt;US&lt;/country&gt; 
+  &lt;state&gt;CA&lt;/state&gt; 
+  &lt;city&gt;San Francisco&lt;/city&gt; 
+  &lt;tz_short&gt;PDT&lt;/tz_short&gt; 
+  &lt;tz_unix&gt;America/Los_Angeles&lt;/tz_unix&gt; 
+  &lt;lat&gt;37.76834106&lt;/lat&gt; 
+  &lt;lon&gt;-122.39418793&lt;/lon&gt; 
+  &lt;zip&gt;94107&lt;/zip&gt; 
+  &lt;magic&gt;1&lt;/magic&gt; 
+  &lt;wmo&gt;99999&lt;/wmo&gt; 
+		&lt;requesturl&gt;/US/CA/San_Francisco.html&lt;/requesturl&gt; 
+		&lt;wuiurl&gt;http://www.wunderground.com/US/CA/San_Francisco.html&lt;/wuiurl&gt; 
+		&lt;radar&gt; 
+		&lt;image_url&gt;&lt;![CDATA[http://resize.wunderground.com/cgi-bin/resize_convert?ox=gif&amp;url=radblast/cgi-bin/radar/WUNIDS_composite%3Fcenterlat=37.76834106%26centerlon=-122.39418793%26radius=15%26newmaps=1%26smooth=1]]&gt;&lt;/image_url&gt; 
+		&lt;url&gt;&lt;![CDATA[http://www.wunderground.com/radar/radblast.asp?ID=MUX&amp;region=c1&amp;lat=37.76834106&amp;lon=-122.39418793]]&gt;&lt;/url&gt; 
+		&lt;/radar&gt; 
+		&lt;webcams&gt; 
+		&lt;cam&gt; 
+  &lt;handle&gt;hlnurse&lt;/handle&gt; 
+  &lt;camid&gt;hlnurseCAM1&lt;/camid&gt; 
+  &lt;camindex&gt;1&lt;/camindex&gt; 
+  &lt;type&gt;ftp&lt;/type&gt; 
+  &lt;assoc_station_id&gt;KCAHEALD3&lt;/assoc_station_id&gt; 
+  &lt;link&gt;http://www.healdsburgweather.com&lt;/link&gt; 
+  &lt;linktext&gt;Healdsburg Weather&lt;/linktext&gt; 
+  &lt;cameratype&gt;Sony CCD&lt;/cameratype&gt; 
+  &lt;organization&gt;&lt;/organization&gt; 
+  &lt;neighborhood&gt;&lt;/neighborhood&gt; 
+  &lt;zip&gt;95448&lt;/zip&gt; 
+  &lt;city&gt;Healdsburg&lt;/city&gt; 
+  &lt;state&gt;CA&lt;/state&gt; 
+  &lt;country&gt;US&lt;/country&gt; 
+  &lt;tzname&gt;America/Los_Angeles&lt;/tzname&gt; 
+  &lt;hexant&gt;4&lt;/hexant&gt; 
+  &lt;hexid&gt;18417&lt;/hexid&gt; 
+  &lt;lat&gt;38.64434814&lt;/lat&gt; 
+  &lt;lon&gt;-122.88079071&lt;/lon&gt; 
+  &lt;updated&gt;2010-10-19 14:58:11&lt;/updated&gt; 
+  &lt;downloaded&gt;0000-00-00 00:00:00&lt;/downloaded&gt; 
+  &lt;hash&gt;&lt;/hash&gt; 
+  &lt;isrecent&gt;1&lt;/isrecent&gt; 
+  &lt;frequency&gt;300&lt;/frequency&gt; 
+  &lt;CURRENTIMAGEURL&gt;http://icons.wunderground.com/webcamramdisk/h/l/hlnurse/1/current.jpg?t=1287514859&lt;/CURRENTIMAGEURL&gt; 
+  &lt;WIDGETCURRENTIMAGEURL&gt;http://icons.wunderground.com/webcamramdisk/h/l/hlnurse/1/widget.jpg?t=1287514859&lt;/WIDGETCURRENTIMAGEURL&gt; 
+  &lt;CAMURL&gt;http://www.wunderground.com/webcams/hlnurse/1/show.html&lt;/CAMURL&gt; 
+  &lt;/cam&gt; 
+&lt;/location&gt; 
+                </pre>
+            </code>
+            <p>An example of JSON</p>
+            <code><pre>
+{
+    "results": [{
+        "profile_image_url": "http://a3.twimg.com/profile_images/58509535/Photo_2_normal.jpg",
+        "created_at": "Thu, 14 Oct 2010 21:47:16 +0000",
+        "from_user": "markng",
+        "metadata": {
+            "result_type": "recent"
+        },
+        "to_user_id": null,
+        "text": "Set up a conversation between @startupmedia students + @mkapor + @dangillmor. Skype still struggles.",
+        "id": 27379243590,
+        "from_user_id": 4671,
+        "geo": null,
+        "iso_language_code": "en",
+        "place": {
+            "id": "89b3cb4fabcbc076",
+            "type": "neighborhood",
+            "full_name": "Downtown Phoenix, Phoenix"
+        },
+        "source": "&lt;a href=&quot;http://mobile.twitter.com&quot; rel=&quot;nofollow&quot;&gt;Mobile Web&lt;/a&gt;"
+    }],
+    "max_id": 27855587588,
+    "since_id": 0,
+    "refresh_url": "?since_id=27855587588&amp;q=startupmedia",
+    "results_per_page": 15,
+    "page": 1,
+    "completed_in": 0.037771,
+    "query": "startupmedia"
+}
+            </pre></code>
+    <h2>Authentication</h2>
+    <p>Many APIs will provide you with an "API key", which is used to authenticate your application against their API.  You will often need to include this in your request.</p>
+    <p>Also, sometimes you will need to authenticate your user against the API, too, particularly if you wish to perform actions on their behalf.</p>
+    
+    <h2>RESTful APIs and URL queries</h2>
+    <p>A good way to start learning about simpler REST APIs is to simply play with the structure of URLs.  Here are some examples.</p>
+    <p><a href="http://search.twitter.com/search.json?q=journalism">http://search.twitter.com/search.json?q=journalism</a> is a twitter search API query in JSON.  The <a href="http://dev.twitter.com/doc/get/search">documentation for this API is here.</a>  In what ways can we adjust the URL in order to get different information ?</p>
+    <ul>
+        <li>add geolocation to the search - <code>&amp;geocode=33.442368,-112.073762,10mi</code></li>
+    </ul>
+    <p><a href="http://chart.apis.google.com/chart?cht=p3&chd=t:60,40&chs=400x100&chl=Facebook|twitter">http://chart.apis.google.com/chart?cht=p3&amp;chd=t:60,40&amp;chs=400x100&amp;chl=Facebook|twitter</a> is a google chart API query, which results in an image.  The <a href="http://code.google.com/apis/chart/">google chart API documentation is here.</a> In what ways can we adjust the URL to get a different chart?</p>
+    <ul>
+        <li>Add more data points <code>cht=p3&amp;chd=t:50,30,20&amp;chs=400x100&amp;chl=facebook|twitter|foursquare</code></li>
+        <li>Change the chart type <code>cht=p</code> or <code>cht=p3</code> or <code>cht=pc</code> <code>cht=lc</code></li>
+        <li>Change the colour scheme <code>chco=FF0000,0000FF</code></li>
+    </ul>
+    <p>Many APIs have &quot;sandboxes&quot; or &quot;playgrounds&quot; to make it easier for you to experiment with them.  They're usually mentioned in the documentation.  In the case of google charts, <a href="http://code.google.com/apis/chart/docs/chart_playground.html">this page is set up to help you explore their API.</a></p>
+</body>
+</html>
