@@ -61,9 +61,9 @@
             tl.isPng = function() { return false; }
             tl.getOpacity = function() { return 1.0; }
             overlay = new GTileLayerOverlay(tl);
-
             resizeDiv();
-            map = new GMap2(mapEl);
+            asu_map_type = new GMapType(overlay, new GMercatorProjection(20), 'ASU Tempe');
+            map = new GMap2(mapEl, {mapTypes : [asu_map_type]});
             var zoom = (params['zoom'] ? parseInt(params['zoom']) : 16);
             var latlng = new GLatLng(
                 (params['latitude'] ? parseFloat(params['latitude']) : 33.421054),
@@ -110,7 +110,6 @@
                     miny = map.getBounds().getSouthWest().y;
                     maxx = map.getBounds().getNorthEast().x;
                     maxy = map.getBounds().getNorthEast().y;
-                    console.log(minx, bounds['minx']);
                     if (minx < bounds['minx'] && maxx < bounds['maxx']) {
                         map.panBy(new GSize(-5,0));
                     }
