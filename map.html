@@ -56,6 +56,7 @@
             catch (e) {}
             var tl = new GTileLayer(new GCopyrightCollection("Arizona State University"), 12, 17);
             tl.getTileUrl = function(tile, zoom) {
+                console.log(zoom);
                 return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
             }
             tl.isPng = function() { return false; }
@@ -64,12 +65,16 @@
             resizeDiv();
             asu_map_type = new GMapType(overlay, new GMercatorProjection(20), 'ASU Tempe');
             map = new GMap2(mapEl, {mapTypes : [asu_map_type]});
-            var zoom = (params['zoom'] ? parseInt(params['zoom']) : 16);
+            var zoom = (params['zoom'] ? parseInt(params['zoom']) : 17);
             var latlng = new GLatLng(
                 (params['latitude'] ? parseFloat(params['latitude']) : 33.421054),
                 (params['longitude'] ? parseFloat(params['longitude']) : -111.931458)
             );
             map.setCenter(latlng, zoom);
+            map.enableDoubleClickZoom();
+            map.enableContinuousZoom();
+            console.log(map.doubleClickZoomEnabled(), map.continuousZoomEnabled());
+            map.addOverlay(overlay);
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(
                     function(position) {
@@ -94,39 +99,38 @@
                 map,
                 'zoomend',
                 function(oldLevel, newLevel){
-                    if (newLevel > 19) {
-                        map.setCenter(map.getCenter(), 19);
+                    console.log(oldLevel, newLevel);
+                    if (newLevel > 17) {
+                        map.setCenter(map.getCenter(), 17);
                     };
-                    if (newLevel < 15) {
-                        map.setCenter(map.getCenter(), 16);
-                    }
                 }
             );
             GEvent.addListener(
                 map,
-                'move',
+                'moveend',
                 function() {
+                    speed = 30;
                     minx = map.getBounds().getSouthWest().x;
                     miny = map.getBounds().getSouthWest().y;
                     maxx = map.getBounds().getNorthEast().x;
                     maxy = map.getBounds().getNorthEast().y;
+                    
                     if (minx < bounds['minx'] && maxx < bounds['maxx']) {
-                        map.panBy(new GSize(-5,0));
+                        map.panBy(new GSize(-speed,0));
                     }
                     else if (maxx > bounds['maxx'] && minx > bounds['minx']) {
-                        map.panBy(new GSize(5,0));
+                        map.panBy(new GSize(speed,0));
                     };
                     
                     if (miny < bounds['miny'] && maxy < bounds['maxy']) {
-                        map.panBy(new GSize(0,5));
+                        map.panBy(new GSize(0,speed));
                     }
                     else if (maxy > bounds['maxy'] && miny > bounds['miny']) {
-                        map.panBy(new GSize(0,-5));
+                        map.panBy(new GSize(0,-speed));
                     }
                 }
             );
 
-            map.addOverlay(overlay);
         }
     }
     //]]>
