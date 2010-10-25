@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
     <html>
         <head>
+            <meta name="apple-mobile-web-app-capable" content="yes">
+        	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        	
             <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
             <meta http-equiv="Content-type" content="text/html; charset=utf-8">
             <title>Test google maps API</title>
@@ -22,12 +25,18 @@
                             return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
                         },
                         tileSize: new google.maps.Size(256, 256),
-                        maxZoom: 19,
+                        maxZoom: 17,
+                        name: "ASU",
+                        alt: "ASU",
                     }
                     var tempeMapType = new google.maps.ImageMapType(tempeMapOptions);
                     var myOptions = {
-                        zoom: 15,
+                        zoom: 16,
                         center: latlng,
+                        mapTypeControlOptions: {
+                          mapTypeIds: ['tempe', google.maps.MapTypeId.SATELLITE],
+                          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                        },
                     };
                     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
                     map.mapTypes.set('tempe',tempeMapType);
