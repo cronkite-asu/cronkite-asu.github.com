@@ -11,7 +11,7 @@
     var followLocation = false;
     var bounds = {
         'maxy' : 33.4292,
-        'miny' : 33.4186,
+        'miny' : 33.4111,
         'maxx' : -111.9198,
         'minx' : -111.9420,
     }
@@ -125,7 +125,7 @@
                     if (miny < bounds['miny'] && maxy < bounds['maxy']) {
                         map.panBy(new GSize(0,speed));
                     }
-                    else if (maxy > bounds['maxy'] && miny > bounds['miny']) {
+                    if (maxy > bounds['maxy'] && miny > bounds['miny']) {
                         map.panBy(new GSize(0,-speed));
                     }
                 }
