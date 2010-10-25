@@ -6,7 +6,7 @@
         	
             <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
             <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-            <title>Test google maps API</title>
+            <title>ASU Tempe</title>
             <script type="text/javascript"
                 src="http://maps.google.com/maps/api/js?sensor=false">
             </script>
@@ -17,6 +17,21 @@
             </style>
             <script type="text/javascript" charset="utf-8">
                 function initialize() {
+                    function CoordMapType(tileSize) {
+                      this.tileSize = tileSize;
+                    }
+
+                    CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+                      var div = ownerDocument.createElement('DIV');
+                      div.innerHTML = coord;
+                      div.style.width = this.tileSize.width + 'px';
+                      div.style.height = this.tileSize.height + 'px';
+                      div.style.fontSize = '10';
+                      div.style.borderStyle = 'solid';
+                      div.style.borderWidth = '1px';
+                      div.style.borderColor = '#AAAAAA';
+                      return div;
+                    };
                     
                     var latlng = new google.maps.LatLng(33.421054, -111.931458);
                     var tempeMapOptions = {
