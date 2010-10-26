@@ -16,6 +16,29 @@
               #map_canvas { height: 100% }
             </style>
             <script type="text/javascript" charset="utf-8">
+             var followLocation = false;
+             function toggleLocation(){
+        // toggle whether watchPosition should move the map or not
+       			 if(followLocation){
+           		 followLocation = false;
+            	return followLocation;
+       			 }
+       		 else{
+            	followLocation = true;
+           		 navigator.geolocation.getCurrentPosition(
+               	 function(position){
+                    latlng = new GLatLng(position.coords.latitude, position.coords.longitude);
+                    
+                    map.addOverlay(new GMarker(latlng));
+                    map.setCenter(latlng, zoom);
+                     
+                },
+                function(positionError){
+                }
+            );
+            return followLocation;
+        }
+       }
                 function initialize() {
                     var sw = new google.maps.LatLng(-111.9420, 33.41111);
                     var ne = new google.maps.LatLng(-111.9198, 33.4292);
@@ -37,6 +60,21 @@
                         div.style.borderColor = '#AAAAAA';
                         return div;
                     };
+                    if (navigator.geolocation) {
+                           navigator.geolocation.watchPosition(
+                               function(position) {
+                                   if (followLocation) {
+                                       latlng = new GLatLng(position.coords.latitude, position.coords.longitude);
+                                       map.setCenter(latlng, zoom);                                       
+                                   };
+                               },
+                               function(error){
+                                   // handle when we can't get a position
+                               }
+                           )
+                       }
+                       
+ 
                     
                     var trafficOptions = {
                       getTileUrl: function(coord, zoom) {
@@ -62,7 +100,7 @@
                     }
                     var tempeMapType = new google.maps.ImageMapType(tempeMapOptions);
                     var myOptions = {
-                        zoom: 17,
+                        zoom: 16,
                         center: latlng,
                         mapTypeControlOptions: {
                           mapTypeIds: ['tempe', google.maps.MapTypeId.SATELLITE],
@@ -77,7 +115,8 @@
                 google.maps.event.addDomListener(window, 'load', initialize);
             </script>
         </head>
-        <body>
+        <body ontoggleLocation="toggleLocation()">
+         <a href="#" onclick="toggleLocation();">toggle now</a>
             <div id="map_canvas" style="width:100%; height:100%"></div>
         </body>
     </html>
