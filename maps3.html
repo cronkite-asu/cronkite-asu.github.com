@@ -29,8 +29,8 @@
                	 function(position){
                     latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     
-                    map.addOverlay(new GMarker(latlng));
-                    map.setCenter(latlng, zoom);
+                    //map.addOverlay(new GMarker(latlng));
+                    google.maps.setCenter(latlng, zoom);
                      
                 },
                 function(positionError){
@@ -65,7 +65,7 @@
                                function(position) {
                                    if (followLocation) {
                                        latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                       map.setCenter(latlng, zoom);                                       
+                                       google.maps.setCenter(latlng, zoom);                                       
                                    };
                                },
                                function(error){
