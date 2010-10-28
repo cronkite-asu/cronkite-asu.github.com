@@ -34,7 +34,7 @@
      				 map: map, 
       				title:"Hello World!"});
       				marker.setMap(map);
-                    google.maps.setCenter(latlng,13);
+                    
                      
                 },
                 function(positionError){
@@ -107,7 +107,7 @@
                                function(position) {
                                    if (followLocation) {
                                        latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                       google.maps.setCenter(latlng,13);                                       
+                                                                             
                                    };
                                },
                                function(error){
