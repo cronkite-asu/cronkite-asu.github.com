@@ -29,10 +29,7 @@
                	 function(position){
                     latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     
-                    var marker = new google.maps.Marker({
-      				position: latlng, 
-     				 map: map, 
-      				title:"Hello World!"});
+                   
       				marker.setMap(map);
                     
                      
@@ -101,6 +98,10 @@
                     };
                     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
                     map.mapTypes.set('tempe',tempeMapType);
+                    var marker = new google.maps.Marker({
+      				position: latlng, 
+     				 map: map, 
+      				title:"Hello World!"});
                     map.setMapTypeId('tempe');
                     if (navigator.geolocation) {
                            navigator.geolocation.watchPosition(
