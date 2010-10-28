@@ -98,17 +98,17 @@
                     };
                     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
                     map.mapTypes.set('tempe',tempeMapType);
-                    var marker = new google.maps.Marker({
-      				position: latlng, 
-     				 map: map, 
-      				title:"Hello World!"});
+                    
                     map.setMapTypeId('tempe');
                     if (navigator.geolocation) {
                            navigator.geolocation.watchPosition(
                                function(position) {
                                    if (followLocation) {
                                        latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                                                             
+                                         var marker = new google.maps.Marker({
+      				position: latlng, 
+     				 map: map, 
+      				title:"you are here!"});                                    
                                    };
                                },
                                function(error){
