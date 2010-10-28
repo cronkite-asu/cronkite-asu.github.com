@@ -16,112 +16,103 @@
               #map_canvas { height: 100% }
             </style>
             <script type="text/javascript" charset="utf-8">
-             var followLocation = false;
-             function toggleLocation(){
-        // toggle whether watchPosition should move the map or not
-       			 if(followLocation){
-           		 followLocation = false;
-            	return followLocation;
-       			 }
-       		 else{
-            	followLocation = true;
-           		 navigator.geolocation.getCurrentPosition(
-               	 function(position){
-                    latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    
-                   
-      				
-                    
-                     
-                },
-                function(positionError){
+            function initialize() {
+                var sw = new google.maps.LatLng(-111.9420, 33.41111);
+                var ne = new google.maps.LatLng(-111.9198, 33.4292);
+                var bounds = new google.maps.LatLngBounds(sw, ne);
+                
+                function CoordMapType(tileSize) {
+                    /* insert like : map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256))); */
+                    this.tileSize = tileSize;
                 }
-            );
-            return followLocation;
-        }
-       }
-                function initialize() {
-                    var sw = new google.maps.LatLng(-111.9420, 33.41111);
-                    var ne = new google.maps.LatLng(-111.9198, 33.4292);
-                    var bounds = new google.maps.LatLngBounds(sw, ne);
-                    
-                    function CoordMapType(tileSize) {
-                        /* insert like : map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256))); */
-                        this.tileSize = tileSize;
-                    }
 
-                    CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
-                        var div = ownerDocument.createElement('DIV');
-                        div.innerHTML = coord;
-                        div.style.width = this.tileSize.width + 'px';
-                        div.style.height = this.tileSize.height + 'px';
-                        div.style.fontSize = '10';
-                        div.style.borderStyle = 'solid';
-                        div.style.borderWidth = '1px';
-                        div.style.borderColor = '#AAAAAA';
-                        return div;
-                    };
-                    
-                       
- 
-                    
-                    var trafficOptions = {
-                      getTileUrl: function(coord, zoom) {
-                        return "http://mt3.google.com/mapstt?" +
-                        "zoom=" + zoom + "&x=" + coord.x + "&y=" + coord.y + "&client=api";
-                      },
-                      tileSize: new google.maps.Size(256, 256),
-                      isPng: true
-                    };
-
-                    var trafficMapType = new google.maps.ImageMapType(trafficOptions);
-                    
-                    
-                    var latlng = new google.maps.LatLng(33.421054, -111.931458);
-                    var tempeMapOptions = {
-                        getTileUrl: function(tile, zoom) {
-                            return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
-                        },
-                        tileSize: new google.maps.Size(256, 256),
-                        maxZoom: 17,
-                        name: "ASU",
-                        alt: "ASU",
+                CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+                    var div = ownerDocument.createElement('DIV');
+                    div.innerHTML = coord;
+                    div.style.width = this.tileSize.width + 'px';
+                    div.style.height = this.tileSize.height + 'px';
+                    div.style.fontSize = '10';
+                    div.style.borderStyle = 'solid';
+                    div.style.borderWidth = '1px';
+                    div.style.borderColor = '#AAAAAA';
+                    return div;
+                };                
+                
+                var latlng = new google.maps.LatLng(33.421054, -111.931458);
+                var tempeMapOptions = {
+                    getTileUrl: function(tile, zoom) {
+                        return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
+                    },
+                    tileSize: new google.maps.Size(256, 256),
+                    maxZoom: 17,
+                    name: "ASU",
+                    alt: "ASU",
+                }
+                var tempeMapType = new google.maps.ImageMapType(tempeMapOptions);
+                var myOptions = {
+                    zoom: 16,
+                    center: latlng,
+                    mapTypeControlOptions: {
+                      mapTypeIds: ['tempe', google.maps.MapTypeId.SATELLITE],
+                      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                    },
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                map.mapTypes.set('tempe',tempeMapType);
+                
+                map.setMapTypeId('tempe');
+                google.maps.event.addListener(map, 'dragend', function(){
+                    console.log('drag end');
+                    navigator.geolocation.watchPosition(
+                            function(position) {
+                            
+                            }
+                        )
+                    followLocation = false;
+                });
+                
+                var followLocation = false;
+                function toggleLocation(){
+                    // toggle whether watchPosition should move the map or not
+                    if(followLocation){
+                        navigator.geolocation.watchPosition(
+                                function(position) {
+                                
+                                }
+                            )
+                        followLocation = false;
                     }
-                    var tempeMapType = new google.maps.ImageMapType(tempeMapOptions);
-                    var myOptions = {
-                        zoom: 16,
-                        center: latlng,
-                        mapTypeControlOptions: {
-                          mapTypeIds: ['tempe', google.maps.MapTypeId.SATELLITE],
-                          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-                        },
-                    };
-                    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-                    map.mapTypes.set('tempe',tempeMapType);
-                    
-                    map.setMapTypeId('tempe');
-                    if (navigator.geolocation) {
-                           navigator.geolocation.watchPosition(
+                    else{
+                        followLocation = true;
+                        navigator.geolocation.getCurrentPosition(
+                            function(position){
+                                latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                map.setCenter(latlng);
+                            },
+                            function(positionError){
+                            }
+                        );
+                        navigator.geolocation.watchPosition(
                                function(position) {
-                                   if (followLocation) {
-                                       latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                         var marker = new google.maps.Marker({
-      				position: latlng, 
-     				 map: map, 
-      				title:"you are here!"});                                    
-                                   };
-                               },
-                               function(error){
-                                   // handle when we can't get a position
-                               }
-                           )
-                       }
+                                   latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                   map.setCenter(latlng);
+                                   var marker = new google.maps.Marker({position: latlng, map: map, title:"you are here!"});                                    
+                           },
+                           function(error){
+                               // handle when we can't get a position
+                           }
+                       )
+                    }
+                    return false;
                 }
-                google.maps.event.addDomListener(window, 'load', initialize);
-            </script>
+                document.getElementById("toggle").onclick = toggleLocation;
+
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
         </head>
-        <body ontoggleLocation="toggleLocation()">
-         <a href="#" onclick="toggleLocation();">toggle now</a>
+        <body>
+         <a id="toggle" href="#">toggle now</a>
             <div id="map_canvas" style="width:100%; height:100%"></div>
         </body>
     </html>
