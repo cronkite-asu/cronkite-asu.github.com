@@ -64,19 +64,7 @@
                         div.style.borderColor = '#AAAAAA';
                         return div;
                     };
-                    if (navigator.geolocation) {
-                           navigator.geolocation.watchPosition(
-                               function(position) {
-                                   if (followLocation) {
-                                       latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                       google.maps.setCenter(latlng,13);                                       
-                                   };
-                               },
-                               function(error){
-                                   // handle when we can't get a position
-                               }
-                           )
-                       }
+                    
                        
  
                     
@@ -114,7 +102,19 @@
                     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
                     map.mapTypes.set('tempe',tempeMapType);
                     map.setMapTypeId('tempe');
-                    
+                    if (navigator.geolocation) {
+                           navigator.geolocation.watchPosition(
+                               function(position) {
+                                   if (followLocation) {
+                                       latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                       google.maps.setCenter(latlng,13);                                       
+                                   };
+                               },
+                               function(error){
+                                   // handle when we can't get a position
+                               }
+                           )
+                       }
                 }
                 google.maps.event.addDomListener(window, 'load', initialize);
             </script>
