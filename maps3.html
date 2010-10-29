@@ -72,9 +72,10 @@
                 });
                 
                 var followLocation = false;
+                var image ='Maroon PinPoint1small32.png'
                
                 function toggleLocation(){
-                c
+                
                     // toggle whether watchPosition should move the map or not
                     if(followLocation){
                         navigator.geolocation.watchPosition(
@@ -91,7 +92,7 @@
                                 latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                                 map.setCenter(latlng);
                              
-                                 var marker = new google.maps.Marker({position: latlng, map: map, title:"you are here!"});  
+                                 var marker = new google.maps.Marker({position: latlng, map: map,icon: image, title:"you are here!"});  
                                  //
                             },
                             function(positionError){
