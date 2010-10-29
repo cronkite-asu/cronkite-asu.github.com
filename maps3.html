@@ -72,6 +72,7 @@
                 });
                 
                 var followLocation = false;
+               
                 function toggleLocation(){
                     // toggle whether watchPosition should move the map or not
                     if(followLocation){
@@ -88,6 +89,8 @@
                             function(position){
                                 latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                                 map.setCenter(latlng);
+                                 var marker = new google.maps.Marker({position: latlng, map: map, title:"you are here!"});  
+                                 //
                             },
                             function(positionError){
                             }
@@ -96,7 +99,8 @@
                                function(position) {
                                    latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                                    map.setCenter(latlng);
-                                   var marker = new google.maps.Marker({position: latlng, map: map, title:"you are here!"});                                    
+                                   marker.setMap(map);
+                                       //                              
                            },
                            function(error){
                                // handle when we can't get a position
