@@ -62,13 +62,36 @@
                 
                 map.setMapTypeId('tempe');
                 google.maps.event.addListener(map, 'dragend', function(){
-                    console.log('drag end');
                     navigator.geolocation.watchPosition(
                             function(position) {
                             
                             }
-                        )
+                        );
                     followLocation = false;
+                    
+                    minx = map.getBounds().getSouthWest().lat();
+                    miny = map.getBounds().getSouthWest().lng();
+                    maxx = map.getBounds().getNorthEast().lat();
+                    maxy = map.getBounds().getNorthEast().lng();
+                    
+                    speed = 50;
+                    
+                    if (minx < bounds.getSouthWest().lat() && maxx < bounds.getNorthEast().lat()) {
+                        console.log(map);
+                    }
+                    
+                    if (maxx > bounds.getNorthEast().lat() && minx > bounds.getSouthWest().lat()) {
+                        map.panBy(speed,0);
+                    }
+                    
+                    if (miny < bounds.getSouthWest().lng() && maxy < bounds.getNorthEast().lng()) {
+                        map.panBy(0,speed);
+                    }
+                    
+                    if (maxy > bounds.getNorthEast().lng() && miny > bounds.getSouthWest().lng()) {
+                        map.panBy(0,-speed);
+                    }
+                    
                 });
                 
                 var followLocation = false;
