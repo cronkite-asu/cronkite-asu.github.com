@@ -16,6 +16,7 @@
               #map_canvas { height: 100% }
             </style>
             <script type="text/javascript" charset="utf-8">
+            var togglelocation;
             function initialize() {
                 var sw = new google.maps.LatLng(33.41075539, -111.94210100, true);
                 var ne = new google.maps.LatLng(33.4292203, -111.919763, true);
@@ -97,7 +98,7 @@
                 var followLocation = false;
                 var image ='Maroon PinPoint1small32.png'
                
-                function toggleLocation(){
+                toggleLocation = function (){
                 
                     // toggle whether watchPosition should move the map or not
                     if(followLocation){
@@ -122,10 +123,8 @@
                         watch = navigator.geolocation.watchPosition(
                                function(position) {
                                    latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                 // marker.setMap(null);
-                                  map.setCenter(latlng);
+                                   map.setCenter(latlng);
                                    marker.setMap(map);
-                                       //                              
                            },
                            function(error){
                                // handle when we can't get a position
@@ -134,14 +133,11 @@
                     }
                     return false;
                 }
-                document.getElementById("toggle").onclick = toggleLocation;
-
             }
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
         </head>
         <body>
-         <a id="toggle" href="#">toggle now</a>
             <div id="map_canvas" style="width:100%; height:100%"></div>
         </body>
     </html>
