@@ -21,6 +21,7 @@
                 var ne = new google.maps.LatLng(33.4292203, -111.919763, true);
                 var latlng = new google.maps.LatLng(33.421054, -111.931458, true); // tempe 
                 var bounds = new google.maps.LatLngBounds(sw, ne);
+                var watch = false;
                 
                 function CoordMapType(tileSize) {
                     /* insert like : map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256))); */
@@ -62,14 +63,11 @@
                 
                 map.setMapTypeId('tempe');
                 google.maps.event.addListener(map, 'dragend', function(){
-                    navigator.geolocation.watchPosition(
-                            function(position) {
-                            
-                            }
-                        );
+                    if (watch){
+                        navigator.geolocation.clearWatch(watch);
+                    }
                     followLocation = false;         
                     speed = 50;
-                    console.log(map.getBounds().getSouthWest(), bounds.getSouthWest());
                     if (map.getBounds().getSouthWest().lat() < bounds.getSouthWest().lat()) {
                         while(map.getBounds().getSouthWest().lat() < bounds.getSouthWest().lat() && map.getBounds().getNorthEast().lat() < bounds.getNorthEast().lat()) {
                             map.panBy(0, -50);
@@ -103,11 +101,9 @@
                 
                     // toggle whether watchPosition should move the map or not
                     if(followLocation){
-                        navigator.geolocation.watchPosition(
-                                function(position) {
-                                
-                                }
-                            )
+                        if (watch){
+                            navigator.geolocation.clearWatch(watch);
+                        }
                         followLocation = false;
                     }
                     else{
@@ -123,7 +119,7 @@
                             function(positionError){
                             }
                         );
-                        navigator.geolocation.watchPosition(
+                        watch = navigator.geolocation.watchPosition(
                                function(position) {
                                    latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                                  // marker.setMap(null);

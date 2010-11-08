@@ -56,7 +56,6 @@
             catch (e) {}
             var tl = new GTileLayer(new GCopyrightCollection("Arizona State University"), 12, 17);
             tl.getTileUrl = function(tile, zoom) {
-                console.log(zoom);
                 return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
             }
             tl.isPng = function() { return false; }
@@ -73,7 +72,6 @@
             map.setCenter(latlng, zoom);
             map.enableDoubleClickZoom();
             map.enableContinuousZoom();
-            console.log(map.doubleClickZoomEnabled(), map.continuousZoomEnabled());
             map.addOverlay(overlay);
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(
