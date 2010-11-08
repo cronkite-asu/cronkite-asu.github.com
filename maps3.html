@@ -23,6 +23,7 @@
                 var latlng = new google.maps.LatLng(33.421054, -111.931458, true); // tempe 
                 var bounds = new google.maps.LatLngBounds(sw, ne);
                 var watch = false;
+                var memarker = false;
                 
                 function CoordMapType(tileSize) {
                     /* insert like : map.overlayMapTypes.insertAt(0, new CoordMapType(new google.maps.Size(256, 256))); */
@@ -111,24 +112,24 @@
                         followLocation = true;
                         navigator.geolocation.getCurrentPosition(
                             function(position){
-                                latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                map.setCenter(latlng);
-                             
-                                 var marker = new google.maps.Marker({position: latlng, map: map,icon: image, title:"you are here!"});  
-                                 //
+                                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                if (!memarker) {
+                                    memarker = new google.maps.Marker({position: latlng, map: map,icon: image, title:"you are here!"});                                    
+                                }
+                                map.setCenter(pos);
                             },
                             function(positionError){
                             }
                         );
                         watch = navigator.geolocation.watchPosition(
-                               function(position) {
-                                   latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                                   map.setCenter(latlng);
-                                   marker.setMap(map);
-                           },
-                           function(error){
-                               // handle when we can't get a position
-                           }
+                            function(position) {
+                                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                map.setCenter(pos);
+                                memarker.setPosition(pos);
+                            },
+                            function(error){
+                                // handle when we can't get a position
+                            }
                        )
                     }
                     return false;
