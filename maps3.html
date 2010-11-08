@@ -17,8 +17,9 @@
             </style>
             <script type="text/javascript" charset="utf-8">
             function initialize() {
-                var sw = new google.maps.LatLng(-111.9420, 33.41111);
-                var ne = new google.maps.LatLng(-111.9198, 33.4292);
+                var sw = new google.maps.LatLng(33.41075539, -111.94210100, true);
+                var ne = new google.maps.LatLng(33.4292203, -111.919763, true);
+                var latlng = new google.maps.LatLng(33.421054, -111.931458, true); // tempe 
                 var bounds = new google.maps.LatLngBounds(sw, ne);
                 
                 function CoordMapType(tileSize) {
@@ -38,7 +39,6 @@
                     return div;
                 };                
                 
-                var latlng = new google.maps.LatLng(33.421054, -111.931458);
                 var tempeMapOptions = {
                     getTileUrl: function(tile, zoom) {
                         return 'http://www.asu.edu/map/interactive/tiles/tempe/' + zoom + '/' + tile.x + '_' + tile.y + '_' + zoom + '.gif';
@@ -67,29 +67,31 @@
                             
                             }
                         );
-                    followLocation = false;
-                    
-                    minx = map.getBounds().getSouthWest().lat();
-                    miny = map.getBounds().getSouthWest().lng();
-                    maxx = map.getBounds().getNorthEast().lat();
-                    maxy = map.getBounds().getNorthEast().lng();
-                    
+                    followLocation = false;         
                     speed = 50;
-                    
-                    if (minx < bounds.getSouthWest().lat() && maxx < bounds.getNorthEast().lat()) {
-                        console.log(map);
+                    console.log(map.getBounds().getSouthWest(), bounds.getSouthWest());
+                    if (map.getBounds().getSouthWest().lat() < bounds.getSouthWest().lat()) {
+                        while(map.getBounds().getSouthWest().lat() < bounds.getSouthWest().lat() && map.getBounds().getNorthEast().lat() < bounds.getNorthEast().lat()) {
+                            map.panBy(0, -50);
+                        }
                     }
                     
-                    if (maxx > bounds.getNorthEast().lat() && minx > bounds.getSouthWest().lat()) {
-                        map.panBy(speed,0);
+                    if (map.getBounds().getNorthEast().lat() > bounds.getNorthEast().lat() && map.getBounds().getSouthWest().lat() > bounds.getSouthWest().lat()) {
+                        while(map.getBounds().getNorthEast().lat() > bounds.getNorthEast().lat() && map.getBounds().getSouthWest().lat() > bounds.getSouthWest().lat()) {
+                            map.panBy(0, 50);
+                        }
                     }
                     
-                    if (miny < bounds.getSouthWest().lng() && maxy < bounds.getNorthEast().lng()) {
-                        map.panBy(0,speed);
+                    if (map.getBounds().getSouthWest().lng() < bounds.getSouthWest().lng() && map.getBounds().getNorthEast().lng() < bounds.getNorthEast().lng()) {
+                        while(map.getBounds().getSouthWest().lng() < bounds.getSouthWest().lng() && map.getBounds().getNorthEast().lng() < bounds.getNorthEast().lng()) {
+                            map.panBy(50, 0);
+                        }
                     }
                     
-                    if (maxy > bounds.getNorthEast().lng() && miny > bounds.getSouthWest().lng()) {
-                        map.panBy(0,-speed);
+                    if (map.getBounds().getNorthEast().lng() > bounds.getNorthEast().lng() && map.getBounds().getSouthWest().lng() > bounds.getSouthWest().lng()) {
+                        while(map.getBounds().getNorthEast().lng() > bounds.getNorthEast().lng() && map.getBounds().getSouthWest().lng() > bounds.getSouthWest().lng()) {
+                            map.panBy(-50, 0);
+                        }
                     }
                     
                 });
