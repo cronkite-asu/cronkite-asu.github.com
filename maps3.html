@@ -105,11 +105,24 @@
                     if(followLocation){
                         if (watch){
                             navigator.geolocation.clearWatch(watch);
+                             watch = navigator.geolocation.watchPosition(
+                                 function(position) {
+                                     // still set the position marker, but don't setcenter
+                                     var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                     memarker.setPosition(pos);
+                                 },
+                                 function(error){
+                                     // handle when we can't get a position
+                                 }
+                            )
                         }
                         followLocation = false;
                     }
                     else{
                         followLocation = true;
+                        if (watch) {
+                            navigator.geolocation.clearWatch(watch);
+                        };
                         navigator.geolocation.getCurrentPosition(
                             function(position){
                                 var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
