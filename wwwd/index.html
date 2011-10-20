@@ -6,11 +6,13 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
     <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+     <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+    <meta name="apple-mobile-web-app-capable" content="yes"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body id="wwwd">
     <div id="home" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
         <h1>Home</h1>
       </div>
       <div data-role="content">	
@@ -21,12 +23,12 @@
           <li><a href="#ethicaldilemmas">Ethical Dilemmas</a></li>
         </ul>
       </div>
-      <div data-role="footer" data-theme="b">
+      <div data-role="footer" data-position="fixed" data-theme="b">
         <h4>Page Footer</h4>
       </div>
     </div>
     <div id="onthescene" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
         <h1>On the Scene</h1>
       </div>
       <div data-role="content">	
@@ -40,29 +42,29 @@
           <li><a href="#publicproperty">Public Property</a></li>
         </ul>
         </div>
-      <div data-role="footer" data-theme="b">
+      <div data-role="footer" data-position="fixed" data-theme="b">
         <h4>Page Footer</h4>
       </div>
     </div>
       
     <div id="inthenewsroom" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
         <h1>In The Newsroom</h1>
       </div>
       <div data-role="content">  
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
            <li><a href="#interviews">Interviews</a></li>
-          <li><a href="#puttingittogether">Putting it Together</a></li>
+          <li><a href="#quotesattribution">Quotes and Attribution</a></li>
           <li><a href="#images">Images</a></li>
         </ul>
         </div>
-      <div data-role="footer" data-theme="b">
+      <div data-role="footer" data-position="fixed" data-theme="b">
         <h4>Page Footer</h4>
       </div>
     </div>
     
     <div id="beforeheadingout" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
         <h1>Before Heading Out</h1>
       </div>
       <div data-role="content">  
@@ -73,24 +75,24 @@
           <li><a href="#governmentaccess">Government Access</a></li>
         </ul>
         </div>
-      <div data-role="footer" data-theme="b">
+      <div data-role="footer" data-position="fixed" data-theme="b">
         <h4>Page Footer</h4>
       </div>
     </div>
     
     <div id="ethicaldilemmas" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
         <h1>Ethical Dilemmas</h1>
       </div>
       <div data-role="content">  
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
           <li><a href="#technology">Technology</a></li>
           <li><a href="#gifts">Gifts</a></li>
-          <li><a href="#minorities">Minorities</a></li>
+          <li><a href="#diversity">Diversity</a></li>
           <li><a href="#sourcing">Sourcing</a></li>
         </ul>
         </div>
-      <div data-role="footer" data-theme="b">
+      <div data-role="footer" data-position="fixed" data-theme="b">
         <h4>Page Footer</h4>
       </div>
     </div>
@@ -98,7 +100,7 @@
 <!-- /On the Scene -->
   
   <div id="emergency" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Emergencies</h1>
      </div>
        <div data-role="content">	
@@ -124,13 +126,13 @@
          <p>For more information:</p>
        	<a href="http://victims.jrn.msu.edu/public/articles/tentips.html">Tips for talking to victims</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
     
   <div id="publicmeeting" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Public Meetings</h1>
      </div>
       <div data-role="content">	
@@ -157,13 +159,13 @@
        	<a href="http://www.citmedialaw.org/legal-guide/access-federal-advisory-committee-meetings">Federal Advisory Committee Meetings</a></br>
        	<a href="http://www.citmedialaw.org/legal-guide/access-state-and-local-government-meetings">State and Local Government Meetings</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
     
   <div id="pressconference" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Press Conferences</h1>
      </div>
        <div data-role="content">	
@@ -175,13 +177,13 @@
     	such as crime scenes, press conferences and events related to breaking news. However, a press pass does 
     	not guarantee admission.</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
     
   <div id="courts" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Courts</h1>
      </div>
        <div data-role="content">	
@@ -196,13 +198,13 @@
        	<p>For more information:</p>
        	<a href="http://www.rcfp.org/djlg/?action=show_item&cat=SCT&tid=40&PHPSESSID=c1dc774032116ad9bf5ca3969fdf5101">Cameras in Courtrooms</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
 
   <div id="schools" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Schools</h1>
      </div>
        <div data-role="content">	
@@ -236,13 +238,13 @@
  	<p>For more information:</p>
  	<a href="http://thefire.org/article/9464.html">The Right to Film on Campus</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
 
   <div id="privateproperty" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Private Property</h1>
      </div>
        <div data-role="content">	
@@ -287,13 +289,13 @@
        	required if you are just recording the outside of the store, or other areas that are visible to the public - 
        	while on public property. However, it's always best to ask first.</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
 
   <div id="publicproperty" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Public Property</h1>
      </div>
        <div data-role="content">	
@@ -322,7 +324,7 @@
        	<p>For more information:</p>
        	<a href="http://www.rcfp.org/handbook/index.php?pg=8-1">The First Amendment Handbook</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
@@ -330,19 +332,10 @@
 <!-- /In the Newsroom -->
    
   <div id="interviews" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Interviews</h1>
      </div>
        <div data-role="content">	
-    	<p><b>Q: How should I go about interviewing an officer about an incident?</b> </p>
-    	
-    	<p><b>A:</b> Often, a Public Information Officer (PIO) will be at the scene if intensive media attention is expected. 
-    	PIOs often are the only representatives at a scene. If you would like to interview an officer instead of a PIO, 
-    	visit the local police station or ask the PIO to set up a contact for you.</p>
-    	<p>Become familiar with the Sunshine Laws in your state to know what information a police officer is 
-    	required to provide.</p>
-    	<p>Viewing an arrest log can answer a lot of questions. Once you find an arrest that piques your interest, 
-    	request a copy of the arrest report then interview the arresting officer for further details.</p>
     	
        	<p><b>Q: Can you record an interview over the phone?</b></p>
        	
@@ -386,15 +379,24 @@
        	<a href="http://www.poynter.org/uncategorized/16916/step-by-step-e-mail-interviewing-tips/">Poynter: Step-by-step email interview tips</a></br>
        	<a href="http://www.poynter.org/how-tos/digital-strategies/web-tips/6811/e-mail-interview-advice/">Poynter: Email interview advice</a></br>
 
+	<p><b>Q: How should I go about interviewing an officer about an incident?</b> </p>
+    	
+    	<p><b>A:</b> Often, a Public Information Officer (PIO) will be at the scene if intensive media attention is expected. 
+    	PIOs often are the only representatives at a scene. If you would like to interview an officer instead of a PIO, 
+    	visit the local police station or ask the PIO to set up a contact for you.</p>
+    	<p>Become familiar with the Sunshine Laws in your state to know what information a police officer is 
+    	required to provide.</p>
+    	<p>Viewing an arrest log can answer a lot of questions. Once you find an arrest that piques your interest, 
+    	request a copy of the arrest report then interview the arresting officer for further details.</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
-  <div id="puttingittogether" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
-	<h1>Putting It Together</h1>
+  <div id="quotesattribution" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Quotes and Attribution</h1>
      </div>
        <div data-role="content">	
     	<p><b>Q: Can I re-quote already published material?</b> </p>
@@ -417,13 +419,13 @@
         <p>For more information:</p>
        	<a href="http://j-source.ca/article/cleaning-quotes">Cleaning up quotes</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="images" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Images</h1>
      </div>
        <div data-role="content">	
@@ -460,7 +462,7 @@
        	images, it's a good practice to alert the author before publishing, especially if the license does not include 
        	preferred attribution. It's always best to use a full name and not a screen name in publication.</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
@@ -468,7 +470,7 @@
 <!-- /Before Heading Out -->
    
   <div id="preinterview" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Pre-interview</h1>
      </div>
        <div data-role="content">	
@@ -485,13 +487,13 @@
     	<p> For more information: </p>
     	<a href= "http://www.newscollege.ca/p123.htm"> Preparing for an interview </a> 
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="permissions" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Permissions</h1>
      </div>
        <div data-role="content">	
@@ -576,13 +578,13 @@
  	<p>For more information:</p>
  	<a href="http://thefire.org/article/9464.html">The Right to Film on Campus</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="research" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Research</h1>
      </div>
        <div data-role="content">	
@@ -593,7 +595,7 @@
     	agencies you cover frequently, check their website as there is often a link to sign up to receive press releases. Finally, there are several press release websites that can provide you with multiple releases. </p>
 	
 	<p> For more information: </p>
-	<a href= "http://www.responsesource.com/index_journalist.php"> Recieving press releases </a> 
+	<a href="http://www.responsesource.com/index_journalist.php"> Recieving press releases </a> 
     	
        	<p><b>Q: How can a Public Information Officers (PIO) help me?</b></p>
        	<p><b>A:</b> The primary responsibility of a Public Information Officer (PIO) is to provide information to the 
@@ -602,14 +604,23 @@
        	contact with any business or government agency. It's a good idea to develop positive relationships with them, 
        	as they are your entry point into many stories. During crises and emergencies, PIOs are often identified by 
        	wearing helmets or vests with the letters "PIO" on them.</p>
+       	
+       	<p><b>Can I use Wikipedia?</b></p>
+       	
+       	<p>As the "free encyclopedia that anyone can edit," Wikipedia should be used with great caution. If necessary, 
+       	use Wikipedia as a starting point for information. Build on what you’ve read in a Wikipedia article by doing 
+       	further research of the cited works. And remember, use Wikipedia as a start, never as a finish.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.ajr.org/article.asp?id=4461"> Wikipedia in the newsroom </a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="governmentaccess" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Government Access</h1>
      </div>
        <div data-role="content">	
@@ -632,7 +643,7 @@
 	pay a small amount, declare that in your request with a statement such as: "I agree to pay reasonable duplication fees for the processing of this request in an 
 	amount not to exceed $XX.XX. However, please notify me prior to your incurring any expenses in excess of that amount."</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
@@ -640,7 +651,7 @@
 <!-- /Ethical Dilemmas -->
 
   <div id="technology" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Technology</h1>
      </div>
        <div data-role="content">	
@@ -687,13 +698,13 @@
     	<p>For more information:</p>
     	<a href="http://www.stinkyjournalism.org/editordetail.php?id=349">Stinky Journalism: The photoshop jungle</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="gifts" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Gifts</h1>
      </div>
        <div data-role="content">	
@@ -716,15 +727,15 @@
 	That ballpoint pen with a logo on it? Maybe not a good thing to use when talking to sources, but the resale value is so low that it
 	is not likely to be seen as a bribe for doing your job.</p>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
    
-  <div id="minorities" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
-	<h1>Minorities</h1>
+  <div id="diversity" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Diversity</h1>
      </div>
        <div data-role="content">	
     	<p><b>Q: What do I need to know about gender, sexual orientation and ethnicity?</b> </p>
@@ -748,13 +759,13 @@
 	<p>For more information:</p>
 	<a href="http://www.spjvideo.org/jtb/archive/disabilityaccessibility-resources/">Resources for journalists interviewing people with disabilities</a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
    
   <div id="sourcing" data-role="page" data-theme="b">
-    <div data-role="header" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Sourcing</h1>
      </div>
        <div data-role="content">	
@@ -821,7 +832,7 @@
          <p>For more information:</p>
          <a href= "http://victims.jrn.msu.edu/public/articles/tentips.html">Tips for talking to victims </a>
       </div>
-  	<div data-role="footer">
+      	<div data-role="footer" data-position="fixed" data-theme="b">
 	  <h4>Footer content</h4>
   	</div>
    </div>
