@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
     <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).bind("mobileinit", function() {
+              $.mobile.page.prototype.options.addBackBtn = true;
+         });
+    </script>
      <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
     <meta name="apple-mobile-web-app-capable" content="yes"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +26,10 @@
           <li><a href="#inthenewsroom">In The Newsroom</a></li>
           <li><a href="#beforeheadingout">Before Heading Out</a></li>
           <li><a href="#ethicaldilemmas">Ethical Dilemmas</a></li>
+        </ul>
+        
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e"> 
+          <li><a href="#about">About</a></li>
         </ul>
       </div>
       <div data-role="footer" data-position="fixed" data-theme="b">
@@ -661,6 +670,10 @@
     	and can come back to hurt you in the future. Make sure that whatever you post on social media is acceptable for your
     	viewing audience and for people who come across your account. These are public forums - don't put any information on 
     	there that you wouldn't want your audience to see.</p> 
+    	<p>Journalists should do their best to maintain a professional image, which may mean creating an account 
+    	for personal use and another account for professional use. If two accounts are being used, do your best to 
+    	prevent them from overlapping. It is a good idea to make your personal account more private than your 
+    	professional account.</p>
     	
     	<p> For more information:</p>
     	<a href="http://stevebuttry.wordpress.com/2009/02/17/journalism-ethics-in-social-networks/">Ethics in Social Media</a>
