@@ -14,18 +14,32 @@
          });
     </script>
     <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      function display_state_contents(position) {
+        $.getJSON(
+          'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.placefinder%20where%20text%3D%22'+position.coords.latitude+','+position.coords.longitude+'%22%20and%20gflags%3D%22R%22&format=json', 
+          function(data) {
+            sc = data['query']['results']['Result'].statecode;
+            $('.statecontent').hide();
+            $('.statecontent_'+sc).show();
+          });
+      }
+      $(document).ready(function() {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(display_state_contents);
+        }
+      });
+    </script>
      <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
     <meta name="apple-mobile-web-app-capable" content="yes"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <style type="text/css" media="screen">
-
-  
-  img.footer_logo {
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
-	</style>
+        img.footer_logo {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        </style>
   </head>
   <body id="wwwd">
     <div id="home" data-role="page" data-theme="b">
