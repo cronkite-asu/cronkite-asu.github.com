@@ -43,12 +43,386 @@
           display: none;
         }
         </style>
+
+
+
+<script type="text/javascript">
+
+function stemmer(w)
+{
+  var step2list = 
+  {
+      "ational" : "ate",
+      "tional" : "tion",
+      "enci" : "ence",
+      "anci" : "ance",
+      "izer" : "ize",
+      "bli" : "ble",
+      "alli" : "al",
+      "entli" : "ent",
+      "eli" : "e",
+      "ousli" : "ous",
+      "ization" : "ize",
+      "ation" : "ate",
+      "ator" : "ate",
+      "alism" : "al",
+      "iveness" : "ive",
+      "fulness" : "ful",
+      "ousness" : "ous",
+      "aliti" : "al",
+      "iviti" : "ive",
+      "biliti" : "ble",
+      "logi" : "log"
+  },
+
+    step3list = {
+      "icate" : "ic",
+      "ative" : "",
+      "alize" : "al",
+      "iciti" : "ic",
+      "ical" : "ic",
+      "ful" : "",
+      "ness" : ""
+    },
+
+    c = "[^aeiou]",          // consonant
+    v = "[aeiouy]",          // vowel
+    C = c + "[^aeiouy]*",    // consonant sequence
+    V = v + "[aeiou]*",      // vowel sequence
+
+    mgr0 = "^(" + C + ")?" + V + C,               // [C]VC... is m>0
+    meq1 = "^(" + C + ")?" + V + C + "(" + V + ")?$",  // [C]VC[V] is m=1
+    mgr1 = "^(" + C + ")?" + V + C + V + C,       // [C]VCVC... is m>1
+    s_v = "^(" + C + ")?" + v;                   // vowel in stem
+
+
+    var   stem,
+      suffix,
+      firstch,
+      re,
+      re2,
+      re3,
+      re4,
+      origword = w;
+
+    if (w.length < 3) { return w; }
+
+    firstch = w.substr(0,1);
+    if (firstch == "y") {
+      w = firstch.toUpperCase() + w.substr(1);
+    }
+
+    // Step 1a
+    re = /^(.+?)(ss|i)es$/;
+    re2 = /^(.+?)([^s])s$/;
+
+    if (re.test(w)) { w = w.replace(re,"$1$2"); }
+    else if (re2.test(w)) { w = w.replace(re2,"$1$2"); }
+
+    // Step 1b
+    re = /^(.+?)eed$/;
+    re2 = /^(.+?)(ed|ing)$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      re = new RegExp(mgr0);
+      if (re.test(fp[1])) {
+        re = /.$/;
+        w = w.replace(re,"");
+      }
+    } else if (re2.test(w)) {
+      var fp = re2.exec(w);
+      stem = fp[1];
+      re2 = new RegExp(s_v);
+      if (re2.test(stem)) {
+        w = stem;
+        re2 = /(at|bl|iz)$/;
+        re3 = new RegExp("([^aeiouylsz])\\1$");
+        re4 = new RegExp("^" + C + v + "[^aeiouwxy]$");
+        if (re2.test(w)) {  w = w + "e"; }
+        else if (re3.test(w)) { re = /.$/; w = w.replace(re,""); }
+        else if (re4.test(w)) { w = w + "e"; }
+      }
+    }
+
+    // Step 1c
+    re = /^(.+?)y$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      stem = fp[1];
+      re = new RegExp(s_v);
+      if (re.test(stem)) { w = stem + "i"; }
+    }
+
+    // Step 2
+    re = /^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      stem = fp[1];
+      suffix = fp[2];
+      re = new RegExp(mgr0);
+      if (re.test(stem)) {
+        w = stem + step2list[suffix];
+      }
+    }
+
+    // Step 3
+    re = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      stem = fp[1];
+      suffix = fp[2];
+      re = new RegExp(mgr0);
+      if (re.test(stem)) {
+        w = stem + step3list[suffix];
+      }
+    }
+
+    // Step 4
+    re = /^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/;
+    re2 = /^(.+?)(s|t)(ion)$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      stem = fp[1];
+      re = new RegExp(mgr1);
+      if (re.test(stem)) {
+        w = stem;
+      }
+    } else if (re2.test(w)) {
+      var fp = re2.exec(w);
+      stem = fp[1] + fp[2];
+      re2 = new RegExp(mgr1);
+      if (re2.test(stem)) {
+        w = stem;
+      }
+    }
+
+    // Step 5
+    re = /^(.+?)e$/;
+    if (re.test(w)) {
+      var fp = re.exec(w);
+      stem = fp[1];
+      re = new RegExp(mgr1);
+      re2 = new RegExp(meq1);
+      re3 = new RegExp("^" + C + v + "[^aeiouwxy]$");
+      if (re.test(stem) || (re2.test(stem) && !(re3.test(stem)))) {
+        w = stem;
+      }
+    }
+
+    re = /ll$/;
+    re2 = new RegExp(mgr1);
+    if (re.test(w) && re2.test(w)) {
+      re = /.$/;
+      w = w.replace(re,"");
+    }
+
+    // and turn initial Y back to y
+
+    if (firstch == "y") {
+      w = firstch.toLowerCase() + w.substr(1);
+    }
+
+    return w;
+}
+
+function load()
+{
+  /*
+var stopwords = ["a", "able", "about", "above", "abst", "accordance", "according", "accordingly", "across", "act", "actually", "added", "adj", "adopted", "affected", "affecting", "affects", "after", "afterwards", "again", "against", "ah", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "announce", "another", "any", "anybody", "anyhow", "anymore", "anyone", "anything", "anyway", "anyways", "anywhere", "apparently", "approximately", "are", "aren", "arent", "arise", "around", "as", "aside", "ask", "asking", "at", "auth", "available", "away", "awfully", "b", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "beginning", "beginnings", "begins", "behind", "being", "believe", "below", "beside", "besides", "between", "beyond", "biol", "both", "brief", "briefly", "but", "by", "c", "ca", "came", "can", "cannot", "can't", "cause", "causes", "certain", "certainly", "co", "com", "come", "comes", "contain", "containing", "contains", "could", "couldnt", "d", "date", "did", "didn't", "different", "do", "does", "doesn't", "doing", "done", "don't", "down", "downwards", "due", "during", "e", "each", "ed", "edu", "effect", "eg", "eight", "eighty", "either", "else", "elsewhere", "end", "ending", "enough", "especially", "et", "et-al", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "except", "f", "far", "few", "ff", "fifth", "first", "five", "fix", "followed", "following", "follows", "for", "former", "formerly", "forth", "found", "four", "from", "further", "furthermore", "g", "gave", "get", "gets", "getting", "give", "given", "gives", "giving", "go", "goes", "gone", "got", "gotten", "h", "had", "happens", "hardly", "has", "hasn't", "have", "haven't", "having", "he", "hed", "hence", "her", "here", "hereafter", "hereby", "herein", "heres", "hereupon", "hers", "herself", "hes", "hi", "hid", "him", "himself", "his", "hither", "home", "how", "howbeit", "however", "hundred", "i", "id", "ie", "if", "i'll", "im", "immediate", "immediately", "importance", "important", "in", "inc", "indeed", "index", "information", "instead", "into", "invention", "inward", "is", "isn't", "it", "itd", "it'll", "its", "itself", "i've", "j", "just", "k", "keep", " keeps", "kept", "keys", "kg", "km", "know", "known", "knows", "l", "largely", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "line", "little", "'ll", "look", "looking", "looks", "ltd", "m", "made", "mainly", "make", "makes", "many", "may", "maybe", "me", "mean", "means", "meantime", "meanwhile", "merely", "mg", "might", "million", "miss", "ml", "more", "moreover", "most", "mostly", "mr", "mrs", "much", "mug", "must", "my", "myself", "n", "na", "name", "namely", "nay", "nd", "near", "nearly", "necessarily", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "ninety", "no", "nobody", "non", "none", "nonetheless", "noone", "nor", "normally", "nos", "not", "noted", "nothing", "now", "nowhere", "o", "obtain", "obtained", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "omitted", "on", "once", "one", "ones", "only", "onto", "or", "ord", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "owing", "own", "p", "page", "pages", "part", "particular", "particularly", "past", "per", "perhaps", "placed", "please", "plus", "poorly", "possible", "possibly", "potentially", "pp", "predominantly", "present", "previously", "primarily", "probably", "promptly", "proud", "provides", "put", "q", "que", "quickly", "quite", "qv", "r", "ran", "rather", "rd", "re", "readily", "really", "recent", "recently", "ref", "refs", "regarding", "regardless", "regards", "related", "relatively", "research", "respectively", "resulted", "resulting", "results", "right", "run", "s", "said", "same", "saw", "say", "saying", "says", "sec", "section", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sent", "seven", "several", "shall", "she", "shed", "she'll", "shes", "should", "shouldn't", "show", "showed", "shown", "showns", "shows", "significant", "significantly", "similar", "similarly", "since", "six", "slightly", "so", "some", "somebody", "somehow", "someone", "somethan", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specifically", "specified", "specify", "specifying", "state", "states", "still", "stop", "strongly", "sub", "substantially", "successfully", "such", "sufficiently", "suggest", "sup", "sure","t", "take", "taken", "taking", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "that'll", "thats", "that've", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "thered", "therefore", "therein", "there'll", "thereof", "therere", "theres", "thereto", "thereupon", "there've", "these", "they", "theyd", "they'll", "theyre", "they've", "think", "this", "those", "thou", "though", "thoughh", "thousand", "throug", "through", "throughout", "thru", "thus", "til", "tip", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "ts", "twice", "two", "u", "un", "under", "unfortunately", "unless", "unlike", "unlikely", "until", "unto", "up", "upon", "ups", "us", "use", "used", "useful", "usefully", "usefulness", "uses", "using", "usually", "v", "value", "various", "'ve", "very", "via", "viz", "vol", "vols", "vs", "w", "want", "wants", "was", "wasn't", "way", "we", "wed", "welcome", "we'll", "went", "were", "weren't", "we've", "what", "whatever", "what'll", "whats", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "wheres", "whereupon", "wherever", "whether", "which", "while", "whim", "whither", "who", "whod", "whoever", "whole", "who'll", "whom", "whomever", "whos", "whose", "why", "widely", "willing", "wish", "with", "within", "without", "won't", "words", "world", "would", "wouldn't", "www", "x", "y", "yes", "yet", "you", "youd", "you'll", "your", "youre", "yours", "yourself", "yourselves", "you've", "z", "zero"];
+
+var search_string = document.getElementById("Search").value;
+if(search_string.length>0)
+{
+var num_div=document.getElementsByTagName("div");
+
+var output="";
+
+search_string=search_string.toLowerCase();
+search_string=search_string.replace('?',"");
+
+//alert(search_string);
+
+for (var i=0;i<stopwords.length;i++)
+{
+var pattern=new RegExp("\\b"+stopwords[i]+"\\b","g");
+
+search_string = search_string.replace(pattern,"");
+}
+
+splitted_string = search_string.split(" ");
+
+/*for(var i=0;i<splitted_string.length;i++)
+{
+splitted_string[i] = stemmer(splitted_string[i]);
+}
+
+    
+for(var j=0;j<splitted_string.length;j++)
+{
+  if(splitted_string[j].length>0)
+
+  {
+    //alert("!"+splitted_string[j]+"!");
+      for(var i = 0; i < num_div.length; i++)
+      {
+  
+        var val =num_div[i].innerHTML;
+        var match = val.search(splitted_string[j]);
+        if(match != -1)
+        {
+          output=output+val; 
+        }
+  
+      }
+    
+    //alert(output);    
+  }
+}
+document.write(output);
+}
+else{
+document.write("Please enter an input");
+}
+
+
+}*/
+var prefix ="%3C!DOCTYPE%20html%3E%0A%3Chtml%3E%0A%20%20%3Chead%3E%0A%20%20%20%20%3Cmeta%20http-equiv%3D%22Content-type%22%20content%3D%22text%2Fhtml%3B%20charset%3Dutf-8%22%3E%0A%20%20%20%20%3Ctitle%3EWhat%20Would%20Walter%20Do%3F%3C%2Ftitle%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22http%3A%2F%2Fcode.jquery.com%2Fmobile%2F1.0rc1%2Fjquery.mobile-1.0rc1.min.css%22%20%2F%3E%0A%20%20%20%20%3Cscript%20src%3D%22http%3A%2F%2Fcode.jquery.com%2Fjquery-1.6.4.min.js%22%3E%3C%2Fscript%3E%0A%20%20%20%20%3Cscript%20type%3D%22text%2Fjavascript%22%20charset%3D%22utf-8%22%3E%0A%20%20%20%20%20%20%20%20%24(document).bind(%22mobileinit%22%2C%20function()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24.mobile.page.prototype.options.addBackBtn%20%3D%20true%3B%0A%20%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%3C%2Fscript%3E%0A%20%20%20%20%3Cscript%20src%3D%22http%3A%2F%2Fcode.jquery.com%2Fmobile%2F1.0rc1%2Fjquery.mobile-1.0rc1.min.js%22%3E%3C%2Fscript%3E%0A%20%20%20%20%3Cmeta%20name%3D%22apple-mobile-web-app-status-bar-style%22%20content%3D%22black%22%3E%20%0A%20%20%20%20%3Cmeta%20name%3D%22apple-mobile-web-app-capable%22%20content%3D%22yes%22%3E%20%0A%20%20%20%20%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1%22%3E";
+
+var suffix ="%3C%2Fbody%3E%3C%2Fhtml%3E";
+
+var pre = "%20%20%3Cdiv%20id%3D%22search%22%20data-role%3D%22page%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22header%22%20data-theme%3D%22b%22%20data-position%3D%22fixed%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ch1%3ESearch%20Results%3C%2Fh1%3E%0A%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22content%22%3E%20%20%0A%20%20%20%20%20%20";
+
+var suf ="%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22footer%22%20data-position%3D%22fixed%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%3Ch4%3EFooter%20content%3C%2Fh4%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%3C%2Fdiv%3E%20%20";
+            
+
+var stopwords = ["a", "able", "about", "above", "abst", "accordance", "according", "accordingly", "across", "act", "actually", "added", "adj", "adopted", "affected", "affecting", "affects", "after", "afterwards", "again", "against", "ah", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "announce", "another", "any", "anybody", "anyhow", "anymore", "anyone", "anything", "anyway", "anyways", "anywhere", "apparently", "approximately", "are", "aren", "arent", "arise", "around", "as", "aside", "ask", "asking", "at", "auth", "available", "away", "awfully", "b", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "beginning", "beginnings", "begins", "behind", "being", "believe", "below", "beside", "besides", "between", "beyond", "biol", "both", "brief", "briefly", "but", "by", "c", "ca", "came", "can", "cannot", "can't", "cause", "causes", "certain", "certainly", "co", "com", "come", "comes", "contain", "containing", "contains", "could", "couldnt", "d", "date", "did", "didn't", "different", "do", "does", "doesn't", "doing", "done", "don't", "down", "downwards", "due", "during", "e", "each", "ed", "edu", "effect", "eg", "eight", "eighty", "either", "else", "elsewhere", "end", "ending", "enough", "especially", "et", "et-al", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "except", "f", "far", "few", "ff", "fifth", "first", "five", "fix", "followed", "following", "follows", "for", "former", "formerly", "forth", "found", "four", "from", "further", "furthermore", "g", "gave", "get", "gets", "getting", "give", "given", "gives", "giving", "go", "goes", "gone", "got", "gotten", "h", "had", "happens", "hardly", "has", "hasn't", "have", "haven't", "having", "he", "hed", "hence", "her", "here", "hereafter", "hereby", "herein", "heres", "hereupon", "hers", "herself", "hes", "hi", "hid", "him", "himself", "his", "hither", "home", "how", "howbeit", "however", "hundred", "i", "id", "ie", "if", "i'll", "im", "immediate", "immediately", "importance", "important", "in", "inc", "indeed", "index", "information", "instead", "into", "invention", "inward", "is", "isn't", "it", "itd", "it'll", "its", "itself", "i've", "j", "just", "k", "keep", " keeps", "kept", "keys", "kg", "km", "know", "known", "knows", "l", "largely", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "line", "little", "'ll", "look", "looking", "looks", "ltd", "m", "made", "mainly", "make", "makes", "many", "may", "maybe", "me", "mean", "means", "meantime", "meanwhile", "merely", "mg", "might", "million", "miss", "ml", "more", "moreover", "most", "mostly", "mr", "mrs", "much", "mug", "must", "my", "myself", "n", "na", "name", "namely", "nay", "nd", "near", "nearly", "necessarily", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "ninety", "no", "nobody", "non", "none", "nonetheless", "noone", "nor", "normally", "nos", "not", "noted", "nothing", "now", "nowhere", "o", "obtain", "obtained", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "omitted", "on", "once", "one", "ones", "only", "onto", "or", "ord", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "owing", "own", "p", "page", "pages", "part", "particular", "particularly", "past", "per", "perhaps", "placed", "please", "plus", "poorly", "possible", "possibly", "potentially", "pp", "predominantly", "present", "previously", "primarily", "probably", "promptly", "proud", "provides", "put", "q", "que", "quickly", "quite", "qv", "r", "ran", "rather", "rd", "re", "readily", "really", "recent", "recently", "ref", "refs", "regarding", "regardless", "regards", "related", "relatively", "research", "respectively", "resulted", "resulting", "results", "right", "run", "s", "said", "same", "saw", "say", "saying", "says", "sec", "section", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sent", "seven", "several", "shall", "she", "shed", "she'll", "shes", "should", "shouldn't", "show", "showed", "shown", "showns", "shows", "significant", "significantly", "similar", "similarly", "since", "six", "slightly", "so", "some", "somebody", "somehow", "someone", "somethan", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specifically", "specified", "specify", "specifying", "state", "states", "still", "stop", "strongly", "sub", "substantially", "successfully", "such", "sufficiently", "suggest", "sup", "sure","t", "take", "taken", "taking", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "that'll", "thats", "that've", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "thered", "therefore", "therein", "there'll", "thereof", "therere", "theres", "thereto", "thereupon", "there've", "these", "they", "theyd", "they'll", "theyre", "they've", "think", "this", "those", "thou", "though", "thoughh", "thousand", "throug", "through", "throughout", "thru", "thus", "til", "tip", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "ts", "twice", "two", "u", "un", "under", "unfortunately", "unless", "unlike", "unlikely", "until", "unto", "up", "upon", "ups", "us", "use", "used", "useful", "usefully", "usefulness", "uses", "using", "usually", "v", "value", "various", "'ve", "very", "via", "viz", "vol", "vols", "vs", "w", "want", "wants", "was", "wasn't", "way", "we", "wed", "welcome", "we'll", "went", "were", "weren't", "we've", "what", "whatever", "what'll", "whats", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "wheres", "whereupon", "wherever", "whether", "which", "while", "whim", "whither", "who", "whod", "whoever", "whole", "who'll", "whom", "whomever", "whos", "whose", "why", "widely", "willing", "wish", "with", "within", "without", "won't", "words", "world", "would", "wouldn't", "www", "x", "y", "yes", "yet", "you", "youd", "you'll", "your", "youre", "yours", "yourself", "yourselves", "you've", "z", "zero"];
+
+
+var search_string = document.getElementById("Search").value;
+
+
+if(search_string.length>0)
+{
+  var num_div=document.getElementsByTagName("div");
+  var output="";
+  var flip_flop=1;
+
+  search_string=search_string.toLowerCase();
+  search_string=search_string.replace('?',"");
+
+
+  for (var i=0;i<stopwords.length;i++)
+  {
+  var pattern=new RegExp("\\b"+stopwords[i]+"\\b","g");
+  search_string = search_string.replace(pattern,"");
+  }
+
+  if(search_string.length>0)
+  {
+    
+    if(search_string.indexOf(" ")!=-1)
+    {
+      splitted_string = search_string.split(" ");
+    }
+    else
+    {
+      var splitted_string = new Array();  
+      splitted_string.push(search_string);
+    }
+
+  var val="";
+
+  for(var i = 0; i < num_div.length; i++)
+  {
+      for(var j=0;j<splitted_string.length;j++)
+      {
+        if(splitted_string[j] != " ")
+        {
+          if(splitted_string[j].length>0)
+          {
+          val =num_div[i].innerHTML;
+          var match = val.search(splitted_string[j]);
+            if(match == -1)
+            {
+            flip_flop=0;
+            break;
+            }
+          }
+        }
+        else
+        {
+          flip_flop=0;
+        } 
+      } 
+      if(flip_flop==1)
+      {
+              //alert(num_div[i].id+" "+num_div[i].id.length);
+              if(num_div[i].id.length>0)
+              {
+              var x = val.split("<div data-role=\"content\">");
+              var y = x[1].split("</div>");
+              var z = y[0].split("<div data-role=\"footer\"");
+              //alert(z[0]);
+              output=output+z[0];            
+              }
+              
+      }
+      else
+      {
+        flip_flop=1;
+      }
+  }
+    if(parseInt(output.length)>0)
+    {
+      //alert(output);
+      document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+    }
+    else 
+    {
+    //alert("No Match");
+    document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    }
+  }
+  else
+  {
+    //alert("No match");
+    document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+  }
+}
+else
+{
+ //document.write(unescape(prefix)+unescape(pre)+"<b>Please enter a query<b>"+unescape(suf)+unescape(suffix));
+
+}
+}
+
+
+</script>
+
+
+
+
+
+
   </head>
   <body id="wwwd">
     <div id="home" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>PocketJourno</h1>
       </div>
+
+<!-- Added for search-->
+
+    <div data-role="fieldcontain">
+      <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
+      <input type="search" name="password" id="Search" value="Search field"  />
+      <input type="submit" onclick="load();" value="Find" data-inline="true" />
+    </div>
+
+<!-- Added for search-->
+
+
+
       <div data-role="content">	
       <p>A Reporter's Field Guide Answering Journalism's Most Common Questions</p>
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e"> 
