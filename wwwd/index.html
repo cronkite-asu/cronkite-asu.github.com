@@ -10,14 +10,14 @@
     
     <script type="text/javascript" charset="utf-8">
         $(document).bind("mobileinit", function() {
-              $.mobile.page.prototype.options.addBackBtn = true; 
+              $.mobile.page.prototype.options.addBackBtn = true;
          });
     </script>
     <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
     <script type="text/javascript" charset="utf-8">
       function display_state_contents(position) {
         $.getJSON(
-          'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.placefinder%20where%20text%3D%22'+position.coords.latitude+','+position.coords.longitude+'%22%20and%20gflags%3D%22R%22&format=json', 
+          'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.placefinder%20where%20text%3D%22'+position.coords.latitude+','+position.coords.longitude+'%22%20and%20gflags%3D%22R%22&format=json',
           function(data) {
             sc = data['query']['results']['Result'].statecode;
             $('.statecontent').hide();
@@ -30,8 +30,8 @@
         }
       });
     </script>
-     <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
-    <meta name="apple-mobile-web-app-capable" content="yes"> 
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <style type="text/css" media="screen">
         img.footer_logo {
@@ -47,255 +47,38 @@
 
 
 <script type="text/javascript">
-
-function stemmer(w)
-{
-  var step2list = 
-  {
-      "ational" : "ate",
-      "tional" : "tion",
-      "enci" : "ence",
-      "anci" : "ance",
-      "izer" : "ize",
-      "bli" : "ble",
-      "alli" : "al",
-      "entli" : "ent",
-      "eli" : "e",
-      "ousli" : "ous",
-      "ization" : "ize",
-      "ation" : "ate",
-      "ator" : "ate",
-      "alism" : "al",
-      "iveness" : "ive",
-      "fulness" : "ful",
-      "ousness" : "ous",
-      "aliti" : "al",
-      "iviti" : "ive",
-      "biliti" : "ble",
-      "logi" : "log"
-  },
-
-    step3list = {
-      "icate" : "ic",
-      "ative" : "",
-      "alize" : "al",
-      "iciti" : "ic",
-      "ical" : "ic",
-      "ful" : "",
-      "ness" : ""
-    },
-
-    c = "[^aeiou]",          // consonant
-    v = "[aeiouy]",          // vowel
-    C = c + "[^aeiouy]*",    // consonant sequence
-    V = v + "[aeiou]*",      // vowel sequence
-
-    mgr0 = "^(" + C + ")?" + V + C,               // [C]VC... is m>0
-    meq1 = "^(" + C + ")?" + V + C + "(" + V + ")?$",  // [C]VC[V] is m=1
-    mgr1 = "^(" + C + ")?" + V + C + V + C,       // [C]VCVC... is m>1
-    s_v = "^(" + C + ")?" + v;                   // vowel in stem
-
-
-    var   stem,
-      suffix,
-      firstch,
-      re,
-      re2,
-      re3,
-      re4,
-      origword = w;
-
-    if (w.length < 3) { return w; }
-
-    firstch = w.substr(0,1);
-    if (firstch == "y") {
-      w = firstch.toUpperCase() + w.substr(1);
-    }
-
-    // Step 1a
-    re = /^(.+?)(ss|i)es$/;
-    re2 = /^(.+?)([^s])s$/;
-
-    if (re.test(w)) { w = w.replace(re,"$1$2"); }
-    else if (re2.test(w)) { w = w.replace(re2,"$1$2"); }
-
-    // Step 1b
-    re = /^(.+?)eed$/;
-    re2 = /^(.+?)(ed|ing)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      re = new RegExp(mgr0);
-      if (re.test(fp[1])) {
-        re = /.$/;
-        w = w.replace(re,"");
-      }
-    } else if (re2.test(w)) {
-      var fp = re2.exec(w);
-      stem = fp[1];
-      re2 = new RegExp(s_v);
-      if (re2.test(stem)) {
-        w = stem;
-        re2 = /(at|bl|iz)$/;
-        re3 = new RegExp("([^aeiouylsz])\\1$");
-        re4 = new RegExp("^" + C + v + "[^aeiouwxy]$");
-        if (re2.test(w)) {  w = w + "e"; }
-        else if (re3.test(w)) { re = /.$/; w = w.replace(re,""); }
-        else if (re4.test(w)) { w = w + "e"; }
-      }
-    }
-
-    // Step 1c
-    re = /^(.+?)y$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      re = new RegExp(s_v);
-      if (re.test(stem)) { w = stem + "i"; }
-    }
-
-    // Step 2
-    re = /^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      suffix = fp[2];
-      re = new RegExp(mgr0);
-      if (re.test(stem)) {
-        w = stem + step2list[suffix];
-      }
-    }
-
-    // Step 3
-    re = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      suffix = fp[2];
-      re = new RegExp(mgr0);
-      if (re.test(stem)) {
-        w = stem + step3list[suffix];
-      }
-    }
-
-    // Step 4
-    re = /^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$/;
-    re2 = /^(.+?)(s|t)(ion)$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      re = new RegExp(mgr1);
-      if (re.test(stem)) {
-        w = stem;
-      }
-    } else if (re2.test(w)) {
-      var fp = re2.exec(w);
-      stem = fp[1] + fp[2];
-      re2 = new RegExp(mgr1);
-      if (re2.test(stem)) {
-        w = stem;
-      }
-    }
-
-    // Step 5
-    re = /^(.+?)e$/;
-    if (re.test(w)) {
-      var fp = re.exec(w);
-      stem = fp[1];
-      re = new RegExp(mgr1);
-      re2 = new RegExp(meq1);
-      re3 = new RegExp("^" + C + v + "[^aeiouwxy]$");
-      if (re.test(stem) || (re2.test(stem) && !(re3.test(stem)))) {
-        w = stem;
-      }
-    }
-
-    re = /ll$/;
-    re2 = new RegExp(mgr1);
-    if (re.test(w) && re2.test(w)) {
-      re = /.$/;
-      w = w.replace(re,"");
-    }
-
-    // and turn initial Y back to y
-
-    if (firstch == "y") {
-      w = firstch.toLowerCase() + w.substr(1);
-    }
-
-    return w;
+function makeNewWindow() {
+    newWindow = window.open("","","status,height=500,width=300")
 }
+
 
 function load()
 {
-  /*
-var stopwords = ["a", "able", "about", "above", "abst", "accordance", "according", "accordingly", "across", "act", "actually", "added", "adj", "adopted", "affected", "affecting", "affects", "after", "afterwards", "again", "against", "ah", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "announce", "another", "any", "anybody", "anyhow", "anymore", "anyone", "anything", "anyway", "anyways", "anywhere", "apparently", "approximately", "are", "aren", "arent", "arise", "around", "as", "aside", "ask", "asking", "at", "auth", "available", "away", "awfully", "b", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "beginning", "beginnings", "begins", "behind", "being", "believe", "below", "beside", "besides", "between", "beyond", "biol", "both", "brief", "briefly", "but", "by", "c", "ca", "came", "can", "cannot", "can't", "cause", "causes", "certain", "certainly", "co", "com", "come", "comes", "contain", "containing", "contains", "could", "couldnt", "d", "date", "did", "didn't", "different", "do", "does", "doesn't", "doing", "done", "don't", "down", "downwards", "due", "during", "e", "each", "ed", "edu", "effect", "eg", "eight", "eighty", "either", "else", "elsewhere", "end", "ending", "enough", "especially", "et", "et-al", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "except", "f", "far", "few", "ff", "fifth", "first", "five", "fix", "followed", "following", "follows", "for", "former", "formerly", "forth", "found", "four", "from", "further", "furthermore", "g", "gave", "get", "gets", "getting", "give", "given", "gives", "giving", "go", "goes", "gone", "got", "gotten", "h", "had", "happens", "hardly", "has", "hasn't", "have", "haven't", "having", "he", "hed", "hence", "her", "here", "hereafter", "hereby", "herein", "heres", "hereupon", "hers", "herself", "hes", "hi", "hid", "him", "himself", "his", "hither", "home", "how", "howbeit", "however", "hundred", "i", "id", "ie", "if", "i'll", "im", "immediate", "immediately", "importance", "important", "in", "inc", "indeed", "index", "information", "instead", "into", "invention", "inward", "is", "isn't", "it", "itd", "it'll", "its", "itself", "i've", "j", "just", "k", "keep", " keeps", "kept", "keys", "kg", "km", "know", "known", "knows", "l", "largely", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "line", "little", "'ll", "look", "looking", "looks", "ltd", "m", "made", "mainly", "make", "makes", "many", "may", "maybe", "me", "mean", "means", "meantime", "meanwhile", "merely", "mg", "might", "million", "miss", "ml", "more", "moreover", "most", "mostly", "mr", "mrs", "much", "mug", "must", "my", "myself", "n", "na", "name", "namely", "nay", "nd", "near", "nearly", "necessarily", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "ninety", "no", "nobody", "non", "none", "nonetheless", "noone", "nor", "normally", "nos", "not", "noted", "nothing", "now", "nowhere", "o", "obtain", "obtained", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "omitted", "on", "once", "one", "ones", "only", "onto", "or", "ord", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "owing", "own", "p", "page", "pages", "part", "particular", "particularly", "past", "per", "perhaps", "placed", "please", "plus", "poorly", "possible", "possibly", "potentially", "pp", "predominantly", "present", "previously", "primarily", "probably", "promptly", "proud", "provides", "put", "q", "que", "quickly", "quite", "qv", "r", "ran", "rather", "rd", "re", "readily", "really", "recent", "recently", "ref", "refs", "regarding", "regardless", "regards", "related", "relatively", "research", "respectively", "resulted", "resulting", "results", "right", "run", "s", "said", "same", "saw", "say", "saying", "says", "sec", "section", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sent", "seven", "several", "shall", "she", "shed", "she'll", "shes", "should", "shouldn't", "show", "showed", "shown", "showns", "shows", "significant", "significantly", "similar", "similarly", "since", "six", "slightly", "so", "some", "somebody", "somehow", "someone", "somethan", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specifically", "specified", "specify", "specifying", "state", "states", "still", "stop", "strongly", "sub", "substantially", "successfully", "such", "sufficiently", "suggest", "sup", "sure","t", "take", "taken", "taking", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "that'll", "thats", "that've", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "thered", "therefore", "therein", "there'll", "thereof", "therere", "theres", "thereto", "thereupon", "there've", "these", "they", "theyd", "they'll", "theyre", "they've", "think", "this", "those", "thou", "though", "thoughh", "thousand", "throug", "through", "throughout", "thru", "thus", "til", "tip", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "ts", "twice", "two", "u", "un", "under", "unfortunately", "unless", "unlike", "unlikely", "until", "unto", "up", "upon", "ups", "us", "use", "used", "useful", "usefully", "usefulness", "uses", "using", "usually", "v", "value", "various", "'ve", "very", "via", "viz", "vol", "vols", "vs", "w", "want", "wants", "was", "wasn't", "way", "we", "wed", "welcome", "we'll", "went", "were", "weren't", "we've", "what", "whatever", "what'll", "whats", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "wheres", "whereupon", "wherever", "whether", "which", "while", "whim", "whither", "who", "whod", "whoever", "whole", "who'll", "whom", "whomever", "whos", "whose", "why", "widely", "willing", "wish", "with", "within", "without", "won't", "words", "world", "would", "wouldn't", "www", "x", "y", "yes", "yet", "you", "youd", "you'll", "your", "youre", "yours", "yourself", "yourselves", "you've", "z", "zero"];
+var prefix ="%3C%21%44%4F%43%54%59%50%45%20%68%74%6D%6C%3E%0A%3C%68%74%6D%6C%3E%0A%20%20%3C%68%65%61%64%3E%0A%20%20%20%20%3C%6D%65%74%61%20%68%74%74%70%2D%65%71%75%69%76%3D%22%43%6F%6E%74%65%6E%74%2D%74%79%70%65%22%20%63%6F%6E%74%65%6E%74%3D%22%74%65%78%74%2F%68%74%6D%6C%3B%20%63%68%61%72%73%65%74%3D%75%74%66%2D%38%22%3E%0A%20%20%20%20%3C%74%69%74%6C%65%3E%50%6F%63%6B%65%74%4A%6F%75%72%6E%6F%3C%2F%74%69%74%6C%65%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%73%74%79%6C%65%73%68%65%65%74%22%20%68%72%65%66%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%63%73%73%22%20%2F%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%73%74%61%72%74%75%70%2D%69%6D%61%67%65%22%20%68%72%65%66%3D%22%73%70%6C%61%73%68%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%69%63%6F%6E%22%20%68%72%65%66%3D%22%69%63%6F%6E%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6A%71%75%65%72%79%2D%31%2E%36%2E%34%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%20%20%20%20%0A%20%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%73%74%61%74%75%73%2D%62%61%72%2D%73%74%79%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%62%6C%61%63%6B%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%63%61%70%61%62%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%79%65%73%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%76%69%65%77%70%6F%72%74%22%20%63%6F%6E%74%65%6E%74%3D%22%77%69%64%74%68%3D%64%65%76%69%63%65%2D%77%69%64%74%68%2C%20%69%6E%69%74%69%61%6C%2D%73%63%61%6C%65%3D%31%22%3E%0A%20%20%20%20%20%20%20%20%3C%73%74%79%6C%65%20%74%79%70%65%3D%22%74%65%78%74%2F%63%73%73%22%20%6D%65%64%69%61%3D%22%73%63%72%65%65%6E%22%3E%0A%20%20%20%20%20%20%20%20%69%6D%67%2E%66%6F%6F%74%65%72%5F%6C%6F%67%6F%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%62%6C%6F%63%6B%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%6C%65%66%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%72%69%67%68%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2E%73%74%61%74%65%63%6F%6E%74%65%6E%74%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%6E%6F%6E%65%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%3C%2F%73%74%79%6C%65%3E%0A%3C%2F%68%65%61%64%3E";
 
-var search_string = document.getElementById("Search").value;
-if(search_string.length>0)
-{
-var num_div=document.getElementsByTagName("div");
-
-var output="";
-
-search_string=search_string.toLowerCase();
-search_string=search_string.replace('?',"");
-
-//alert(search_string);
-
-for (var i=0;i<stopwords.length;i++)
-{
-var pattern=new RegExp("\\b"+stopwords[i]+"\\b","g");
-
-search_string = search_string.replace(pattern,"");
-}
-
-splitted_string = search_string.split(" ");
-
-/*for(var i=0;i<splitted_string.length;i++)
-{
-splitted_string[i] = stemmer(splitted_string[i]);
-}
-
-    
-for(var j=0;j<splitted_string.length;j++)
-{
-  if(splitted_string[j].length>0)
-
-  {
-    //alert("!"+splitted_string[j]+"!");
-      for(var i = 0; i < num_div.length; i++)
-      {
-  
-        var val =num_div[i].innerHTML;
-        var match = val.search(splitted_string[j]);
-        if(match != -1)
-        {
-          output=output+val; 
-        }
-  
-      }
-    
-    //alert(output);    
-  }
-}
-document.write(output);
-}
-else{
-document.write("Please enter an input");
-}
+var pre = "%20%20%3C%62%6F%64%79%3E%0A%3C%64%69%76%20%69%64%3D%22%73%65%61%72%63%68%22%20%64%61%74%61%2D%72%6F%6C%65%3D%22%70%61%67%65%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%68%65%61%64%65%72%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%20%64%61%74%61%2D%70%6F%73%69%74%69%6F%6E%3D%22%66%69%78%65%64%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%68%31%3E%53%65%61%72%63%68%20%52%65%73%75%6C%74%73%3C%2F%68%31%3E%0A%20%20%20%20%20%3C%2F%64%69%76%3E%0A%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%63%6F%6E%74%65%6E%74%22%3E%20%20%0A%20%20%20%20%20%20";
 
 
-}*/
-var prefix ="%3C!DOCTYPE%20html%3E%0A%3Chtml%3E%0A%20%20%3Chead%3E%0A%20%20%20%20%3Cmeta%20http-equiv%3D%22Content-type%22%20content%3D%22text%2Fhtml%3B%20charset%3Dutf-8%22%3E%0A%20%20%20%20%3Ctitle%3EWhat%20Would%20Walter%20Do%3F%3C%2Ftitle%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22http%3A%2F%2Fcode.jquery.com%2Fmobile%2F1.0rc1%2Fjquery.mobile-1.0rc1.min.css%22%20%2F%3E%0A%20%20%20%20%3Cscript%20src%3D%22http%3A%2F%2Fcode.jquery.com%2Fjquery-1.6.4.min.js%22%3E%3C%2Fscript%3E%0A%20%20%20%20%3Cscript%20type%3D%22text%2Fjavascript%22%20charset%3D%22utf-8%22%3E%0A%20%20%20%20%20%20%20%20%24(document).bind(%22mobileinit%22%2C%20function()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24.mobile.page.prototype.options.addBackBtn%20%3D%20true%3B%0A%20%20%20%20%20%20%20%20%20%7D)%3B%0A%20%20%20%20%3C%2Fscript%3E%0A%20%20%20%20%3Cscript%20src%3D%22http%3A%2F%2Fcode.jquery.com%2Fmobile%2F1.0rc1%2Fjquery.mobile-1.0rc1.min.js%22%3E%3C%2Fscript%3E%0A%20%20%20%20%3Cmeta%20name%3D%22apple-mobile-web-app-status-bar-style%22%20content%3D%22black%22%3E%20%0A%20%20%20%20%3Cmeta%20name%3D%22apple-mobile-web-app-capable%22%20content%3D%22yes%22%3E%20%0A%20%20%20%20%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1%22%3E";
+var suf ="%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22footer%22%20data-position%3D%22fixed%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%3Ch4%3EFooter%20content%3C%2Fh4%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%3C%2Fdiv%3E%20%20";
 
 var suffix ="%3C%2Fbody%3E%3C%2Fhtml%3E";
 
-var pre = "%20%20%3Cdiv%20id%3D%22search%22%20data-role%3D%22page%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22header%22%20data-theme%3D%22b%22%20data-position%3D%22fixed%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ch1%3ESearch%20Results%3C%2Fh1%3E%0A%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22content%22%3E%20%20%0A%20%20%20%20%20%20";
 
-var suf ="%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22footer%22%20data-position%3D%22fixed%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%3Ch4%3EFooter%20content%3C%2Fh4%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%3C%2Fdiv%3E%20%20";
+
             
 
 var stopwords = ["a", "able", "about", "above", "abst", "accordance", "according", "accordingly", "across", "act", "actually", "added", "adj", "adopted", "affected", "affecting", "affects", "after", "afterwards", "again", "against", "ah", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "announce", "another", "any", "anybody", "anyhow", "anymore", "anyone", "anything", "anyway", "anyways", "anywhere", "apparently", "approximately", "are", "aren", "arent", "arise", "around", "as", "aside", "ask", "asking", "at", "auth", "available", "away", "awfully", "b", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "beginning", "beginnings", "begins", "behind", "being", "believe", "below", "beside", "besides", "between", "beyond", "biol", "both", "brief", "briefly", "but", "by", "c", "ca", "came", "can", "cannot", "can't", "cause", "causes", "certain", "certainly", "co", "com", "come", "comes", "contain", "containing", "contains", "could", "couldnt", "d", "date", "did", "didn't", "different", "do", "does", "doesn't", "doing", "done", "don't", "down", "downwards", "due", "during", "e", "each", "ed", "edu", "effect", "eg", "eight", "eighty", "either", "else", "elsewhere", "end", "ending", "enough", "especially", "et", "et-al", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "except", "f", "far", "few", "ff", "fifth", "first", "five", "fix", "followed", "following", "follows", "for", "former", "formerly", "forth", "found", "four", "from", "further", "furthermore", "g", "gave", "get", "gets", "getting", "give", "given", "gives", "giving", "go", "goes", "gone", "got", "gotten", "h", "had", "happens", "hardly", "has", "hasn't", "have", "haven't", "having", "he", "hed", "hence", "her", "here", "hereafter", "hereby", "herein", "heres", "hereupon", "hers", "herself", "hes", "hi", "hid", "him", "himself", "his", "hither", "home", "how", "howbeit", "however", "hundred", "i", "id", "ie", "if", "i'll", "im", "immediate", "immediately", "importance", "important", "in", "inc", "indeed", "index", "information", "instead", "into", "invention", "inward", "is", "isn't", "it", "itd", "it'll", "its", "itself", "i've", "j", "just", "k", "keep", " keeps", "kept", "keys", "kg", "km", "know", "known", "knows", "l", "largely", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "line", "little", "'ll", "look", "looking", "looks", "ltd", "m", "made", "mainly", "make", "makes", "many", "may", "maybe", "me", "mean", "means", "meantime", "meanwhile", "merely", "mg", "might", "million", "miss", "ml", "more", "moreover", "most", "mostly", "mr", "mrs", "much", "mug", "must", "my", "myself", "n", "na", "name", "namely", "nay", "nd", "near", "nearly", "necessarily", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "ninety", "no", "nobody", "non", "none", "nonetheless", "noone", "nor", "normally", "nos", "not", "noted", "nothing", "now", "nowhere", "o", "obtain", "obtained", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "omitted", "on", "once", "one", "ones", "only", "onto", "or", "ord", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "owing", "own", "p", "page", "pages", "part", "particular", "particularly", "past", "per", "perhaps", "placed", "please", "plus", "poorly", "possible", "possibly", "potentially", "pp", "predominantly", "present", "previously", "primarily", "probably", "promptly", "proud", "provides", "put", "q", "que", "quickly", "quite", "qv", "r", "ran", "rather", "rd", "re", "readily", "really", "recent", "recently", "ref", "refs", "regarding", "regardless", "regards", "related", "relatively", "research", "respectively", "resulted", "resulting", "results", "right", "run", "s", "said", "same", "saw", "say", "saying", "says", "sec", "section", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sent", "seven", "several", "shall", "she", "shed", "she'll", "shes", "should", "shouldn't", "show", "showed", "shown", "showns", "shows", "significant", "significantly", "similar", "similarly", "since", "six", "slightly", "so", "some", "somebody", "somehow", "someone", "somethan", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specifically", "specified", "specify", "specifying", "state", "states", "still", "stop", "strongly", "sub", "substantially", "successfully", "such", "sufficiently", "suggest", "sup", "sure","t", "take", "taken", "taking", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "that'll", "thats", "that've", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "thered", "therefore", "therein", "there'll", "thereof", "therere", "theres", "thereto", "thereupon", "there've", "these", "they", "theyd", "they'll", "theyre", "they've", "think", "this", "those", "thou", "though", "thoughh", "thousand", "throug", "through", "throughout", "thru", "thus", "til", "tip", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "ts", "twice", "two", "u", "un", "under", "unfortunately", "unless", "unlike", "unlikely", "until", "unto", "up", "upon", "ups", "us", "use", "used", "useful", "usefully", "usefulness", "uses", "using", "usually", "v", "value", "various", "'ve", "very", "via", "viz", "vol", "vols", "vs", "w", "want", "wants", "was", "wasn't", "way", "we", "wed", "welcome", "we'll", "went", "were", "weren't", "we've", "what", "whatever", "what'll", "whats", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "wheres", "whereupon", "wherever", "whether", "which", "while", "whim", "whither", "who", "whod", "whoever", "whole", "who'll", "whom", "whomever", "whos", "whose", "why", "widely", "willing", "wish", "with", "within", "without", "won't", "words", "world", "would", "wouldn't", "www", "x", "y", "yes", "yet", "you", "youd", "you'll", "your", "youre", "yours", "yourself", "yourselves", "you've", "z", "zero"];
+
+
+
+
+
+var non_stopwords = ['', '$10', '$xx', '&', '0', '000', '001', '01', '010', '016', '02', '020', '03', '030', '040', '050', '1', '10', '100', '10001', '101', '102', '103', '105', '106', '107', '109', '11', '11124', '12', '120', '121', '1210', '1214', '13', '1313', '133', '1335', '1359', '13a', '13d', '14', '1412', '142', '143', '15', '156a', '15a', '16', '165', '17', '176', '18', '19', '191', '192', '1973', '1975', '1976', '1977', '1978', '1979', '1980', '1981', '1982', '1983', '1984', '1985', '1988', '1990', '1993', '1994', '1995', '1997', '1998', '1d', '2', '20', '200', '2000', '2002', '2004', '2005', '21', '213', '22', '225', '23', '2342', '23a', '23b', '2402', '25', '25%', '255', '25a', '263', '272', '274', '28', '287', '29', '2933', '2a', '2d', '3', '30', '300', '3005', '303', '304', '305', '31', '310', '312', '314', '318', '324', '33', '338', '345', '348', '35', '35a', '36', '3707', '3711', '3712', '38', '389', '39', '398', '4', '4001', '401', '402', '403', '406', '41', '411', '42', '431', '4318', '44', '45', '46', '49', '4th', '5', '50', '504', '507', '52', '526', '531', '535', '539c', '540', '542', '54953', '551', '553', '559', '57', '570', '5703', '5704', '570d', '58', '6', '60', '601', '606', '610', '616', '62', '620', '6252', '626a', '630', '631', '632', '65', '650', '66', '67', '6702', '673', '686', '7', '70', '700', '702', '704', '710', '720', '722', '727', '73', '75', '750', '77', '793', '8', '803', '808b', '82', '84', '891', '9', '901', '91', '92', '934', '938', '96', '968', '969', '97', '99', 'absence', 'absolutely', 'accept', 'acceptable', 'accepted', 'accepting', 'access', 'accessible', 'accompanied', 'accompanies', 'account', 'accounts', 'accredited', 'accurate', 'acquire', 'acquiring', 'acting', 'action', 'actions', 'active', 'activities', 'activity', 'acts', 'actual', 'add', 'addition', 'additionally', 'address', 'addressing', 'administrative', 'admission', 'admit', 'adopt', 'adult', 'advance', 'advanced', 'advice', 'advised', 'advisory', 'aff', 'affect', 'afford', 'afraid', 'afterthoughts', 'age', 'agencies', 'agency', 'agenda', 'agree', 'agreement', 'ahead', 'aircrafts', 'ala', 'alabama', 'alaska', 'albuquerque', 'alert', 'alien', 'allow', 'allowed', 'allows', 'allstate', 'alter', 'alteration', 'alternate', 'amendment', 'american', 'americans', 'amount', 'amplify', 'amplifying', 'ann', 'anna', 'answer', 'answering', 'anytime', 'app', 'apparent', 'appeals', 'appears', 'appellate', 'application', 'applications', 'applied', 'applies', 'apply', 'applying', 'appointed', 'approach', 'approaching', 'approval', 'arapahoe', 'areas', 'argued', 'arguments', 'ariz', 'arizona', 'ark', 'arkansas', 'arnold', 'arrest', 'arresting', 'arrived', 'art', 'article', 'articles', 'asks', 'ass', 'assemblage', 'assemblies', 'assembly', 'assistance', 'association', 'associations', 'att', 'attend', 'attendance', 'attendances', 'attended', 'attendees', 'attending', 'attention', 'attorney', 'attribute', 'attribution', 'atty', 'audience', 'audio', 'audit', 'auditor', 'auditors', 'author', 'authority', 'authorized', 'avoid', 'avoiding', 'background', 'bagley', 'ballot', 'ballpoint', 'ban', 'bargaining', 'base', 'basic', 'basis', 'beach', 'behalf', 'behave', 'beneficiaries', 'beneficiary', 'best', 'better', 'big', 'bloggers', 'board', 'boards', 'bodies', 'body', 'branch', 'breaking', 'bribe', 'bring', 'bringing', 'brings', 'broad', 'broadcast', 'broadcasting', 'bronner', 'brown', 'budget', 'build', 'building', 'built', 'business', 'businesses', 'busy', 'cal', 'california', 'call', 'called', 'calls', 'camera', 'cameras', 'campus', 'capacity', 'card', 'careful', 'carolina', 'carried', 'carries', 'carrying', 'case', 'cases', 'casual', 'categories', 'category', 'caucus', 'caucuses', 'caution', 'cautious', 'cellular', 'census', 'cent', 'center', 'centers', 'central', 'ceremonial', 'ch', 'challenge', 'chance', 'change', 'changes', 'chapter', 'charge', 'charges', 'check', 'chicago', 'child', 'children', 'chiropractic', 'circulated', 'circulation', 'circumstances', 'circumvent', 'cite', 'cited', 'citizen', 'citizens', 'citizenship', 'city', 'civ', 'civil', 'claiming', 'claims', 'class', 'classrooms', 'clean', 'cleaning', 'clear', 'clearance', 'clearly', 'client', 'clients', 'close', 'closed', 'closure', 'code', 'coded', 'codified', 'coffee', 'cole', 'collective', 'colo', 'colorado', 'combination', 'commercial', 'commission', 'commissions', 'commitment', 'commits', 'committed', 'committee', 'committees', 'committing', 'common', 'commons', 'commonwealth', 'communicating', 'communication', 'communicationincluding', 'communications', 'community', 'comp', 'companies', 'company', 'compiled', 'complaint', 'complete', 'completely', 'completing', 'completion', 'comply', 'compromise', 'compromised', 'computer', 'concerning', 'condition', 'conditioned', 'conditions', 'condolences', 'conduct', 'conducted', 'conducting', 'conducts', 'conference', 'conferences', 'conferencing', 'confidential', 'confined', 'confirm', 'congregation', 'congress', 'conn', 'connecticut', 'connection', 'cons', 'consensus', 'consent', 'consented', 'consenting', 'consents', 'consequences', 'consider', 'considered', 'considering', 'consie', 'consist', 'consists', 'constitute', 'constitutes', 'constitution', 'consultation', 'contact', 'contacts', 'content', 'contents', 'contra', 'control', 'convened', 'convenes', 'convening', 'conventions', 'conversation', 'conversations', 'convince', 'copied', 'copy', 'copying', 'copyright', 'cordless', 'corporate', 'corporation', 'corporations', 'correct', 'costa', 'county', 'course', 'court', 'courthouse', 'courtroom', 'courtrooms', 'courts', 'cover', 'coverage', 'covered', 'covering', 'craft', 'create', 'creating', 'creative', 'creativecommons', 'creator', 'credential', 'credibility', 'credible', 'credit', 'crime', 'criminal', 'criminalizes', 'criminally', 'crises', 'critical', 'cronkite', 'ct', 'cty', 'cultural', 'current', 'dakota', 'damages', 'data', 'day', 'days', 'dca', 'dealing', 'debates', 'debating', 'december', 'decide', 'decided', 'deciding', 'decision', 'decisions', 'declaration', 'declare', 'decline', 'deemed', 'define', 'defined', 'defines', 'definition', 'del', 'delaware', 'deliberate', 'deliberating', 'deliberation', 'deliberations', 'democratic', 'denay', 'denial', 'denied', 'dentistry', 'departments', 'depends', 'described', 'description', 'design', 'designation', 'designed', 'desiring', 'despite', 'details', 'determines', 'develop', 'development', 'device', 'devices', 'didn', 'dies', 'differ', 'digital', 'dilemmas', 'dining', 'direct', 'directly', 'director', 'disabilities', 'disability', 'disaster', 'disclose', 'disclosed', 'discloses', 'disclosing', 'disclosure', 'discourage', 'discretion', 'discuss', 'discussed', 'discussing', 'discussion', 'discussions', 'disjointed', 'disrupt', 'disrupting', 'disruptive', 'disrupts', 'dissembling', 'disseminate', 'dist', 'distinction', 'districts', 'disturbance', 'disturbing', 'div', 'diversity', 'divulge', 'document', 'documents', 'don', 'door', 'dorm', 'doubt', 'draft', 'drastically', 'drink', 'duly', 'duplication', 'duration', 'duties', 'duty', 'dvd', 'easier', 'easy', 'eavesdrop', 'eavesdropper', 'eavesdropping', 'edit', 'editor', 'educ', 'education', 'educational', 'effective', 'effort', 'efforts', 'elected', 'electorate', 'electors', 'electronic', 'eliminate', 'email', 'emailed', 'emails', 'embedded', 'emergencies', 'emergency', 'emphasize', 'employee', 'employees', 'employer', 'employment', 'encounter', 'encounters', 'encyclopedia', 'enforce', 'enforced', 'enforcement', 'engaged', 'engaging', 'engineering', 'enters', 'entities', 'entitle', 'entitled', 'entity', 'entrance', 'entry', 'enumerated', 'epresentatives', 'equipment', 'err', 'essential', 'establish', 'established', 'estate', 'estimated', 'etched', 'ethical', 'ethically', 'ethics', 'ethnicity', 'evading', 'event', 'events', 'everyday', 'examiners', 'example', 'exceed', 'exceptions', 'excess', 'exchange', 'excitement', 'exciting', 'exclude', 'excluding', 'executive', 'exempt', 'exempted', 'exemption', 'exemptions', 'exercising', 'exist', 'existence', 'exists', 'expect', 'expectation', 'expected', 'expenses', 'experience', 'explain', 'explicit', 'explicitly', 'expressing', 'expressly', 'expropriated', 'extent', 'extra', 'face', 'facebook', 'facilities', 'facility', 'fact', 'factors', 'facts', 'factual', 'fall', 'falls', 'false', 'familiar', 'family', 'fashion', 'fast', 'faster', 'fata', 'feasible', 'federal', 'fee', 'feel', 'fees', 'felonies', 'felony', 'field', 'file', 'filing', 'filler', 'film', 'filming', 'final', 'finalize', 'finally', 'find', 'finding', 'fines', 'finish', 'fired', 'fixes', 'fla', 'flesh', 'florida', 'fly', 'foia', 'follow', 'forbid', 'forever', 'formal', 'forthright', 'forums', 'fourth', 'francisco', 'free', 'freedom', 'frequencies', 'frequently', 'friendly', 'fulfill', 'fulfilled', 'full', 'fully', 'funds', 'furnish', 'furtherance', 'future', 'futures', 'ga', 'gain', 'gather', 'gathered', 'gathering', 'gatherings', 'gen', 'gender', 'general', 'generally', 'georgia', 'gerould', 'gift', 'gifts', 'going', 'gonna', 'good', 'gov', 'governing', 'government', 'governmental', 'graduate', 'grammar', 'grant', 'granting', 'grants', 'gray', 'great', 'grounds', 'group', 'groups', 'guarantee', 'guarantees', 'guardian', 'guide', 'guideline', 'guidelines', 'guilty', 'gutierrez', 'gym', 'half', 'hampshire', 'hand', 'handbook', 'handset', 'handy', 'hard', 'haw', 'hawaii', 'headed', 'heading', 'hear', 'hearing', 'hearings', 'heart', 'held', 'helmets', 'help', 'hidden', 'higher', 'highest', 'hill', 'history', 'hold', 'holding', 'holds', 'household', 'human', 'hurt', 'i83', 'i84', 'idaho', 'idea', 'identifiable', 'identified', 'identify', 'identity', 'ii', 'iii', 'ilcs', 'ill', 'illegal', 'illegally', 'illinois', 'illustrate', 'image', 'images', 'impeachment', 'implementation', 'implication', 'impose', 'imposed', 'inbox', 'incident', 'include', 'included', 'includes', 'including', 'increase', 'incurring', 'ind', 'indiana', 'indication', 'indirect', 'individual', 'individuals', 'industrial', 'inform', 'informal', 'informed', 'injurious', 'innovation', 'ins', 'inside', 'insofar', 'inspection', 'inspections', 'installation', 'instance', 'institutions', 'intended', 'intensive', 'intent', 'intention', 'intentionally', 'intercept', 'intercepted', 'intercepting', 'interception', 'interceptions', 'interceptor', 'intercepts', 'interest', 'interested', 'interests', 'interference', 'interjecting', 'intermediate', 'interpretation', 'interpreted', 'interpreting', 'interstate', 'interview', 'interviewee', 'interviewing', 'interviews', 'invasion', 'invasions', 'investigating', 'involving', 'iowa', 'ipod', 'island', 'issue', 'issued', 'issues', 'item', 'items', 'jersey', 'job', 'journalism', 'journalist', 'journalists', 'judge', 'judicial', 'jungle', 'jurisdiction', 'jurisdictions', 'kan', 'kansas', 'keene', 'kentucky', 'kern', 'key', 'kind', 'knew', 'knowledge', 'ky', 'la', 'lab', 'labels', 'lakeidra', 'lane', 'language', 'lasts', 'law', 'lawfully', 'lawns', 'laws', 'learn', 'leave', 'legal', 'legally', 'legislates', 'legislation', 'legislative', 'legitimate', 'letter', 'letters', 'liability', 'libraries', 'license', 'licensed', 'licenses', 'licensing', 'licensure', 'limit', 'limitations', 'limited', 'limits', 'link', 'list', 'listen', 'listening', 'lists', 'litigation', 'littleton', 'll', 'local', 'location', 'locations', 'log', 'logo', 'long', 'lose', 'lot', 'louisiana', 'low', 'lunch', 'maine', 'mainstream', 'maintain', 'maintenance', 'majority', 'making', 'manager', 'manner', 'mark', 'marquee', 'maryland', 'mass', 'massachusetts', 'material', 'matter', 'matters', 'mckinney', 'md', 'meal', 'meaning', 'meaningful', 'meaningless', 'measured', 'mechanical', 'media', 'medical', 'medium', 'meet', 'meeting', 'meetings', 'meets', 'member', 'members', 'memorize', 'mention', 'mentioning', 'message', 'messages', 'methods', 'mexico', 'mich', 'michigan', 'mindful', 'minimal', 'minn', 'minnesota', 'minor', 'minors', 'minutes', 'misconduct', 'misdemeanor', 'misdemeanors', 'misleading', 'mississippi', 'missouri', 'missteps', 'mistakes', 'mo', 'mobile', 'money', 'mont', 'montana', 'move', 'moved', 'multi', 'multimedia', 'multiple', 'municipal', 'municipality', 'names', 'national', 'native', 'natoli', 'navajo', 'neb', 'nebraska', 'necessity', 'negotiating', 'negotiation', 'nev', 'nevada', 'news', 'newsgathering', 'newspapers', 'newsroom', 'newsworthiness', 'newsworthy', 'ng', 'nice', 'nmsa', 'nonpublic', 'nonresident', 'normal', 'north', 'notable', 'notes', 'notice', 'notify', 'number', 'nursing', 'oakland', 'observation', 'observe', 'obtaining', 'obvious', 'occurred', 'occurring', 'occurs', 'offense', 'offenses', 'office', 'officer', 'officers', 'official', 'officials', 'ohio', 'okla', 'oklahoma', 'older', 'oma', 'oml', 'online', 'op', 'open', 'openly', 'openness', 'opens', 'operated', 'operating', 'operational', 'operations', 'opportunity', 'option', 'oral', 'orally', 'order', 'orderly', 'ordinances', 'ordinary', 'oregon', 'org', 'organization', 'organized', 'orientation', 'original', 'ors', 'osteopathic', 'oswego', 'overhear', 'overheard', 'overhearing', 'overhears', 'overlapping', 'overusing', 'owned', 'owner', 'pa', 'paid', 'paper', 'parent', 'parental', 'parks', 'parole', 'partial', 'partially', 'participant', 'participants', 'participate', 'participated', 'participating', 'participation', 'parties', 'party', 'pass', 'passes', 'pay', 'paying', 'pen', 'penal', 'penalty', 'pending', 'pennsylvania', 'people', 'performance', 'performed', 'permission', 'permissions', 'permit', 'permits', 'permitted', 'persistent', 'person', 'personal', 'personnel', 'persons', 'persuade', 'pharmacy', 'phone', 'photo', 'photograph', 'photographer', 'photographers', 'photographing', 'photos', 'photoshop', 'phrase', 'phrases', 'pio', 'pios', 'piques', 'place', 'places', 'plagiarism', 'plan', 'planned', 'planning', 'pocketjourno', 'point', 'police', 'policy', 'political', 'portion', 'pose', 'position', 'positions', 'positive', 'possession', 'post', 'posted', 'posts', 'power', 'poynter', 'practical', 'practice', 'pre', 'prearranged', 'precedent', 'preferred', 'premised', 'prepare', 'preparing', 'presence', 'presented', 'press', 'prevent', 'prevents', 'pride', 'primary', 'prior', 'prison', 'prisons', 'privacy', 'private', 'privately', 'privilege', 'procedures', 'proceeding', 'proceedings', 'process', 'processing', 'produced', 'products', 'profession', 'professional', 'program', 'prohibit', 'prohibited', 'prohibits', 'projects', 'property', 'protect', 'protected', 'protecting', 'protects', 'proven', 'provide', 'provided', 'providing', 'provisions', 'pub', 'public', 'publication', 'publicized', 'publish', 'published', 'publishing', 'pulled', 'punishable', 'punished', 'punishment', 'purchase', 'purely', 'purpose', 'purposes', 'pursuant', 'pursue', 'push', 'quasi', 'question', 'questionnaire', 'questions', 'quick', 'quicker', 'quiet', 'quorum', 'quote', 'quotes', 'race', 'radio', 'range', 'rcw', 'reached', 'read', 'readers', 'readmitting', 'real', 'reason', 'reasonable', 'reasonableness', 'reasonably', 'reasons', 'receive', 'received', 'receiver', 'receiving', 'recieving', 'recipient', 'recognized', 'recommend', 'record', 'recorded', 'recorder', 'recorders', 'recording', 'records', 'reference', 'refuses', 'refusing', 'regents', 'regional', 'register', 'registering', 'regular', 'regulations', 'relations', 'relationship', 'relationships', 'release', 'releases', 'relevant', 'remain', 'remember', 'reminder', 'removal', 'removed', 'removes', 'repetitive', 'replace', 'report', 'reporter', 'reporters', 'reporting', 'represent', 'representative', 'representatives', 'reproduce', 'republishing', 'request', 'requests', 'require', 'required', 'requirement', 'requirements', 'requires', 'requisite', 'resale', 'rescheduling', 'residence', 'residences', 'residency', 'resident', 'residents', 'resistance', 'resold', 'resource', 'resourceful', 'resources', 'response', 'responsibility', 'responsible', 'restaurant', 'restricted', 'restrictions', 'restrictive', 'retail', 'retha', 'rev', 'reveal', 'reviewing', 'rhode', 'rights', 'risk', 'rivas', 'room', 'rooms', 'roudybush', 'rsa', 'rudolph', 'rudy', 'rule', 'rules', 'sale', 'san', 'sanction', 'scene', 'scenes', 'scheduling', 'school', 'schools', 'science', 'screen', 'search', 'secret', 'secretly', 'secrets', 'security', 'seizure', 'send', 'sender', 'senior', 'separate', 'separately', 'seq', 'serial', 'series', 'seriously', 'service', 'session', 'sessions', 'set', 'setting', 'severely', 'sexual', 'share', 'ships', 'shopping', 'shots', 'shubhendra', 'side', 'sidewalk', 'sidewalks', 'sign', 'signing', 'silence', 'silent', 'simply', 'simultaneous', 'singh', 'single', 'site', 'situation', 'situations', 'small', 'social', 'society', 'sold', 'solely', 'sort', 'source', 'sources', 'sourcing', 'south', 'spaces', 'speak', 'speaker', 'speakers', 'speaking', 'speaks', 'special', 'specific', 'speech', 'spell', 'spirit', 'standards', 'stanley', 'start', 'starting', 'starts', 'stat', 'stated', 'statement', 'station', 'status', 'statute', 'statutes', 'statutory', 'stay', 'step', 'stinky', 'store', 'stories', 'story', 'straight', 'strategy', 'stray', 'streets', 'student', 'students', 'subd', 'subdivision', 'subject', 'subjective', 'submissions', 'submit', 'subscriber', 'subscribes', 'substantial', 'sue', 'suit', 'sullivan', 'summaries', 'sunshine', 'supervision', 'supp', 'surveillance', 'suspend', 'swag', 'sympathy', 'takes', 'talk', 'talking', 'tap', 'tape', 'taped', 'tapes', 'taping', 'tax', 'technical', 'technically', 'technique', 'technologies', 'technologist', 'technology', 'telecommunication', 'teleconferences', 'teleconferencing', 'telegraph', 'telegraphic', 'telephone', 'telephonic', 'televising', 'telling', 'tenn', 'tennesse', 'tennessee', 'term', 'terms', 'test', 'testimony', 'tex', 'texas', 'theoretically', 'thing', 'third', 'threat', 'three', 'ticket', 'time', 'times', 'tips', 'tit', 'tools', 'topic', 'topics', 'tortious', 'townsend', 'trade', 'traditional', 'training', 'transaction', 'transactions', 'transcription', 'transcripts', 'transmissions', 'transmit', 'transmitted', 'transmitting', 'traumatic', 'trespassing', 'tribune', 'trust', 'truth', 'turning', 'tv', 'twitter', 'type', 'typically', 'ultimately', 'um', 'unaided', 'unavoidable', 'unconsenting', 'uncovering', 'undergraduate', 'understand', 'understanding', 'unfeasible', 'unique', 'unit', 'united', 'unlawful', 'unlawfully', 'unnecessary', 'unplanned', 'unsure', 'usage', 'utah', 'utilities', 'va', 'vague', 'variance', 'varies', 'variety', 'vary', 've', 'vehicles', 'verbal', 'verified', 'vermont', 'vernon', 'vero', 'vespe', 'vests', 'victim', 'victims', 'video', 'videotaped', 'videotaping', 'view', 'viewers', 'viewing', 'views', 'violate', 'violating', 'violation', 'virgina', 'virginia', 'visible', 'visibly', 'visit', 'visual', 'vital', 'vocational', 'voice', 'voluntarily', 'voluntary', 'vote', 'voters', 'votes', 'waive', 'waiver', 'waivers', 'warned', 'warning', 'wash', 'washington', 'wastes', 'waves', 'wearing', 'website', 'websites', 'well', 'west', 'whatsoever', 'white', 'wikipedia', 'will', 'willfully', 'wire', 'wireless', 'wiretapping', 'wis', 'wisconsin', 'withdraw', 'witnessed', 'wondering', 'work', 'working', 'works', 'wouldn', 'wright', 'writing', 'written', 'wyo', 'wyoming', 'xx', 'year', 'years', 'york', 'young', 'zoning', 'zorc'];
+
+
+
+
+
 
 
 var search_string = document.getElementById("Search").value;
@@ -316,7 +99,34 @@ if(search_string.length>0)
   var pattern=new RegExp("\\b"+stopwords[i]+"\\b","g");
   search_string = search_string.replace(pattern,"");
   }
+  var string_after_stopwords = search_string;
 
+ for (var i=0;i<non_stopwords.length;i++)
+  {
+  var pattern=new RegExp("\\b"+non_stopwords[i]+"\\b","g");
+  string_after_stopwords = string_after_stopwords.replace(pattern,"");
+  }
+
+  string_after_stopwords = string_after_stopwords.replace(/\s+/g, " ");
+  search_string = search_string.replace(/\s+/g, " ");
+
+  var words_to_eliminate = string_after_stopwords.split(" ");
+//alert(string_after_stopwords);
+//alert(search_string);
+  for (var i=0;i<words_to_eliminate.length;i++)
+  {
+    if(words_to_eliminate[i].length>0)
+    {
+      //alert(words_to_eliminate[i]);
+      var pattern=new RegExp("\\b"+words_to_eliminate[i]+"\\b","g");
+      search_string = search_string.replace(pattern,"");
+      
+    }
+  }
+
+  search_string = search_string.replace(/\s+/g, " ");
+  //alert(search_string);
+ 
   if(search_string.length>0)
   {
     
@@ -331,7 +141,6 @@ if(search_string.length>0)
     }
 
   var val="";
-
   for(var i = 0; i < num_div.length; i++)
   {
       for(var j=0;j<splitted_string.length;j++)
@@ -374,26 +183,47 @@ if(search_string.length>0)
   }
     if(parseInt(output.length)>0)
     {
-      //alert(output);
-      document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+      //alert("hel12123");
+      //alert(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+      //document.getElementById('home').innerHTML=output;
+      //document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+          
+          
+        //   document.write(output);
+       // alert(window.location.href);
+        makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+    newWindow.document.close() // close layout stream
+  
     }
     else 
     {
     //alert("No Match");
-    document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    newWindow.document.close()
     }
   }
   else
   {
     //alert("No match");
-    document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+       makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    newWindow.document.close()
   }
 }
-else
-{
+  else
+  {
+    //alert("Problem");
  //document.write(unescape(prefix)+unescape(pre)+"<b>Please enter a query<b>"+unescape(suf)+unescape(suffix));
 
-}
+  }
+
 }
 
 
@@ -401,10 +231,11 @@ else
 
 
 
+</head>
 
 
 
-  </head>
+
   <body id="wwwd">
     <div id="home" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
@@ -415,7 +246,7 @@ else
 
     <div data-role="fieldcontain">
       <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
-      <input type="search" name="password" id="Search" value="Search field"  />
+      <input type="search" name="password" id="Search" value=""  />
       <input type="submit" onclick="load();" value="Find" data-inline="true" />
     </div>
 
