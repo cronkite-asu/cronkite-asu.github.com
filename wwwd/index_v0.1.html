@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>PocketJourno</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.css" />
+    <link rel="apple-touch-startup-image" href="splash.jpg">
+    <link rel="apple-touch-icon" href="icon.jpg">
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    
+    <script type="text/javascript" charset="utf-8">
+        $(document).bind("mobileinit", function() {
+              $.mobile.page.prototype.options.addBackBtn = true;
+         });
+    </script>
+    <script src="http://code.jquery.com/mobile/1.0rc1/jquery.mobile-1.0rc1.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      function display_state_contents(position) {
+        $.getJSON(
+          'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.placefinder%20where%20text%3D%22'+position.coords.latitude+','+position.coords.longitude+'%22%20and%20gflags%3D%22R%22&format=json',
+          function(data) {
+            sc = data['query']['results']['Result'].statecode;
+            $('.statecontent').hide();
+            $('.statecontent_'+sc).show();
+          });
+      }
+      $(document).ready(function() {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(display_state_contents);
+        }
+      });
+    </script>
+     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css" media="screen">
+        img.footer_logo {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .statecontent {
+          display: none;
+        }
+        </style>
+
+
+
+<script type="text/javascript">
+function makeNewWindow() {
+    newWindow = window.open("","","status,height=500,width=300")
+}
+
+
+function load()
+{
+var prefix ="%3C%21%44%4F%43%54%59%50%45%20%68%74%6D%6C%3E%0A%3C%68%74%6D%6C%3E%0A%20%20%3C%68%65%61%64%3E%0A%20%20%20%20%3C%6D%65%74%61%20%68%74%74%70%2D%65%71%75%69%76%3D%22%43%6F%6E%74%65%6E%74%2D%74%79%70%65%22%20%63%6F%6E%74%65%6E%74%3D%22%74%65%78%74%2F%68%74%6D%6C%3B%20%63%68%61%72%73%65%74%3D%75%74%66%2D%38%22%3E%0A%20%20%20%20%3C%74%69%74%6C%65%3E%50%6F%63%6B%65%74%4A%6F%75%72%6E%6F%3C%2F%74%69%74%6C%65%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%73%74%79%6C%65%73%68%65%65%74%22%20%68%72%65%66%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%63%73%73%22%20%2F%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%73%74%61%72%74%75%70%2D%69%6D%61%67%65%22%20%68%72%65%66%3D%22%73%70%6C%61%73%68%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%69%63%6F%6E%22%20%68%72%65%66%3D%22%69%63%6F%6E%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6A%71%75%65%72%79%2D%31%2E%36%2E%34%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%20%20%20%20%0A%20%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%73%74%61%74%75%73%2D%62%61%72%2D%73%74%79%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%62%6C%61%63%6B%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%63%61%70%61%62%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%79%65%73%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%76%69%65%77%70%6F%72%74%22%20%63%6F%6E%74%65%6E%74%3D%22%77%69%64%74%68%3D%64%65%76%69%63%65%2D%77%69%64%74%68%2C%20%69%6E%69%74%69%61%6C%2D%73%63%61%6C%65%3D%31%22%3E%0A%20%20%20%20%20%20%20%20%3C%73%74%79%6C%65%20%74%79%70%65%3D%22%74%65%78%74%2F%63%73%73%22%20%6D%65%64%69%61%3D%22%73%63%72%65%65%6E%22%3E%0A%20%20%20%20%20%20%20%20%69%6D%67%2E%66%6F%6F%74%65%72%5F%6C%6F%67%6F%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%62%6C%6F%63%6B%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%6C%65%66%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%72%69%67%68%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2E%73%74%61%74%65%63%6F%6E%74%65%6E%74%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%6E%6F%6E%65%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%3C%2F%73%74%79%6C%65%3E%0A%3C%2F%68%65%61%64%3E";
+
+var pre = "%20%20%3C%62%6F%64%79%3E%0A%3C%64%69%76%20%69%64%3D%22%73%65%61%72%63%68%22%20%64%61%74%61%2D%72%6F%6C%65%3D%22%70%61%67%65%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%68%65%61%64%65%72%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%20%64%61%74%61%2D%70%6F%73%69%74%69%6F%6E%3D%22%66%69%78%65%64%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%68%31%3E%53%65%61%72%63%68%20%52%65%73%75%6C%74%73%3C%2F%68%31%3E%0A%20%20%20%20%20%3C%2F%64%69%76%3E%0A%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%63%6F%6E%74%65%6E%74%22%3E%20%20%0A%20%20%20%20%20%20";
+
+
+var suf ="%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%20%20%20%20%3Cdiv%20data-role%3D%22footer%22%20data-position%3D%22fixed%22%20data-theme%3D%22b%22%3E%0A%20%20%20%20%3Ch4%3EFooter%20content%3C%2Fh4%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%3C%2Fdiv%3E%20%20";
+
+var suffix ="%3C%2Fbody%3E%3C%2Fhtml%3E";
+
+
+
+            
+
+var stopwords = ["a", "able", "about", "above", "abst", "accordance", "according", "accordingly", "across", "act", "actually", "added", "adj", "adopted", "affected", "affecting", "affects", "after", "afterwards", "again", "against", "ah", "all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "announce", "another", "any", "anybody", "anyhow", "anymore", "anyone", "anything", "anyway", "anyways", "anywhere", "apparently", "approximately", "are", "aren", "arent", "arise", "around", "as", "aside", "ask", "asking", "at", "auth", "available", "away", "awfully", "b", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "beginning", "beginnings", "begins", "behind", "being", "believe", "below", "beside", "besides", "between", "beyond", "biol", "both", "brief", "briefly", "but", "by", "c", "ca", "came", "can", "cannot", "can't", "cause", "causes", "certain", "certainly", "co", "com", "come", "comes", "contain", "containing", "contains", "could", "couldnt", "d", "date", "did", "didn't", "different", "do", "does", "doesn't", "doing", "done", "don't", "down", "downwards", "due", "during", "e", "each", "ed", "edu", "effect", "eg", "eight", "eighty", "either", "else", "elsewhere", "end", "ending", "enough", "especially", "et", "et-al", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "except", "f", "far", "few", "ff", "fifth", "first", "five", "fix", "followed", "following", "follows", "for", "former", "formerly", "forth", "found", "four", "from", "further", "furthermore", "g", "gave", "get", "gets", "getting", "give", "given", "gives", "giving", "go", "goes", "gone", "got", "gotten", "h", "had", "happens", "hardly", "has", "hasn't", "have", "haven't", "having", "he", "hed", "hence", "her", "here", "hereafter", "hereby", "herein", "heres", "hereupon", "hers", "herself", "hes", "hi", "hid", "him", "himself", "his", "hither", "home", "how", "howbeit", "however", "hundred", "i", "id", "ie", "if", "i'll", "im", "immediate", "immediately", "importance", "important", "in", "inc", "indeed", "index", "information", "instead", "into", "invention", "inward", "is", "isn't", "it", "itd", "it'll", "its", "itself", "i've", "j", "just", "k", "keep", " keeps", "kept", "keys", "kg", "km", "know", "known", "knows", "l", "largely", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "line", "little", "'ll", "look", "looking", "looks", "ltd", "m", "made", "mainly", "make", "makes", "many", "may", "maybe", "me", "mean", "means", "meantime", "meanwhile", "merely", "mg", "might", "million", "miss", "ml", "more", "moreover", "most", "mostly", "mr", "mrs", "much", "mug", "must", "my", "myself", "n", "na", "name", "namely", "nay", "nd", "near", "nearly", "necessarily", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "ninety", "no", "nobody", "non", "none", "nonetheless", "noone", "nor", "normally", "nos", "not", "noted", "nothing", "now", "nowhere", "o", "obtain", "obtained", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "omitted", "on", "once", "one", "ones", "only", "onto", "or", "ord", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "owing", "own", "p", "page", "pages", "part", "particular", "particularly", "past", "per", "perhaps", "placed", "please", "plus", "poorly", "possible", "possibly", "potentially", "pp", "predominantly", "present", "previously", "primarily", "probably", "promptly", "proud", "provides", "put", "q", "que", "quickly", "quite", "qv", "r", "ran", "rather", "rd", "re", "readily", "really", "recent", "recently", "ref", "refs", "regarding", "regardless", "regards", "related", "relatively", "research", "respectively", "resulted", "resulting", "results", "right", "run", "s", "said", "same", "saw", "say", "saying", "says", "sec", "section", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sent", "seven", "several", "shall", "she", "shed", "she'll", "shes", "should", "shouldn't", "show", "showed", "shown", "showns", "shows", "significant", "significantly", "similar", "similarly", "since", "six", "slightly", "so", "some", "somebody", "somehow", "someone", "somethan", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specifically", "specified", "specify", "specifying", "state", "states", "still", "stop", "strongly", "sub", "substantially", "successfully", "such", "sufficiently", "suggest", "sup", "sure","t", "take", "taken", "taking", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "that'll", "thats", "that've", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "thereafter", "thereby", "thered", "therefore", "therein", "there'll", "thereof", "therere", "theres", "thereto", "thereupon", "there've", "these", "they", "theyd", "they'll", "theyre", "they've", "think", "this", "those", "thou", "though", "thoughh", "thousand", "throug", "through", "throughout", "thru", "thus", "til", "tip", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "ts", "twice", "two", "u", "un", "under", "unfortunately", "unless", "unlike", "unlikely", "until", "unto", "up", "upon", "ups", "us", "use", "used", "useful", "usefully", "usefulness", "uses", "using", "usually", "v", "value", "various", "'ve", "very", "via", "viz", "vol", "vols", "vs", "w", "want", "wants", "was", "wasn't", "way", "we", "wed", "welcome", "we'll", "went", "were", "weren't", "we've", "what", "whatever", "what'll", "whats", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein", "wheres", "whereupon", "wherever", "whether", "which", "while", "whim", "whither", "who", "whod", "whoever", "whole", "who'll", "whom", "whomever", "whos", "whose", "why", "widely", "willing", "wish", "with", "within", "without", "won't", "words", "world", "would", "wouldn't", "www", "x", "y", "yes", "yet", "you", "youd", "you'll", "your", "youre", "yours", "yourself", "yourselves", "you've", "z", "zero"];
+
+
+var search_string = document.getElementById("Search").value;
+
+
+if(search_string.length>0)
+{
+  var num_div=document.getElementsByTagName("div");
+  var output="";
+  var flip_flop=1;
+
+  search_string=search_string.toLowerCase();
+  search_string=search_string.replace('?',"");
+
+
+  for (var i=0;i<stopwords.length;i++)
+  {
+  var pattern=new RegExp("\\b"+stopwords[i]+"\\b","g");
+  search_string = search_string.replace(pattern,"");
+  }
+
+ 
+  if(search_string.length>0)
+  {
+    
+    if(search_string.indexOf(" ")!=-1)
+    {
+      splitted_string = search_string.split(" ");
+    }
+    else
+    {
+      var splitted_string = new Array();  
+      splitted_string.push(search_string);
+    }
+
+  var val="";
+  for(var i = 0; i < num_div.length; i++)
+  {
+      for(var j=0;j<splitted_string.length;j++)
+      {
+        if(splitted_string[j] != " ")
+        {
+          if(splitted_string[j].length>0)
+          {
+          val =num_div[i].innerHTML;
+          var match = val.search(splitted_string[j]);
+            if(match == -1)
+            {
+            flip_flop=0;
+            break;
+            }
+          }
+        }
+        else
+        {
+          flip_flop=0;
+        } 
+      } 
+      if(flip_flop==1)
+      {
+              //alert(num_div[i].id+" "+num_div[i].id.length);
+              if(num_div[i].id.length>0)
+              {
+              var x = val.split("<div data-role=\"content\">");
+              var y = x[1].split("</div>");
+              var z = y[0].split("<div data-role=\"footer\"");
+              //alert(z[0]);
+              output=output+z[0];            
+              }
+              
+      }
+      else
+      {
+        flip_flop=1;
+      }
+  }
+    if(parseInt(output.length)>0)
+    {
+      //alert("hel12123");
+      //alert(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+      //document.getElementById('home').innerHTML=output;
+      //document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+          
+          
+        //   document.write(output);
+       // alert(window.location.href);
+        makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+    newWindow.document.close() // close layout stream
+  
+    }
+    else 
+    {
+    //alert("No Match");
+    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    newWindow.document.close()
+    }
+  }
+  else
+  {
+    //alert("No match");
+    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+       makeNewWindow()
+    newWindow.focus()
+    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    newWindow.document.close()
+  }
+}
+  else
+  {
+    //alert("Problem");
+ //document.write(unescape(prefix)+unescape(pre)+"<b>Please enter a query<b>"+unescape(suf)+unescape(suffix));
+
+  }
+
+}
+
+
+</script>
+
+
+
+</head>
+
+
+
+
+  <body id="wwwd">
+    <div id="home" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>PocketJourno</h1>
+      </div>
+
+<!-- Added for search-->
+
+    <div data-role="fieldcontain">
+      <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
+      <input type="search" name="password" id="Search" value=""  />
+      <input type="submit" onclick="load();" value="Find" data-inline="true" />
+    </div>
+
+<!-- Added for search-->
+
+
+
+      <div data-role="content">	
+      <p>A Reporter's Field Guide Answering Journalism's Most Common Questions</p>
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e"> 
+          <li><a href="#onthescene">On The Scene</a></li>
+          <li><a href="#inthenewsroom">In The Newsroom</a></li>
+          <li><a href="#beforeheadingout">Before Heading Out</a></li>
+          <li><a href="#ethicaldilemmas">Ethical Dilemmas</a></li>
+        </ul>
+        
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e"> 
+          <li><a href="#nmil">About</a></li>
+        </ul>
+      </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+        <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+    <div id="onthescene" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>On the Scene</h1>
+      </div>
+      <div data-role="content">	
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
+           <li><a href="#emergency">Emergencies</a></li>
+          <li><a href="#publicmeeting">Public Meeting</a></li>
+          <li><a href="#pressconference">Press Conference</a></li>
+          <li><a href="#courts">Courts</a></li>
+          <li><a href="#schools">Schools</a></li>
+          <li><a href="#privateproperty">Private Property</a></li>
+          <li><a href="#publicproperty">Public Property</a></li>
+        </ul>
+        </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+         <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+      
+    <div id="inthenewsroom" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>In The Newsroom</h1>
+      </div>
+      <div data-role="content">  
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
+           <li><a href="#interviews">Interviews</a></li>
+          <li><a href="#quotesattribution">Quotes and Attribution</a></li>
+          <li><a href="#images">Images</a></li>
+        </ul>
+        </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+         <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+    
+    <div id="beforeheadingout" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>Before Heading Out</h1>
+      </div>
+      <div data-role="content">  
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
+          <li><a href="#preinterview">Pre-Interview</a></li>
+          <li><a href="#permissions">Permissions</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#governmentaccess">Government Access</a></li>
+        </ul>
+        </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+         <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+    
+    <div id="ethicaldilemmas" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>Ethical Dilemmas</h1>
+      </div>
+      <div data-role="content">  
+        <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
+          <li><a href="#technology">Technology</a></li>
+          <li><a href="#gifts">Gifts</a></li>
+          <li><a href="#diversity">Diversity</a></li>
+          <li><a href="#sourcing">Sourcing</a></li>
+        </ul>
+        </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+         <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+    
+	<div id="nmil" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="b" data-position="fixed">
+        <h1>About</h1>
+      </div>
+      <div data-role="content">  
+         <p>This application was produced by the <a href="http://nmil.jmc.asu.edu/">The New Media Innovation Lab</a> 
+         to help journalists and bloggers who may not have had formal journalism 
+         training but are out covering stories on a regular basis. This is also 
+         for new journalists who may need a reminder about certain issues while 
+         out in the field. This is intended as a quick, on-the-fly guide to 
+         everyday questions journalists may have.</p>
+         <p> The app was written and coded by Cronkite graduate students LaKeidra Denay Bronner and Anna Consie, 
+         undergraduate student Rudy Rivas and computer science graduate student Shubhendra 
+         Singh, with assistance by Technologist in Residence Mark Ng.</p>
+	 <p><a href="http://nmil.jmc.asu.edu/">The New Media Innovation Lab</a>, headed by Executive Director Retha Hill, 
+	 is a research and development program designed to help media companies 
+	 create new and exciting multimedia products.</p>
+	 <p>Operated by the <a href="http://cronkite.asu.edu/">Cronkite School</a>, the lab brings 
+	  together students from across campus – journalism, business, 
+	  computer engineering and design to create digital media projects 
+	  for paying clients.</p>
+        </div>
+      <div data-role="footer" data-position="fixed" data-theme="b">
+         <img src="footer.png" class="footer_logo">
+      </div>
+    </div>
+
+  
+<!-- /On the Scene -->
+  
+  <div id="emergency" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Emergencies</h1>
+     </div>
+       <div data-role="content">	
+      	 <p><b>Q: How should I go about interviewing an officer about an incident?</b> </p>
+    	 
+    	 <p><b>A:</b> Often, a Public Information Officer (PIO) will be at the scene if intensive media attention is expected. 
+    	 PIOs often are the only representatives at a scene. If you would like to interview an officer instead of a PIO, 
+    	 visit the local police station or ask the PIO to set up a contact for you.</p>
+	 <p>Become familiar with the Sunshine Laws in your state to know what information 
+	 a police officer is required to provide.</p>
+         <p>Viewing an arrest log can answer a lot of questions. Once you find an arrest that piques your interest, 
+         request a copy of the arrest report then interview the arresting officer for further details.</p>
+         
+   	 <p><b>Q: How do I talk to victims and family of victims?</b></p> 
+         
+         <p><b>A:</b> When approaching a victim, identify yourself as a reporter but be sure to establish a human connection 
+         by expressing sympathy, condolences etc. Leave all equipment behind.</p> <p>Know what you are going to say in order 
+         to avoid missteps, which can discourage the victim. Emphasize that you are giving them the opportunity to tell 
+         their story. Use silence to allow a response.</p> <p>If they decline, don’t push, but instead ask if they can 
+         recommend any other people to interview. Be sure to leave a business card so that the victim can contact you 
+         if necessary to follow up. Ask for contact information and be sure to call back for afterthoughts or omitted 
+         details.</p>
+         <p>For more information:</p>
+       	<a href="http://victims.jrn.msu.edu/public/articles/tentips.html">Tips for talking to victims</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+    
+  <div id="publicmeeting" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Public Meetings</h1>
+     </div>
+      <div data-role="content">	
+    	<p><b>Q: Can bloggers get the same access to public meetings? </b> </p>
+    	
+    	<p><b>A:</b> Yes, theoretically, because you are exercising your First Amendment right to gather and disseminate 
+    	news. However, bloggers and other non-mainstream journalists should know that they might encounter some 
+    	resistance because many officials do not view them as legitimate journalists.</p>
+    	
+    	<p>Open meetings laws allow anyone to attend most federal, state and local government meetings. They also 
+    	entitle everyone to receive advance notice about when and where meetings will be held in a reasonable amount 
+    	of time. In most states, meetings by city and county agencies, school districts, agency boards and commissions 
+    	are also public.</p>
+    	
+    	<p>However, these laws can vary from state to state and do not give access to every government meeting. An 
+    	agency can hold a partial or fully closed meeting for a variety of issues including official misconduct, 
+    	personnel issues, pending litigation, the purchase of real estate or anything that could release personal 
+    	information about an individual or reveal trade secrets.</p>
+    	
+    	<p>When a closed meeting is permitted varies among states and between federal and state entities.</p>
+    	
+    	<p class="statecontent statecontent_AL">Alabama law requires that accurate minutes of all meetings are kept including information about the location and time of the meetings as well as the list of members present.</p>
+       	<p class="statecontent statecontent_AL">All votes on matters before a governmental body must be made during the open or public portion of a meeting and voice votes are allowed.</p>
+       	<p class="statecontent statecontent_AL">No votes can be taken in executive sessions and a governmental body may not vote by secret ballot.</p>
+       	<p class="statecontent statecontent_AL">The law also permits any individual attending the meeting to record the meeting by using any audio or video recording device.</p>
+       	<p class="statecontent statecontent_AL">The Alabama Open Meetings Act grants the right to attend meetings covered by the Act to the public generally. Ala. Code §  36-25A-2(7) (Supp. 2005).</p>
+       	
+       	<p class="statecontent statecontent_AK">All Alaska meetings, including teleconferencing, of an Alaska governmental body of a public entity are open to the public, unless exempt by statute.</p>
+       	<p class="statecontent statecontent_AK">While not expressly exempt, advisory committees are not subject to the same enforcement of the law as are public bodies that decide policy.</p>
+       	<p class="statecontent statecontent_AK">Alaska's Open Meetings Act (OMA) (AS 44.62.310-.312) protects the right of any member of the public to attend public meetings. AS 44.62.310(a)</p>
+       	
+       	<p class="statecontent statecontent_AZ">Arizona law states that a meeting is defined as any gathering of a quorum of the members of a public body in order to deliberate and decide on public policy. These provisions include emails and telephone conversations under the definition of open meetings.</p>
+       	<p class="statecontent statecontent_AZ">Notable exemptions to this definition include prison hearings, where the governing body can: prohibit the attendance of individuals who pose a threat to the individuals at the hearing, require the signing of an attendance log, prevent articles from being taken in and excluding recording devices and search individuals in attendance.</p>
+       	<p class="statecontent statecontent_AZ">All persons so desiring shall be permitted to attend and listen to the deliberations and proceedings” of any public meeting. A.R.S. § 38-431.01(A).  The Open Meetings Law (“OML”), however, does not provide for active public participation in the meeting. Ariz. Att’y Gen. Op. Nos. I84-133, I83-49. Meetings may not be conducted in a language (e.g., Navajo) if its use prevents the public from understanding the business of the meeting.  Ariz. Att’y Gen. Op. No. I84-133.</p>
+       	
+       	<p class="statecontent statecontent_AR">The Arkansas Open Meetings Law is a part of the Arkansas Freedom of Information Act and legislates the methods by which public meetings are conducted. Statutes 25-19-101 through 25-19-109 of the State code define the law. The statement of purpose of the Open Meetings Act states, "It is vital in a democratic society that public business be performed in an open and public manner so that the electors shall be advised of the performance of public officials and of the decisions that are reached in public activity and in making public policy. Toward this end, this chapter is adopted, making it possible for them or their representatives to learn and to report fully the activities of their public officials."</p>
+       	<p class="statecontent statecontent_AR">Because the FOIA provides that meetings “shall be public,” Ark. Code Ann. § 25-19-106(a), it appears that anyone may attend, including representatives of the news media. However, only an Arkansas citizen may bring an action under the FOIA claiming a violation of the act. Ark. Code Ann. § 25-19-107(a). See Ark. Op. Att’y Gen. No. 97-016.</p>
+       	
+       	<p class="statecontent statecontent_CA">California law defines meetings as any congregation or teleconferencing of a majority of the members of a local public body with the intention of deliberating public matters. The law also explicitly states that public bodies cannot use communication methods, like email, to circumvent the Brown act.</p>
+       	<p class="statecontent statecontent_CA">Notable exemptions to this definition include: The attendance of public conferences whose topic is governmental actions, so long as the members of the public agency do not meet separately but only participate in the conference, open and publicized meetings organized by private individuals to discuss public topics, and purely social or ceremonial events, where the board does not separate to privately discuss public matters.</p>
+       	<p class="statecontent statecontent_CA">Many local jurisdictions, including San Francisco, Contra Costa County, and Oakland, have adopted local "Sunshine" provisions that increase the access and openness to the public.</p>
+       	<p class="statecontent statecontent_CA">Attendance cannot be conditioned on registering, completing a questionnaire, signing an attendance list, or providing other information. Cal. Gov't Code §§ 11124 (Bagley-Keene Act); 54953.3 (Brown Act). If such a list or questionnaire is posted near the entrance or circulated during the meeting, it must state that completion is voluntary and that all persons may attend regardless of whether they complete the document. Cal. Gov't Code §§ 11124 (Bagley-Keene Act); 54953.3 (Brown Act).</p>
+       	
+       	<p class="statecontent statecontent_CO">Colorado law states that all meetings of two or more members of any state public body where any public business is discussed must be open to the public. This definition includes in person, telephone, or electronic communications. The law states that a gathering of a quorum or three or more individuals of a local body constitutes a meeting. The law also explicitly states that emailed messages discussing pending actions constitutes meetings and are subject to the law.</p>
+       	<p class="statecontent statecontent_CO">Although who constitutes the "public" is not defined in the statute, it has been expressly held to allow the attendance of "citizens," see Littleton Educ. Ass'n v. Arapahoe Cty. School Dist. No. 6, 191 Colo. 411, 553 P.2d 793 (1976) (local agencies); Cole v. State, 673 P.2d 345 (Colo. 1983) (state agencies); and, by implication, to the media.</p>
+       	
+       	<p class="statecontent statecontent_CT">The Connecticut act defines meetings as all gatherings of or communications to a quorum of members of a multi-member public agency with the intention of discussing or deciding on public policy.</p>
+       	<p class="statecontent statecontent_CT">Notable exemptions to this definition include: employment search committees for executive positions, chance meetings, collective bargaining single party caucus meetings and if the group does not constitute a quorum.</p>
+       	<p class="statecontent statecontent_CT"> FOIA states that "[t]he meetings of all public agencies, except executive sessions as defined in subdivision (6) of section 1-200, shall be open to the public." Conn. Gen. Stat. §1-225(a). FOIA also provides: "[n]o member of the public shall be required, as a condition to attendance at a meeting of [a public agency], to register the member's name, or furnish other information, or complete a questionnaire or otherwise fulfill any condition precedent to the member's attendance." Conn. Gen. Stat. §1-225(e).</p>
+       	
+       	<p class="statecontent statecontent_DC">Under D.C. law, the term "meeting" applies to gatherings "at which official action of any kind is taken," including hearings. This broad definition includes most gatherings where a multi-member government body takes action on a public matter.</p>
+	<p class="statecontent statecontent_DC">The D.C. Sunshine Act gives "the public" the right to attend the meetings of D.C. government bodies. D.C. law does not limit access to meetings to a specific category of people or a profession, such as "the traditional press." Anyone may attend the meetings covered by the Act.</p>
+	
+       	<p class="statecontent statecontent_DE">Delaware law states that all gatherings of a quorum of members of a public body, whether formal, informal or through video conferencing, with the intention of discussing public business are considered meetings.</p>
+       	<p class="statecontent statecontent_DE">Any citizen of Delaware, subject to certain exceptions, may attend a "meeting." 29 Del. C. § 10001; A "meeting" is defined as a "formal or informal gathering of a quorum of the members of any public body for the purpose of discussing or taking action on public business.</p>
+       	
+       	<p class="statecontent statecontent_FL">Florida law states that all meetings of any governmental body where official acts will be taken are public meetings.</p>
+       	<p class="statecontent statecontent_FL"> The Florida law opens government meetings to the public, with no restrictions on who may attend.  Under the Sunshine Law, a meeting is either fully open or fully closed; there are no intermediate categories. Zorc v. City of Vero Beach, 722 So. 2d 891, 901 (Fla. 4th DCA 1998).</p>
+       	
+       	<p class="statecontent statecontent_GA">Georgia law defines meetings as any gathering of a quorum of members of a public body where business will be discussed or action will be taken.</p>
+       	<p class="statecontent statecontent_GA">Notable exceptions to this definition include: The on-site inspection of facilities and meetings with other agencies outside of the original agencies jurisdiction, where no action is taken.</p>
+       	<p class="statecontent statecontent_GA">Any member of the "public," i.e., any person, can attend meetings under the Open Meetings Act. O.C.G.A. § 50-14-1(b)-(c).</p>
+       	
+       	<p class="statecontent statecontent_HI">Hawaii law defines meetings as any gathering of a quorum of a public body.</p>
+       	<p class="statecontent statecontent_HI">Every meeting of all boards is open to the public with a few exceptions. The boards must allow anyone interested an opportunity to submit data, views, or arguments, in writing, on any agenda item. Attendees must be allowed to present oral testimony on any agenda item.</p>
+       	<p class="statecontent statecontent_HI">"[A]ll persons" may attend, but any person "who willfully disrupts a meeting to prevent and compromise the conduct of the meeting" may be removed. Haw. Rev. Stat. § 92-3.</p>
+       	
+       	<p class="statecontent statecontent_ID">Idaho law defines a meeting as any convening of a government body to deliberate and decide on public matters. This definition includes all meetings conducted through telecommunication.</p>
+       	<p class="statecontent statecontent_ID">Notable exemptions include deliberations from the following groups, involving hearings and the discussions of the legal rights and duties of an individual: board of tax appeals, public utilities commission,and industrial commission.</p>
+       	<p class="statecontent statecontent_ID">In Idaho, meetings of a governing body of a public agency are open to the public unless closure of such meetings is expressly permitted under the Open Meeting Law. Idaho Code § 67-2342(1). The meetings are expressly open to the “public and all persons shall be permitted to attend any meeting.” Idaho Code § 67-2342(1). Although “public” and “persons” are not defined terms under the Law, there is nothing in the law to suggest that any distinction is to be made between different members of the public, whether they are citizens, residents, journalists or otherwise.</p>
+       	
+       	<p class="statecontent statecontent_IL">Illinois law states that all meetings, whether in person or by video or audio conference, telephone call, electronic means of any sort, where a majority of a quorum of a public body (or three members for a five-member body) meets to discuss or act on business in any way shall be open to the public except when the General Assembly determines the meeting closed.</p>
+       	<p class="statecontent statecontent_IL">Any person may attend a public meeting; the Illinois Open Meetings Act, 5 ILCS 120/1 to 6, makes no distinction between members of the news media and members of the general public.</p>
+       	
+       	<p class="statecontent statecontent_IN">Indiana law states that a "meeting" is defined as a gathering of a majority of the governing body of a public agency for the purpose of taking official action upon public business. All meetings of the governing bodies of public agencies must be open at all times to permit members of the public to observe and record them.</p>
+       	<p class="statecontent statecontent_IN">Members of the public. Ind. Code § 5-14-1.5-3(a). At the heart of the Open Door Law is the requirement that meetings of "the governing bodies of public agencies" must be open to allow members of the public to "observe and record them." Id. This does not mean that the law guarantees a citizen the right to speak; rather, it guarantees public access to the meetings.</p>
+       	
+       	<p class="statecontent statecontent_IA">Iowa law defines a meeting as any gathering, formal or informal, of a majority of the members of a public body with the intention of deliberating or deciding upon public issues.</p>
+       	<p class="statecontent statecontent_IA">Notable exemptions to this definition include: Gatherings for social purposes, gatherings where no public business is discussed and collective bargaining planning.</p>
+       	<p class="statecontent statecontent_IA">All members of the public.. Iowa Code §  §  21.2(3).</p>
+       	
+       	<p class="statecontent statecontent_KS">Kansas law defines a government meeting as any gathering of the majority of a government body with the intention of discussing public business.</p>
+       	<p class="statecontent statecontent_KS">Notable exemptions to this definition include: Impeachment hearings, if exempted by other state or federal statute.</p>
+       	<p class="statecontent statecontent_KS"> Any person. K.S.A. 75-4318(a).</p>
+       	
+       	<p class="statecontent statecontent_KY">Kentucky law states that for the purposes of the Kentucky open meetings laws, a "meeting" means all gatherings of a public agency of every kind, including video teleconferences and casual gatherings.</p>
+       	<p class="statecontent statecontent_KY">The public agency may not impose any conditions on attendance, and may not prohibit media coverage: No condition other than those required for the maintenance of order shall apply to the attendance of any member of the public at any meeting of a public agency. No person can be required to identify himself in order to attend any such meeting. All agencies shall provide meeting room conditions which insofar as is feasible allow effective public observation of the public meetings. All agencies shall permit news media coverage, including but not limited to recording and broadcasting.</p>
+
+       	<p class="statecontent statecontent_LA">Louisiana law defines meeting as a gathering of a quorum of members of a public body with the intention of receiving information for, or deliberating or deciding on public matters.</p>
+       	<p class="statecontent statecontent_LA">Notable exemptions to this definition include: chance or social meetings where no vote is taken and judicial proceedings.</p>
+       	<p class="statecontent statecontent_LA">Meetings of a public body required to be open shall be open to "the public." La. Rev. Stat. Ann. § 42:14(A).</p>
+       	
+       	<p class="statecontent statecontent_ME">Maine law states that the act applies to all meetings where transactions that affect the citizens of the state have occurred.</p>
+       	<p class="statecontent statecontent_ME">Any person may attend any "public proceeding" in Maine, subject to the statutory authority of the body or agency holding the proceeding to move into executive session. 1 M.R.S.A. § 403.</p>
+       	
+       	<p class="statecontent statecontent_MD">Maryland law states that a meeting is a gathering of a quorum of the public body for the transaction of public business.</p>
+       	<p class="statecontent statecontent_MD">Notable exemptions to this definition include: Public bodies acting in an administrative, judicial or quasi-judicial capacity unless the public body is meeting to discuss: Granting a license or permit, zoning laws and chance encounters or social gatherings.</p>
+       	<p class="statecontent statecontent_MD">The general public is entitled to attend an open session meeting of a public body. § 10-507(a). The public body, however, may adopt "reasonable" rules concerning the conduct of those attending the meeting. § 10-507(b). Such rules may address the videotaping, televising, photographing, broadcasting, or recording of its meetings. Id.</p>
+       	
+       	<p class="statecontent statecontent_MA">Massachusetts law states that a meeting is any gathering of a quorum of members of a public body for the purposes of deliberating and deciding on public matters.</p>
+       	<p class="statecontent statecontent_MA">Notable exemptions to this definition include: On site inspections of facilities and chance or social meetings at which no final decisions are made.</p>
+       	<p class="statecontent statecontent_MA">"Any person." G.L. c. 39, §  23B. This clearly includes non-residents and non-voters.</p>
+       	
+       	<p class="statecontent statecontent_MI">Michigan law states that meetings are any gathering of a quorum of a public body with the intention of deliberating or deciding on public matters.</p>
+       	<p class="statecontent statecontent_MI">The OMA provides generally that "all persons" may attend "all meetings of a public body," except as otherwise provided. Mich. Comp. Laws Ann. § 15.263(1). A person cannot be required as a condition of attendance "to register or otherwise provide his name or other information or otherwise to fulfill a condition precedent to attendances Mich. Comp. Laws Ann. § 15.263(4). The OMA also provides for attendees to address public meetings "under rules established and recorded by the public body.</p>
+       	
+       	<p class="statecontent statecontent_MN">Minnesota law states that any gathering of a public body for the transaction of business is considered a meeting and is to be open.</p>
+       	<p class="statecontent statecontent_MN">Minnesota's Open Meeting Law makes it clear that all meetings required by statute to be open are open "to the public." Minn.Stat. § 13D.01, subd. 1.</p>
+       	
+       	<p class="statecontent statecontent_MS">Mississippi law defines meeting as any official assembly of a public body in order to deliberate or decide on public policy. The definition includes meetings using electronic telecommunication equipment. However, the act does not apply to chance meetings or social gatherings.</p>
+       	<p class="statecontent statecontent_MS">Meetings are open to "the public." § 25-41-5 (1).  Under Mississippi law, a meeting is defined as an assemblage of members of a public body at which official acts may be taken.  § 25-41-3.</p>
+       	
+       	<p class="statecontent statecontent_MO">Missouri law states that all gatherings of members of a public body where public business is discussed or decided upon are considered meetings and are required to be open to the public.</p>
+       	<p class="statecontent statecontent_MO">Notable exceptions to this include: Social gatherings where there was no intention of avoiding the requirements of the open meetings laws.</p>
+       	<p class="statecontent statecontent_MO">Any member of the public may attend public meetings under the Sunshine Law. Access is not limited to United States, Missouri, or community citizens.</p>
+       	
+       	<p class="statecontent statecontent_MT">Montana law defines meeting as any gathering of a quorum of the members of a public body, including the use of electronic equipment, so as to deliberate and decide on public policy.</p>
+       	<p class="statecontent statecontent_MT">Article II, § 9 of the Montana Constitution guarantees any person the right to observe the deliberations of public bodies and agencies in Montana. "Person" includes citizen, alien, resident, nonresident, media person, or member of the public.</p>
+       	
+       	<p class="statecontent statecontent_NE">Nebraska law states that all regular or special gatherings, whether informal or formal, where a public body convenes for the purposes of discussing and deciding on public policy are considered meetings and are to be open to the public. This definition explicitly includes meetings that make use of telecommunication equipment. The act specifically states that emails may not be used so as to circumvent the intention of this act.</p>
+       	<p class="statecontent statecontent_NE">The public" has a right to attend all or any part of a meeting of a "public body," except closed sessions as defined by statute. Neb. Rev. Stat. § 84-1412. There is no statutory or court definition of "the public," but the phrase does include "the media."</p>
+       	
+       	<p class="statecontent statecontent_NV">Nevada law states that a meeting is any gathering of a quorum of the members of a public body to deliberate or decide on public matters. The act also includes serial meetings where each meeting has less than a quorum but the combination of the meeting results in a quorum decision and the meetings were held to try and violate the open meetings law.</p>
+       	<p class="statecontent statecontent_NV">Nevada's Open Meeting Law states: ". . .all meetings of public bodies must be open and public, and all persons must be permitted to attend any meeting of these bodies."</p>
+       	
+       	<p class="statecontent statecontent_NH">New Hampshire law states that all gatherings of a quorum of members of a public body for the purpose of deliberating and deciding public policy.</p>
+       	<p class="statecontent statecontent_NH">Notable exemptions to this definition include: collective bargaining strategy and negotiation, consultation that would fall under the attorney-client privilege, single party caucuses and circulation of draft documents that merely finalize decisions made in open meetings.</p>
+       	<p class="statecontent statecontent_NH">RSA 91-A:2,II states: “Subject to the provisions of RSA 91-A:3, all meetings, whether held in person, by means of telephone or electronic communication, or in any other manner, shall be open to the public.”  RSA 91-A:3 provides for “nonpublic sessions.”</p>
+       	
+       	<p class="statecontent statecontent_NJ">New Jersey law states that a meeting is any gathering that is open to all members of the public body for the purposes of discussing or deciding on public business.</p>
+       	<p class="statecontent statecontent_NJ">Notable exemptions to this definition include: All meetings that are attended by less than a majority of the members of the public body, and conventions that are open to members of three or more similar public bodies.</p>
+       	<p class="statecontent statecontent_NJ">Any member of the public has the right to be present at all meetings of public bodies. N.J.S.A. 10:4-7.</p>
+       	
+       	<p class="statecontent statecontent_NM">New Mexico law states that a meeting is any gathering of a quorum of members of the public body in order to discuss and decide on personnel policy, rules, regulations, ordinances and all other public business.</p>
+       	<p class="statecontent statecontent_NM">Any interested person. §10-15-1(A), NMSA 1978; Gutierrez v. City of Albuquerque, 96 N.M. 398, 631 P.2d 304 (1981); Att'y Gen. Op. 1973-10.</p>
+       	
+       	<p class="statecontent statecontent_NY">New York law states that meetings are the official convening of a public body to discuss and decide on public business.</p>
+       	<p class="statecontent statecontent_NY">Notable exemptions to this definition include: Judicial or quasi-judicial proceedings, except public service commissions and zoning boards, and any matter made confidential by federal or state law.</p>
+       	<p class="statecontent statecontent_NY">The "general public" may attend meetings, other than executive sessions or meetings specifically exempted under the law. N.Y. Pub. Off. Law § 103(a) (McKinney 1988).</p>
+       	
+       	<p class="statecontent statecontent_NC">North Carolina law states that an official meeting is any gathering of a public body to discuss or decide upon public business. The act also includes simultaneous communication via any electronic means in this definition of meeting.</p>
+       	<p class="statecontent statecontent_NC">Notable exemptions to this definition include: Social meetings and informal assemblies.</p>
+       	<p class="statecontent statecontent_NC">North Carolina General Statute Section 143-318.9 provides that public bodies "exist solely to conduct the people's business" and should conduct their business openly. Therefore, anyone is entitled to attend an open session of a public body. </p>
+       	
+       	<p class="statecontent statecontent_ND">North Dakota law states that a meeting is any gathering of a quorum of the members of a public body, whether it be in person or through electronic means, in order to discuss and decide on public business. The act also includes all meetings of less than a quorum if the public body holds a series of similar gatherings so that the attendance at the series constitutes a quorum of members.</p>
+       	<p class="statecontent statecontent_ND">Notable exemptions to this definition include: Chance or social gatherings where public business is not discussed, emergency operations during a disaster, attendance at any national, regional, or state association, single party legislative caucuses so long as they do not meet on public property.</p>
+       	<p class="statecontent statecontent_ND">North Dakota law provides that all public meetings are open meetings unless there is a specific statutory exemption of a particular type of meeting.</p>
+       	
+       	<p class="statecontent statecontent_OH">Ohio law states that a meeting is any prearranged discussion of public business by a quorum of the public body.</p>
+       	<p class="statecontent statecontent_OH">Notable exemptions to this definition include: Audit conferences conducted by the state auditor; adult parole authority hearings conducted at prisons; licensing hearings of the Board of Nursing; the State Board of Pharmacy; the State Chiropractic Board; the executive committee of the emergency response commission when deciding if they want to pursue a civil action; when state agencies who provide public assistance funds for businesses are considering the personal information or trade secrets of those businesses.</p>
+       	<p class="statecontent statecontent_OH"> Any person may attend. Ohio Rev. Code § 121.22(C).</p>
+       	
+       	<p class="statecontent statecontent_OK">Oklahoma law states that a meeting is any conduct of business by the majority of a public body that has gathered for the purpose of conducting business. The act only permits the use of teleconferencing technology for the purpose of holding electronic meetings and explicitly prohibits the use of other technologies for gathering consensus decisions outside of public meetings. </p>
+       	<p class="statecontent statecontent_OK">The following boards are permitted to use teleconferencing technologies: Oklahoma Futures, Oklahoma State Regents for Higher Education, Oklahoma Board of Medical Licensure and Supervision, The State Board of Osteopathic Examiners, The Board of Dentistry, Variance and Appeals Boards, A public trust whose beneficiary is a municipality, Native American Cultural and Education Authority, Corporation Commission and The State Board of Vocational and Technical Education.</p>
+       	<p class="statecontent statecontent_OK"> Any person may attend meetings of a public body. 25 O.S. § 303.</p>
+       	
+       	<p class="statecontent statecontent_OR">Oregon law states that a meeting is any convening of a quorum of the members of a governing body in order to discuss or decide on public business.</p>
+       	<p class="statecontent statecontent_OR">Notable exemptions to this definition include: on-site inspection of facilities and attendance to national, regional or state associations of which the public body is a part.</p>
+       	<p class="statecontent statecontent_OR">Under ORS 192.620 and 192.630, the stated policy of the State of Oregon is that decisions of public governing bodies operating in the State of Oregon are arrived at openly. This means that all meetings of public governing bodies shall be open to the public and all persons shall be permitted to attend any meeting.</p>
+       	
+       	<p class="statecontent statecontent_PA">Pennsylvania law states that a meeting is any prearranged gathering of a quorum of the members of a public body to discuss public matters.</p>
+       	<p class="statecontent statecontent_PA">Notable exemptions to this definition include: Working sessions of the boards of auditors, conferences where a quorum of an agency is in attendance and no deliberation concerning agency business occurs.</p>
+       	<p class="statecontent statecontent_PA">The Sunshine Act provides that covered meetings must be open to the “public.” 65 Pa. Cons. Stat. §  704. It also allows “any person” to sue for a violation. On the other hand, the declaration of intent speaks in terms of the right of the Commonwealth’s “citizens” to attend meetings. 65 Pa. Cons. Stat. §  702</p>
+       	
+       	<p class="statecontent statecontent_RI">Rhode Island act defines government body as all agencies, departments, committees and boards of the state and municipal government, including all libraries that received at least 25% of its budget from public funds.</p>
+       	<p class="statecontent statecontent_RI">Notable exemptions to the definition of public body include: The act does not include meetings of only one political party so long as it is not intended to circumvent the spirit of the law.</p>
+       	<p class="statecontent statecontent_RI">Any member of the public may attend an open meeting. R.I. Gen. Laws § 42-46-3. However, the OML expressly allows the removal of any person who willfully disrupts a meeting to the extent that orderly conduct of the meeting is seriously compromised.</p>
+       	
+       	<p class="statecontent statecontent_SC">South Carolina law states that a meeting is the convening of a quorum of the members of a public body, for the purposes of discussing and deciding on public business.</p>
+       	<p class="statecontent statecontent_SC">Meetings are open to the public, including the news media. No citizenship or residency requirement is established. S.C. Code Ann. § 30-4-60.</p>
+       	
+       	<p class="statecontent statecontent_SD">South Dakota law states that all official meetings, including teleconferencing, must be open to the public.</p>
+       	<p class="statecontent statecontent_SD">Notable exemptions to this definition are members of a political subdivision attending a meeting of the state.</p>
+       	<p class="statecontent statecontent_SD">The "public" may attend. (S.D.C.L. § 1-25-1)</p>
+       	
+       	<p class="statecontent statecontent_TN">Tennessee law states that a meeting is any gathering of a quorum of the members of a public body in order to deliberate or decide on public policy.</p>
+       	<p class="statecontent statecontent_TN">Notable exemptions to this definition include: On site facility inspections and chance meetings so long as they are not used to circumvent the open meetings law.</p>
+       	<p class="statecontent statecontent_TN"> Any person may attend any open meeting that any governing body conducts. See T.C.A. § 8-44-102(a) (meetings open to "the public").</p>
+       	
+       	<p class="statecontent statecontent_TX">Texas law states that a meeting is any gathering of a quorum of the members of a public body with the intention of deliberating and deciding on public policy.</p>
+       	<p class="statecontent statecontent_TX">Notable exemptions to this definition include: Chance gatherings, conferences, ceremonial events and press conferences which the members of the public body attend but do not deliberate or discuss public policy.</p>
+       	<p class="statecontent statecontent_TX">The Texas Open Meetings Act ("the Act") (Tex. Gov't Code Ann. § 551.001 et seq., formerly Tex. Rev. Civ. Stat. Ann. art. 6252-17 (Vernon 2004 & Supp. 2005)) does not specifically address who may attend open meetings. However, section 551.142(a) provides that "[a]n interested person, including a member of the news media" may file suit to enforce the Act.</p>
+       	
+       	<p class="statecontent statecontent_UT">Utah law states that a meeting is a gathering of a quorum of the members of a public body, either in person or through electronic methods, with the intention of discussing or deciding on public policy. The law requires that all meetings must be open to the public, unless exempted under executive sessions.</p>
+       	<p class="statecontent statecontent_UT">Notable exemptions to this definition include: Chance meetings or social gatherings, the convening of a body with legislative and executive power where no public funds are expropriated and which is "convened solely for the discussion or implementation of administrative or operational matters" which do not require a formal vote and which would not need to be presented before the public.</p>
+       	<p class="statecontent statecontent_UT">In Utah, any person may attend an open government meeting. See Utah Code Ann. § 52-4-303(3).</p>
+       	
+       	<p class="statecontent statecontent_VT">Vermont law states that a meeting is any gathering of a quorum of the members of a public body for the purposes of deliberating or deciding on public business.</p>
+       	<p class="statecontent statecontent_VT">Notable exemptions include: On site inspection.</p>
+       	<p class="statecontent statecontent_VT">The public meetings law, 1 V.S.A. §§ 310-314, is silent as to its specific beneficiaries. Because the act is premised on Art. 6 of the Vermont Constitution, however, it applies to all "the people" of the state, including corporations.</p>
+       	
+       	<p class="statecontent statecontent_VA">Virginia law states that a meeting is any gathering, whether in person or through the use of electronic communication, of at least three members of a public body or a quorum if it is less than three members whether or not a vote is taken.</p>
+       	<p class="statecontent statecontent_VA">Notable exemptions to this definition include: The gathering of public employees, chance or social gatherings that were not used to circumvent the act and public forums or debates designed to inform the electorate.</p>
+       	<p class="statecontent statecontent_VA">All meetings shall be open to the public unless the topic of discussion at such meetings falls within one of the enumerated exemptions in § 2.2-3707 or § 2.2-3711(A) and the requisite closure procedures for exempted meetings are followed pursuant to § 2.2-3712.</p>
+       	
+       	<p class="statecontent statecontent_WA">Washington law states that a meeting is a gathering in which any action is taken.</p>
+       	<p class="statecontent statecontent_WA">Notable exceptions to this definition include: When granting or reviewing license applications, when acting in a judicial capacity and collective bargaining sessions.</p>
+       	<p class="statecontent statecontent_WA">"[A]ll persons” are generally permitted to attend any meeting of the governing body of a public agency. RCW 42.30.030. In the event that there is a disturbance and individuals are removed for disrupting the meeting, “[r]epresentatives of the press or other news media, except those participating in the disturbance,” will be allowed to remain in attendance. RCW 42.30.050. No one can be required, as a condition of attendance at a public meeting, to register his name or other information, to complete a questionnaire, or otherwise fulfill any condition precedent to attendance. RCW 42.30.040. Though a governing body may set reasonable rules of conduct so the meetings can be conducted in an orderly fashion, access cannot be limited and cameras and tape recorders cannot be prohibited unless they are actually disruptive. RCW 42.30.050; Op. Atty. Gen. 1998, No. 15.</p>
+       	
+       	<p class="statecontent statecontent_WV">West Virginia law states that a meeting is any gathering of a quorum of the members of a public body in order to deliberate and decide on public policy.</p>
+       	<p class="statecontent statecontent_WV">Notable exemptions to this definition include: Judicial or quasi-judicial proceedings,on site inspections, single party caucuses, discussion of public business at "a planned or unplanned social, educational, training, informal, ceremonial or similar setting" where no intention of action exists and when discussing scheduling or rescheduling meetings.</p>
+       	<p class="statecontent statecontent_WV"> Any member of the public may attend a meeting subject to the Open Meetings Act.</p>
+       	
+       	<p class="statecontent statecontent_WI">Wisconsin law states that a meeting is any gathering of the members of a public body with the intention of conducting public business. The act determines that any gathering of at least half of the members of the public body is a clear indication of an intention to conduct public business.</p>
+       	<p class="statecontent statecontent_WI">An "open session" of a public body "means a meeting which is held in a place reasonably accessible to members of the public and open to all citizens at all times." Wis. Stat. § 19.82(3). The open meetings law may be enforced upon "the verified complaint of any person." Wis. Stat. § 19.97(1).</p>
+       	
+       	<p class="statecontent statecontent_WY">Wyoming law states that a meeting is a gathering of a quorum the members of a public body, which was called by the public body with the intention of discussing public business.</p>
+       	<p class="statecontent statecontent_WY">The Public Meeting Law generally requires that meetings of "governing bodies" be open to "the public." Wyo. Stat. § 16-4-403(a) (1977, Rev. 1995); E.G. Rudolph, Wyoming Local Government Law, § 3.1, at 103 (1985). A person or group of persons who willfully disrupt a meeting to the point orderly conduct of the meeting is unfeasible can be removed, or the meeting can be moved. Wyo. Stat. § 16-4-406 (1977, Rev. 1982). The governing body shall establish procedures for readmitting "individuals not responsible for disturbing the conduct of a meeting." Id. Section 16-4-406 also states that "duly accredited members of the press or other news media except those who participated in a disturbance shall be allowed to attend any meeting permitted by this section." Id. "Duly accredited press member" is not defined. Finally, the statute states that all meetings of the governing body of an agency are open to the public at all times, "except where otherwise provided."</p>
+       	
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.citmedialaw.org/legal-guide/access-federal-agency-meetings">Federal Agency Meetings</a> </br>
+       	<a href="http://www.citmedialaw.org/legal-guide/access-federal-advisory-committee-meetings">Federal Advisory Committee Meetings</a></br>
+       	<a href="http://www.citmedialaw.org/legal-guide/access-state-and-local-government-meetings">State and Local Government Meetings</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+    
+  <div id="pressconference" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Press Conferences</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Can a press pass get me into a press conference?   </b> </p>
+    	
+    	<p><b>A:</b> A press pass is a journalist's credential, issued and used to confirm his or her identity as 
+    	a representative of a news organization. While press passes are not always necessary, some passes have a 
+    	recognized legal status. Wearing a press pass may afford the journalist special access to restricted areas 
+    	such as crime scenes, press conferences and events related to breaking news. However, a press pass does 
+    	not guarantee admission.</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+    
+  <div id="courts" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Courts</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: What can I bring into a court?  </b> </p>
+    	
+    	<p><b>A:</b> Each county courthouse will have its own rules on what you can bring into a courtroom. 
+    	Generally, you can bring in paper and a pen to take notes. Some courtrooms forbid cameras -- including those 
+    	embedded in mobile devices -- while some will admit them for certain cases. Typically, it's up to the 
+    	judge’s discretion and can vary from case to case. Check beforehand so you are not denied access for bringing 
+    	a mobile phone with a built-in camera.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/djlg/?action=show_item&cat=SCT&tid=40&PHPSESSID=c1dc774032116ad9bf5ca3969fdf5101">Cameras in Courtrooms</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+
+  <div id="schools" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Schools</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Should I interview children?   </b> </p>
+    	
+    	<p><b>A:</b> Avoid interviewing young children, especially if they have witnessed a traumatic event. It is essential 
+    	to talk to a child in the presence of a parent and get parental consent before publishing or broadcasting the 
+    	interview. If it is essential to talk to the child do so with an adult present - in a quiet place, away from 
+    	the excitement of the scene. Do not, however, separate a child from his parent or guardian to interview her. 
+    	Before publishing a photo of a child, get permission from a parent or legal guardian.</p>
+    	
+    	<p>For more information:</p>
+    	<a href="http://dartcenter.org/content/interviewing-children-guide-for-journalists">Guidelines for Interviewing Children</a>
+    	
+       	<p><b>Q: Can I film at a school?</b></p>
+       	
+       	<p><b>A:</b> Recording inside spaces at public schools is typically up to the school's governing board. The school 
+       	does not have to allow recording inside classrooms, the school gym or dorm rooms. You may record a public 
+       	school from a public sidewalk but be careful about using identifiable images of children. If you must record, 
+       	try to get shots of the school name or marquee only. However, the best practice is to get permission before 
+       	setting up your camera at a school.</p>
+       	
+       	<p>A private campus, on the other hand, can usually ban recording at its discretion. In a few states, there 
+       	may be a right to record in privately owned areas open to the general public, such as private campus sidewalks 
+       	and lawns, but the general rule is that a private campus can set its own regulations regarding access and 
+       	filming.</p>
+ 	
+ 	<p>The technique of recording students from behind or in a way that would not identify them is a good way 
+ 	to persuade officials to grant permission.</p>
+ 	
+ 	<p>For more information:</p>
+ 	<a href="http://thefire.org/article/9464.html">The Right to Film on Campus</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+
+  <div id="privateproperty" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Private Property</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Private property vs. public property: Where do they differ? </b> </p>
+    	
+    	<p><b>A:</b> Rules vary drastically between rights on private and public property. Generally, there are few 
+    	limits placed on reporters' actions while on public property, however on private property you typically 
+    	need prior permission before recording.</p>
+    	
+    	<p><i>Private Property:</i> Reporters on private property trying to cover news without consent can be subject 
+    	to charges of trespassing or invasion of privacy charges. This includes any location with a private owner, 
+    	i.e. residences, shopping centers, businesses, etc. Journalists who obtain permission from a public agency 
+    	official are not protected from legal action and risk possible claims of trespassing, invasion of privacy 
+    	and illegal search and seizure. It's best to call ahead to request permission from the property owner before 
+    	trying to record on private property.</p>
+    	
+    	<p><i>Public property:</i> Under most circumstances, journalists have full access to places where the public 
+    	is welcome unless there have been special provisions made for a specific event. This includes most 
+    	government-owned locations, places such as streets, sidewalks and parks. </p>
+       	
+       	<p><b>Q: How do I get permission to interview people on private property?</b></p>
+       
+ 	<p><b>A:</b> In most situations, journalists are not permitted to cover an event or interview on private property 
+       	without prior permission. It's best to call several days in advance to request permission, especially if you 
+       	are dealing with businesses or corporations. Often, a local branch needs to contact the corporate office 
+       	before they can grant permission.</p>
+       
+        <p>Be friendly, forthright and persistent. If you do not hear back in a day or two, call again and ask how 
+       	the approval process is going.</p>
+       	
+       	<p>Businesses may often impose restrictions on what you can or cannot record while on private property. This 
+       	is often requires a negotiation as there is no set of hard and fast rules. The key to getting what you want 
+       	is building trust with the source.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/handbook/index.php?pg=8-1">The First Amendment Handbook</a>
+       	
+       	<p><b>Q: Can I record in a restaurant or retail location?</b></p>
+       
+       <p><b>A:</b> You need permission from the owner or manager to record or photograph in a restaurant or retail location. 
+       	It's best to get clearance in advance of recording, a process that can take several days. No permission is 
+       	required if you are just recording the outside of the store, or other areas that are visible to the public - 
+       	while on public property. However, it's always best to ask first.</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+
+  <div id="publicproperty" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Public Property</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Private property vs. public property: Where do they differ? </b> </p>
+    	
+    	<p><b>A:</b> Rules vary drastically between rights on private and public property. Generally, there are few 
+    	limits placed on reporters' actions while on public property, however on private property you typically 
+    	need prior permission before recording.</p>
+    	
+    	<p><i>Private Property:</i> Reporters on private property trying to cover news without consent can be subject 
+    	to charges of trespassing or invasion of privacy charges. This includes any location with a private owner, 
+    	i.e. residences, shopping centers, businesses, etc. Journalists who obtain permission from a public agency 
+    	official are not protected from legal action and risk possible claims of trespassing, invasion of privacy 
+    	and illegal search and seizure. It's best to call ahead to request permission from the property owner before 
+    	trying to record on private property.</p>
+    	
+    	<p><i>Public property:</i> Under most circumstances, journalists have full access to places where the public 
+    	is welcome unless there have been special provisions made for a specific event. This includes most 
+    	government-owned locations, places such as streets, sidewalks and parks. </p>
+    	
+       	<p><b>Q: What can you do on public property? </b></p>
+       	
+       	<p><b>A:</b> You may record/interview anyone at anytime on public property. You do not need permission to pursue 
+       	news on public property.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/handbook/index.php?pg=8-1">The First Amendment Handbook</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+<!-- /In the Newsroom -->
+   
+  <div id="interviews" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Interviews</h1>
+     </div>
+       <div data-role="content">	
+    	
+       	<p><b>Q: Can you record an interview over the phone?</b></p>
+       	
+       	<p><b>A:</b> Voice recorders can be a handy resource, but it may make an interview seem more formal. Laws regarding 
+       	use of voice recorders vary from state to state. It's good practice to always ask before turning on the 
+       	recorder.</p>
+       	
+       	<p>When in doubt, always tell someone you are recording him or her. Otherwise you risk violating legal 
+       	restrictions.</p>
+       	
+       	
+       	<p class="statecontent statecontent_AL">In Alabama, one person must know that recording is taking place. </p>
+       	<p class="statecontent statecontent_AL">The eavesdropping statute criminalizes the use of “any device” to overhear or record communications, whether the eavesdropper is present or not, without the consent of at least one party engaged in the communication. Ala. Code § 13A-11-31</p>
+       
+	<p class="statecontent statecontent_AK">In Alaska, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_AK">It is a misdemeanor in Alaska to use an eavesdropping device to hear or record a conversation without the consent of at least one party to the conversation, or to disclose or publish information that one knows, or should know, was illegally obtained. Alaska Stat. § 42.20.310. </p>
+	<p class="statecontent statecontent_AK">A person who intercepts a private conversation cannot legally divulge or publish the information without consent of at least one party. Alaska Stat. § 42.20.300. </p>
+	
+	<p class="statecontent statecontent_AZ">In Arizona, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_AZ">In Arizona, an individual must have the consent of at least one party to a conversation in order to legally intercept a wire or electronic communication, including wireless and cellular calls. Otherwise, this conduct is a felony. Ariz. Rev. Stat. Ann. § 13-3005. </p>
+	
+	<p class="statecontent statecontent_AR">In Arkansas, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_AR">In Arkansas, intercepting or recording any wire, oral, cellular or cordless phone conversation is a misdemeanor, unless the person recording is a party to the conversation, or one of the parties to the conversation has given prior consent. Ark. Code § 5-60-120. </p>
+	
+	<p class="statecontent statecontent_CA">In California, all parties must know that recording is taking place. </p>
+	<p class="statecontent statecontent_CA">It is a crime in California to intercept or eavesdrop upon any confidential communication, including a telephone call or wire communication, without the consent of all parties. Cal. Penal Code §§ 631, 632. </p>
+	<p class="statecontent statecontent_CA">Eavesdropping upon or recording a conversation, whether by telephone (including cordless or cellular telephone) or in person, that a person would reasonably expect to be confined to the parties present, carries the same penalty as intercepting telephone or wire communications.</p>
+	<p class="statecontent statecontent_CA">Conversations occurring at any public gathering that one should expect to be overheard, including any legislative, judicial or executive proceeding open to the public, are not covered by the law.</p>
+	
+	<p class="statecontent statecontent_CO">In Colorado, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_CO">In Colorado, recording or intercepting a telephone conversation, or any electronic communication, without the consent of at least one party to the conversation is a felony. Colo. Rev. Stat. § 18-9-303. Recording a communication from a cordless telephone, however, is a misdemeanor. Colo. Rev. Stat. § 18-1.3-401. </p>
+	<p class="statecontent statecontent_CO">Anyone who is not "visibly present" during a conversation who overhears or records the conversation without the consent of at least one of the parties commits a felony carrying the same punishment as a telephone interception, as does anyone who discloses the contents of such a conversation. Colo. Rev. Stat § 18-9-304.</p>
+	<p class="statecontent statecontent_CO">However, nothing in these statutes “shall be interpreted to prevent a news agency, or an employee thereof, from using the accepted tools and equipment of that news medium in the course of reporting or investigating a public and newsworthy event.” Colo. Rev. Stat. § 18-9-305.</p>
+	
+	<p class="statecontent statecontent_CT">In Connecticut, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_CT">Conn. Gen. Stat. § 52-570d: It is illegal to tape a telephone conversation in Connecticut without the consent of all parties. Consent should be in writing or should be given on the recording, or a verbal warning that the conversation is being taped should be included in the recording.</p>
+	
+	<p class="statecontent statecontent_DE">In Delaware, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_DE">Del. Code Ann. tit. 11, § 2402(c)(4): Delaware's wiretapping and surveillance law specifically allows an individual to "intercept" (defined as acquiring the contents of a communication through a mechanical device) any wire, oral or electronic communication to which the individual is a party, or a communication in which any one of the parties has given prior consent, so long as the communication is not intercepted with a criminal or tortious intent.</p>
+	<p class="statecontent statecontent_DE">However, another Delaware privacy law makes it illegal to intercept "without the consent of all parties thereto a message by telephone, telegraph, letter or other means of communicating privately, including private conversation." Del. Code Ann. tit. 11, § 1335(a)(4). The wiretapping law is much more recent, and at least one federal court has held that, even under the privacy law, an individual can record his own conversations. United States v. Vespe, 389 F. Supp. 1359 (1975).</p>
+	
+	<p class="statecontent statecontent_DC">In D.C., one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_DC">D.C. Code Ann. § 23-542: It is legal to record or disclose the contents of a wire or oral communication where the person recording is a party to the communication, or where one of the parties has given prior consent, unless the recording is done with criminal or injurious intent.</p>
+	<p class="statecontent statecontent_DC">However, disclosure of the contents of an illegally recorded communication cannot be punished criminally if the contents of the communication have “become common knowledge or public information.” D.C. Code Ann. § 23-542</p>
+	
+	<p class="statecontent statecontent_FL">In Florida, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_FL">Fla. Stat. ch. 934.03: All parties must consent to the recording or the disclosure of the contents of any wire, oral or electronic communication in Florida. Recording or disclosing without the consent of all parties is a felony, unless the interception is a first offense committed without any illegal purpose, and not for commercial gain, or the communication is the radio portion of a cellular conversation. </p>
+	<p class="statecontent statecontent_FL">These first offenses and the interception of cellular frequencies are misdemeanors. State v. News-Press Pub. Co., 338 So. 2d 1313 (1976).</p>
+	
+	<p class="statecontent statecontent_GA">In Georgia, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_GA">Ga. Code Ann. § 16-11-62: Secretly recording or overhearing a conversation held in a private place, whether carried out orally or by wire or electronic means, is criminally punishable as a felony under statutory provisions regarding invasions of privacy. However, the law expressly provides that it does not prohibit a person who is a party to a conversation from recording and does not prohibit recording if one party to the conversation has given prior consent. Ga. Code Ann. § 16-11-66.</p>
+	
+	<p class="statecontent statecontent_HI">In Hawaii, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_HI">In Hawaii, any wire, oral or electronic communication (including cellular phone calls) can lawfully be recorded by a person who is a party to the communication, or when one of the parties has consented to the recording, so long as no criminal or tortious purpose exists. Haw. Rev. Stat. § 803-42. </p>
+	<p class="statecontent statecontent_HI">The one-party consent rule does not apply, however, to the installation of a recording device in a "private place" that will amplify or broadcast conversations outside that private place. All parties who have a reasonable expectation of privacy in that place must consent to the installation of a recording device. Haw. Rev. Stat. § 803-42(b)(3).</p>
+	
+	<p class="statecontent statecontent_ID">In Idaho, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_ID">In Idaho, although legislation criminalizes the interception and disclosure of wire or oral communications, it specifically allows interception when one of the parties has given prior consent. Idaho Code § 18-6702.</p>
+	
+	<p class="statecontent statecontent_IL">In Illinois, all parties must know that recording is taking place.</p>
+	<p class="statecontent statecontent_IL">An eavesdropping device cannot be used to record or overhear a conversation without the consent of all parties to the conversation under criminal statutes. An eavesdropping device is anything used to hear or record a conversation, whether the conversation is in person or conducted by any means other than face-to-face conversation, such as a telephone conversation. 720 Ill. Compiled Stat. Ann. 5/14-1, -2</p>
+	
+	<p class="statecontent statecontent_IN">In Indiana, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_IN">In Indiana, the recording or acquiring of the contents of a telephonic or telegraphic communication by someone who is neither the sender nor the receiver is a felony and can be the basis for civil liability. Ind. Code Ann. § 35-33.5-1-5.</p>
+	
+	<p class="statecontent statecontent_IA">In Iowa, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_IA">It is a misdemeanor in Iowa under general criminal laws to tap into a communication of any kind, including telephone conversations, unless the person listening or recording is a sender or recipient of the communication, or is openly present and participating in the conversation. Thus, one party to a communication generally may record it without the consent of the other parties.Iowa Code § 727.8.</p>
+	<p class="statecontent statecontent_IA">Iowa also has more specific legislation regarding the interception of communications that expressly allows the interception of wire, oral or electronic communications through use of a mechanical device by a party to the communication, or with the consent of at least one party, in the absence of any criminal or tortious intent. Iowa Code § 808B.2.</p>
+	
+	<p class="statecontent statecontent_KS">In Kansas, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_KS">In Kansas, unlawful eavesdropping consists of secretly listening to, recording, or amplifying private conversations or using any device to intercept a telephone or wire communication “without the consent of the person in possession or control of the facilities for such wire communication.” Kan. Stat. Ann. § 21-4001.</p>
+	<p class="statecontent statecontent_KS">The state’s highest court has interpreted the eavesdropping and privacy statutes to sanction one-party consent for taping of conversations and in interpreting both statutes stated: "In other words, any party to a private conversation may waive the right to privacy and the non-consenting party has no Fourth Amendment or statutory right to challenge the waiver." Kansas v. Roudybush, 686 P.2d 100 (Kan. 1984).</p>
+	
+	<p class="statecontent statecontent_KY">In Kentucky, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_KY">It is a felony to overhear or record, through use of an electronic or mechanical device, a wire or oral communication without the consent of at least one party to that communication. Ky. Rev. Stat. Ann. § 526.010</p>
+	<p class="statecontent statecontent_KY">A person is guilty of eavesdropping when he intentionally uses any device to eavesdrop, whether or not he is present at the time. Ky. Rev. Stat. Ann. § 526.020.</p>
+	
+	<p class="statecontent statecontent_LA">In Louisiana, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_LA">In Louisiana, unless a criminal or tortious purpose exists, a person can record any conversations transmitted by wire, oral or electronic means to which he is a party, or when one participating party has consented.</p>
+	
+	<p class="statecontent statecontent_ME">In Maine, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_ME">In Maine, interception of wire and oral communications is a “Class C” crime under the state criminal code, and an interceptor is someone other than the sender or receiver of a communication who is not in the range of “normal unaided hearing” and has not been given the authority to hear or record the communication by a sender or receiver. Me. Rev. Stat. Ann. tit. 15, § 710. </p>
+	
+	<p class="statecontent statecontent_MD">In Maryland, all parties must know that recording is taking place.</p>
+	<p class="statecontent statecontent_MD">Md. Code Ann., Courts and Judicial Proceedings § 10-402: It is a felony to intercept a wire, oral or electronic communication unless all parties to the communication have consented. But all-party consent will not make the recording legal if there is a criminal or tortious purpose behind it.</p>
+	
+	<p class="statecontent statecontent_MA">In Massachusetts, all parties must know that recording is taking place. </p>
+	<p class="statecontent statecontent_MA">It is a crime to record any conversation, whether oral or wire, without the consent of all parties in Massachusetts. Mass. Ann. Laws ch. 272 , § 99.</p>
+	
+	<p class="statecontent statecontent_MI">In Michigan, all parties must know that recording is taking place. </p>
+	<p class="statecontent statecontent_MI">In Michigan, a private conversation legally cannot be overheard or recorded without the consent of all participants.Mich. Comp. Laws § 750.539c.</p>
+	<p class="statecontent statecontent_MI">The eavesdropping statute has been interpreted by one court as applying only to situations in which a third party has intercepted a communication, an interpretation that makes it legal for a participant in a conversation to record that conversation without the permission of other parties. Sullivan v. Gray, 324 N.W.2d 58 (Mich. Ct. App. 1982).</p>
+	
+	<p class="statecontent statecontent_MN">In Minnesota, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_MN">In Minnesota, it is legal for a person to record a wire, oral or electronic communication if that person is a party to the communication, or if one of the parties has consented to the recording — so long as no criminal or tortious intent accompanies the recording. Minn. Stat. § 626A.02. </p>
+	
+	<p class="statecontent statecontent_MS">In Mississippi, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_MS">It is generally a violation of Mississippi law to intercept and acquire the contents of wire, oral or other communications with a mechanical or electronic device. The law against interception of communications applies neither to a “subscriber” to a telephone who “intercepts a communication on a telephone to which he subscribes,” nor to members of the subscriber’s household. Miss. Code Ann. § 41-29-535, Wright v. Stanley, 700 So.2d 274 (Miss. 1997)</p>
+	<p class="statecontent statecontent_MS">In addition, the law specifically provides that if a person is a party to a communication, or has obtained consent from any one of the parties, no liability can be imposed unless the interception was accompanied by a criminal or tortious intent. Miss. Code Ann. § 41-29-531.</p>
+	
+	<p class="statecontent statecontent_MO">In Missouri, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_MO">In Missouri, an individual who is a party to a wire communication, or who has the consent of one of the parties to the communication, can lawfully record it or disclose its contents, unless the person is intercepting the communication for the purpose of committing a criminal or tortious act. Mo. Rev. Stat. § 542.402. 
+
+	<p class="statecontent statecontent_MT">In Montana, an individual who is a party to a wire communication, or who has the consent of one of the parties to the communication, can lawfully record it or disclose its contents, unless the person is intercepting the communication for the purpose of committing a criminal or tortious act. Mo. Rev. Stat. § 542.402. </p>
+	<p class="statecontent statecontent_MT">It is a violation of privacy in communications under state law to record a conversation with a hidden electronic or mechanical device without the knowledge of all parties to the conversation, but the law does not apply to public officials or employees speaking in the course of their duties, to anyone speaking at a public meeting, or to anyone who has been warned of the recording.See Mont. Code ann. § 45-8-213.</p>
+	<p class="statecontent statecontent_MT">Exceptions to this rule include the recording of: elected or appointed officials and public employees, when recording occurs in the performance of public duty; persons speaking at public meetings, and persons given warning of the transcription. If one party gives warning, then either party may record. Mont. Code ann. § 45-8-213-1-c-i, ii, iii. </p>
+	
+	<p class="statecontent statecontent_NE">In Nebraska, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NE">In Nebraska, a person who is a party to a wire, electronic or oral communication, or who has obtained prior consent from a party, can record or disclose the contents of that communication without violating the law, so long as there is no criminal or tortious purpose behind the recording or disclosure. Illegal interceptions are felonies that can be punished with fines up to $10,000 and five years in prison. Neb. Rev. Stat. § 28-105.</p>
+	
+	<p class="statecontent statecontent_NV">In Nevada, all parties must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NV">The Nevada wiretapping statute provides that it is a crime for anyone to "intercept" or disclose the contents of any wire communication, but that no illegal activity occurs when the interception is made "with the prior consent of one of the parties to the communication" and "an emergency situation exists."</p>
+	<p class="statecontent statecontent_NV">In December 1998, the state's highest court stated in a 3-2 decision that the wiretapping statutes require that an individual obtain the consent of all parties before taping a telephone conversation, and thus, that an individual who tapes his own telephone calls without the consent of all participants unlawfully "intercepts" those calls. Lane v. Allstate Ins. Co., 969 P.2d 938 (Nev. 1998).</p>
+	<p class="statecontent statecontent_NV">In addition, it is a criminal invasion of privacy to secretly listen to, record or disclose the contents of any private conversation "engaged in by other persons" through use of any mechanical or electronic device, "unless authorized to do so by one of the persons engaging in the conversation." Nev. Rev. Stat. Ann. § 200.650.</p>
+	<p class="statecontent statecontent_NV">Nevada statutory provisions also make it a crime to disclose the existence or contents of any wire or radio communication without permission from the sender or receiver.</p>
+	
+	<p class="statecontent statecontent_NH">In New Hampshire, all parties must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NH">It is a felony to intercept or disclose the contents of any telecommunication or oral communication without the consent of all parties. N.H. Rev. Stat. Ann. § 570-A:2-I. </p>
+	<p class="statecontent statecontent_NH">However, it is only a misdemeanor if a party to a communication, or anyone who has the consent of only one of the parties, intercepts a telecommunication or oral communication. N.H. Rev. Stat. Ann § 570-A:2-I. </p>
+	
+	<p class="statecontent statecontent_NJ">In New Jersey, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NJ">In New Jersey, interception of any wire, electronic or oral communication, or disclosure of the contents of such communication by someone having reason to know of the interception, is a crime. The disclosure of intercepted information is not a crime, however, if the contents of the communication have "become public knowledge or public information."</p>
+	<p class="statecontent statecontent_NJ">In addition, an interception is legal if the interceptor is a party to the communication, or one of the parties has given prior consent, so long as no criminal or tortious intent is present. Nonetheless, even if a person is a subscriber to a particular telephone, that person cannot consent to the recording of conversations on that telephone to which he is not a party. N.J. Stat. § 2A:156A-4.</p>
+	
+	<p class="statecontent statecontent_NM">In New Mexico, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NM">A criminal interference with communications occurs when anyone intercepts, records or discloses the contents of any message sent by telephone or telegraph without the consent of a sender or receiver. Illegal interceptions are misdemeanors. N.M. Stat. Ann. § 30-12.</p>
+	<p class="statecontent statecontent_NM">An intermediate appellate court has stated that in New Mexico, "one who voluntarily enters into a conversation with another takes the risk that the other person on the line may memorize, record or even transmit the conversation." New Mexico v. Arnold, 610 P.2d 1214 (N.M Ct. App. 1979), rev’d on other grounds, 610 P.2d 1210 (N.M. 1980).</p>
+	
+	<p class="statecontent statecontent_NY">In New York, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NY">An intermediate appellate court has stated that in New York, "one who voluntarily enters into a conversation with another takes the risk that the other person on the line may memorize, record or even transmit the conversation." New Mexico v. Arnold, 610 P.2d 1214 (N.M Ct. App. 1979), rev’d on other grounds, 610 P.2d 1210 (N.M. 1980).</p>
+	<p class="statecontent statecontent_NY"> It is a Class E felony to overhear or record a telephonic or telegraphic communication if one is not the sender or receiver, or does not have the consent of either the sender or receiver. It also is a crime for someone not present to overhear or record any conversation or discussion without the consent of at least one party to that conversation.</p>
+	<p class="statecontent statecontent_NY">Cordless telephone conversations that are partially broadcast over ordinary radio waves are protected by the wiretapping and eavesdropping laws and require the same consent for recording as any other communication. New York v. Fata, 559 N.Y.S.2d 348 (N.Y. App. Div. 1990).</p>
+	<p class="statecontent statecontent_NY">State courts have held that newspapers that published transcripts of an illegally recorded telephone conversation were subject to civil liability when "the newspapers knew they were dealing with recorded conversations between unconsenting parties." Natoli v. Sullivan, 606 N.Y.S.2d 504 (N.Y. Sup. Ct. Oswego County 1993), aff’d, 616 N.Y.S.2d 318 (N.Y. App. Div. 1994).</p>
+	
+	<p class="statecontent statecontent_NC">In North Carolina, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_NC">In North Carolina, it is a felony to intercept or disclose the contents of a wire, oral or electronic communication without the consent of at least one party to the communication, The statute defines wire communications to exclude the radio portion of a cordless telephone call that is transmitted between a cordless telephone handset and base unit. N.C. Gen. Stat. § 15A-287.</p>
+	<p class="statecontent statecontent_NC">In addition, communications transmitted in a manner accessible to the general public, radio transmissions of aircrafts, ships or vehicles, and law enforcement radio communications, can be legally intercepted.</p>
+
+	<p class="statecontent statecontent_ND">In North Dakota, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_ND">In North Dakota, anyone who is a party to a communication, or who has obtained prior consent from someone who is a party to the communication, may legally record or disclose the contents of any wire or oral communication as long as they do not have criminal or tortious intent.  N.D. Cent. Code § 12.1-15-02.</p>
+	
+	<p class="statecontent statecontent_OH">In Ohio, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_OH">In Ohio, intercepting, recording or disclosing the contents of a wire, oral or electronic communication if a person is a participant, or has obtained the consent of at least one participant, is legal unless it is accompanied by a criminal or tortious intent.Ohio Rev. Code ann. § 2933.52.</p>
+	
+	<p class="statecontent statecontent_OK">In Oklahoma, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_OK">In Oklahoma, anyone who is a party to a wire, oral or electronic communication or who has obtained consent from a party can lawfully record or disclose the contents of that communication, so long as he does not do so in furtherance of a criminal act. Okla. Stat. tit. 13 § 176.4. </p>
+	
+	<p class="statecontent statecontent_OR">In Oregon, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_OR">In Oregon, it is illegal to obtain or divulge a telecommunication or radio communication, unless one is a party or has obtained consent from at least one party to the conversation. It is illegal to obtain or divulge an oral communication unless all parties to the communication are informed that their conversation is being obtained.  Or. Rev. Stat. § 165.540(1)(a). </p>
+	
+	<p class="statecontent statecontent_PA">In Pennsylvania, all parties must know that recording is taking place. </p>
+	<p class="statecontent statecontent_PA">In Pennsylvania, it is a felony to intercept any wire, oral or electronic communication without the consent of all participants. It also is a felony to disclose or use the contents of a communication when there is reason to know those contents were obtained through an illegal interception. 18 Pa. Cons. Stat. § 5703(1).</p>
+	<p class="statecontent statecontent_PA">Under the current statutory language, consent of all parties is required to tape a conversation. 18 Pa. Cons. Stat. § 5704.</p>
+	
+	<p class="statecontent statecontent_RI">In Rhode Island, one person must know that recording is taking place. </p>
+	<p class="statecontent statecontent_RI">Rhode Island law expressly allows the recording and disclosure of the contents of any wire, oral or electronic communication by a party to the communication or with the prior consent of one of the parties, so long as no criminal or tortious purpose exists.R.I. Gen Laws § 11-35-21.</p>
+	
+	<p class="statecontent statecontent_SC">In South Carolina, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_SC">In South Carolina, It is a felony to intercept, disclose or use a wire, electronic or oral communication, unless it is done with the consent of at least one party to the communication. §§ 17-30-20, 17-30-30. </p>
+	
+	<p class="statecontent statecontent_SD">In South Dakota, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_SD">In South Dakota, one can record an oral or wire communication without obtaining consent of all the parties if he is present to the communication. Additionally, a third party can record an oral or wire communication if one party consents. It is a felony otherwise. S.D. Codified Laws § 23A-35A-20.</p>
+	<p class="statecontent statecontent_SD">Generally, the consent of one participant in any communication to the recording removes it from the type of interception prohibited under the South Dakota wiretapping statute. </p>
+	
+	<p class="statecontent statecontent_TN">In Tennesse, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_TN">In Tennessee, a person who is a party to a wire, oral, or electronic communication, or who has obtained the consent of at least one party, can lawfully record a communication and divulge the contents of the recorded conversation unless he has a criminal or tortious purpose. Tenn. Code Ann. § 39-13-601. </p>
+	
+	<p class="statecontent statecontent_TX">In Texas, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_TX">In Texas, so long as a wire, oral, or electronic communication—including the radio portion of any cordless telephone call—is not recorded for a criminal or tortious purpose, anyone who is a party to the communication, or who has the consent of a party, can lawfully record the communication and disclose its contents. Texas Penal Code § 16.02.</p>
+	
+	<p class="statecontent statecontent_UT">In Utah, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_UT">In Utah, an individual legally can record or disclose the contents of any wire, oral or electronic communication to which he is a party, or when at least one participant has consented to the recording, unless the person has a criminal or tortious purpose in making the recording. Utah Code Ann. § 77-23a-4.</p>
+	
+	<p class="statecontent statecontent_VT">There are no specific statutes in Vermont addressing interception of communications.</p>
+	
+	<p class="statecontent statecontent_VA">In Virginia, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_VA">In Virginia, despite the fact that it is generally a felony to intercept or disclose the contents of any wire, oral or electronic communication under state law, the recording or disclosing of communications by a party, or with the consent of a party, is specifically permitted. Va. Code Ann. § 19.2-62.</p>
+	
+	<p class="statecontent statecontent_WA">In Washington, all parties must know that recording is taking place. </p>
+	<p class="statecontent statecontent_WA">In Washington, all parties generally must consent to the interception or recording of any private communication, whether conducted by telephone, telegraph, radio or face-to-face, to comply with state law. Wash. Rev. Code § 9.73.030. </p>
+	<p class="statecontent statecontent_WA">Moreover, an employee of a news organization engaged in newsgathering is deemed to have the requisite consent to record and divulge the contents of conversations “if the consent is expressly given or if the recording or transmitting device is readily apparent or obvious to the speakers.” Wash. Rev. Code § 0.73.030(4). Anyone speaking to an employee of a news organization who has been deemed to have given consent cannot withdraw that consent after the communication has been made. Wash. Rev. Code § 0.73.030(4).</p>
+	<p class="statecontent statecontent_WA">Whether a communication is considered "private" under the statute depends on the factual circumstances. Among the factors considered are the subjective intent of the parties; the reasonableness of their expectation of privacy; the duration and subject matter of the communication; the location of the communication and the presence of third parties; and the relationship between the consenting party and the non-consenting party. State v. Townsend, 57 P.2d 255 (Wash. 2002). </p>
+	
+	<p class="statecontent statecontent_WV">In West Virgina, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_WV">In West Virginia, recording a wire, oral, or electronic communication, or disclosing its contents, is not a violation of West Virginia law when the person recording is a party to the communication or has obtained consent from one of the parties, so long as the recording is not accompanied by a criminal or tortious intent. W. Va. Code § 62-1D-3.</p>
+	
+	<p class="statecontent statecontent_WI">In Wisconsin, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_WI">In Wisconsin, if the person who records the wire, electronic, or oral communication is a party to the conversation or has obtained prior consent from one party, he may lawfully record and divulge the contents of the communication, unless he does so for the purpose of committing a criminal or tortious act. Wis. Stat. § 968.31.</p>
+	
+	<p class="statecontent statecontent_WY">In Wyoming, one person must know that recording is taking place.</p>
+	<p class="statecontent statecontent_WY">In Wyoming, it is legal for a party to a wire, oral, or electronic communication to record that communication, and it is legal for anyone to record with the consent of one of the parties to a communication, unless the communication is intercepted to further a criminal or tortious purpose. Wyo. Stat. § 7-3-702.</p>
+       	
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/taping/index.html">The First Amendment Handbook</a></br>
+       	<a href="http://www.rcfp.org/taping/states.html">State by State Summaries</a></br>
+       	<a href="http://www.rcfp.org/taping/quick.html">Quick guide to state laws</a></br>
+       	<a href="http://www.rcfp.org/taping/interstate.html">Interstate Phone Calls</a>
+       	
+       	<p><b>Q: Should I do an interview over email?</b></p>
+       	
+       	<p><b>A:</b> Interviews via email should be the very last option for a journalist, one used only when there is 
+       	absolutely no other way to conduct the interview. Emailed interviews provide the source with a chance to 
+       	“craft” a message, unlike with a real-time interview. If there is no other way, send questions one or two 
+       	at-a-time, like in a real-time interview. Interviews conducted by email, ethically, should be disclosed 
+       	within the story.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.ajr.org/article.asp?id=4005">Inbox Journalism</a>
+       	<a href="http://www.poynter.org/uncategorized/16916/step-by-step-e-mail-interviewing-tips/">Poynter: Step-by-step email interview tips</a></br>
+       	<a href="http://www.poynter.org/how-tos/digital-strategies/web-tips/6811/e-mail-interview-advice/">Poynter: Email interview advice</a></br>
+
+	<p><b>Q: How should I go about interviewing an officer about an incident?</b> </p>
+    	
+    	<p><b>A:</b> Often, a Public Information Officer (PIO) will be at the scene if intensive media attention is expected. 
+    	PIOs often are the only representatives at a scene. If you would like to interview an officer instead of a PIO, 
+    	visit the local police station or ask the PIO to set up a contact for you.</p>
+    	<p>Become familiar with the Sunshine Laws in your state to know what information a police officer is 
+    	required to provide.</p>
+    	<p>Viewing an arrest log can answer a lot of questions. Once you find an arrest that piques your interest, 
+    	request a copy of the arrest report then interview the arresting officer for further details.</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="quotesattribution" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Quotes and Attribution</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Can I re-quote already published material?</b> </p>
+    	
+    	<p><b>A:</b> Above all, try to confirm the information on your own. Make every effort to get previously published 
+    	information by your own efforts, because if the published information is false, you can be held responsible 
+    	for republishing and lose credibility with your readers.</p>
+    	
+    	<p>However, if it is absolutely necessary to use published material, <b>always attribute</b> it, giving 
+    	credit to the publication from which you pulled the information. Never take credit for a quote you did not 
+    	obtain directly. If you do not attribute, you may get fired or suspend from your job for plagiarism.</p>
+    	
+       	<p><b>Q: Should I fix a quote I got from someone?</b></p>
+       	
+       	<p><b>A:</b> Correct minor grammar mistakes (e.g. replace "gonna" with "going to"), in speech. Eliminate unnecessary 
+       	filler words (e.g. "um," "ah"), or repetitive phrases that are meaningless (you could change, "so, for example, 
+       	um, for instance..." into "For instance..."). Never clean up a quote in a way that changes the meaning of the 
+       	speaker.</p>
+       
+        <p>For more information:</p>
+       	<a href="http://j-source.ca/article/cleaning-quotes">Cleaning up quotes</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="images" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Images</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: What can I do in Photoshop and still be ethically responsible?</b> </p>
+    	
+    	<p><b>A:</b> Photoshop ethics consist of one critical question: Do your changes make the photo misleading? With the 
+    	advanced technology of Photoshop, it is easy to be pulled into overusing “quick-fixes," which could ultimately 
+    	change the photo completely. Be mindful of your changes and your commitment to the truth. In other words, stay 
+    	away from using tools that significantly alter content.</p>
+    	
+    	<p>For more information:</p>
+    	<a href="http://www.stinkyjournalism.org/editordetail.php?id=349">Stinky Journalism: The photoshop jungle</a>
+    	
+       	<p><b>Q: What are the limits on photograph usage?</b></p>
+       	
+       	<p><b>A:</b> Photographers will always own the rights to their photos regardless of whether an actual copyright 
+       	has been applied.</p>
+       	
+       	<p>Copyright of a photograph protects not merely the photographer from direct copying of his work, 
+       	but also from indirect copying to reproduce his work, where a substantial portion of it has been copied.</p>
+       	
+       	<p>Copyright - of any work - lasts for 70 years from the end of the year in which the creator dies.</p>
+       	
+       	<p><b>Q: What are creative commons images and how do I find them?</b></p>
+       	
+       	<p><b>A:</b> Creative Commons photos or content are a great way to illustrate or flesh out a story free of charge. 
+       	The organization provides six different copyright-licenses, with various restrictions, free of charge to the 
+       	public. The least restrictive requires attribution-only, but the most restrictive requires attribution, 
+       	non-commercial use and use of the work with no alteration whatsoever. Be sure to check the license before 
+       	using an image, as there can be legal consequences to breaking the license requirements.</p>
+       	
+       	<p><a href="http://search.creativecommons.org/">search.creativecommons.org</a> provides a search service that can be used to find Creative Commons licensed 
+       	work and it can be very resourceful when looking for a visual to represent a story. Even with creative commons 
+       	images, it's a good practice to alert the author before publishing, especially if the license does not include 
+       	preferred attribution. It's always best to use a full name and not a screen name in publication.</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+<!-- /Before Heading Out -->
+   
+  <div id="preinterview" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Pre-interview</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: What's the best way to prepare for an interview with public officials?</b> </p>
+    	
+    	<p><b>A:</b> When interviewing public officials, make sure you have an interview plan set out in advance. 
+    	Asking disjointed questions to a busy official who may not want to talk in the first place wastes time and effort. 
+    	Officials are especially good at evading and dissembling questions while providing no meaningful content. 
+    	If an answer starts to stray, don't be afraid to bring the interviewee back to the question by interjecting: 
+    	"I'm still wondering about the original question," or "You didn't answer the question." 
+    	If you do not understand an answer that the official gave, follow up with a question such as, 
+    	“can you explain that in a way that the public can understand?” </p>
+    	
+    	<p> For more information: </p>
+    	<a href="http://www.newscollege.ca/p123.htm"> Preparing for an interview </a> 
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="permissions" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Permissions</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: When do I need waivers and releases?</b> </p>
+    	
+    	<p><b>A:</b> Generally, releases are unnecessary for newsgathering purposes. 
+    	However, if there is question about the newsworthiness of the recording, it's best to obtain a release first. 
+    	You can face legal consequences if the video can be argued to be an invasion of privacy. 
+    	If the video is going to be sold to viewers (e.g. sale of a DVD of a videotaped event) then a release may be 
+    	necessary.</p>
+	
+	<p>If you are interviewing a minor, a release can be necessary if the parent is not present or did not give 
+	explicit permission. Minors cannot sign their own release - a parent or guardian must sign it on their behalf. 
+	If in doubt about the necessity of a release, err on the side of caution. </p> 
+ 	
+ 	<p> For more information: </p>
+ 	<a href="http://www.reelseo.com/video-waivers/"> Video waivers </a> 
+       
+        <p><b>Q: What can I bring to a court?</b></p>
+    	
+    	<p><b>A:</b> Each county courthouse will have its own rules on what you can bring into a courtroom. 
+    	Generally, you can bring in paper and a pen to take notes. Some courtrooms forbid cameras -- including those 
+    	embedded in mobile devices -- while some will admit them for certain cases. Typically, it's up to the 
+    	judge’s discretion and can vary from case to case. Check beforehand so you are not denied access for bringing 
+    	a mobile phone with a built-in camera.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/djlg/?action=show_item&cat=SCT&tid=40&PHPSESSID=c1dc774032116ad9bf5ca3969fdf5101">Cameras in Courtrooms</a>
+       	
+       	<p><b>Q: Should I interview children?</b></p>
+	
+	<p><b>A:</b> Avoid interviewing young children, especially if they have witnessed a traumatic event. It is essential 
+    	to talk to a child in the presence of a parent and get parental consent before publishing or broadcasting the 
+    	interview. If it is essential to talk to the child do so with an adult present - in a quiet place, away from 
+    	the excitement of the scene. Do not, however, separate a child from his parent or guardian to interview her. 
+    	Before publishing a photo of a child, get permission from a parent or legal guardian.</p>
+    	
+    	<p>For more information:</p>
+    	<a href="http://dartcenter.org/content/interviewing-children-guide-for-journalists">Guidelines for Interviewing Children</a>
+    	
+    	<p><b>Q: Can a press pass get me into a press conference?</b></p>
+	
+	<p><b>A:</b> A press pass is a journalist's credential, issued and used to confirm his or her identity as 
+    	a representative of a news organization. While press passes are not always necessary, some passes have a 
+    	recognized legal status. Wearing a press pass may afford the journalist special access to restricted areas 
+    	such as crime scenes, press conferences and events related to breaking news. However, a press pass does 
+    	not guarantee admission.</p>       	
+    	
+    	<p><b>Q: How do I get permission to interview people on private property?</b></p>
+	
+	<p><b>A:</b> In most situations, journalists are not permitted to cover an event or interview on private property 
+       	without prior permission. It's best to call several days in advance to request permission, especially if you 
+       	are dealing with businesses or corporations. Often, a local branch needs to contact the corporate office 
+       	before they can grant permission.</p>
+       
+       <p>Be friendly, forthright and persistent. If you do not hear back in a day or two, call again and ask how 
+       	the approval process is going.</p>
+       	
+       	<p>Businesses may often impose restrictions on what you can or cannot record while on private property. This 
+       	is often requires a negotiation as there is no set of hard and fast rules. The key to getting what you want 
+       	is building trust with the source.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.rcfp.org/handbook/index.php?pg=8-1">The First Amendment Handbook</a>
+	
+	<p><b>Q: Can I film at a school?</b></p>
+       	
+       	<p><b>A:</b> Recording inside spaces at public schools is typically up to the school's governing board. The school 
+       	does not have to allow recording inside classrooms, the school gym or dorm rooms. You may record a public 
+       	school from a public sidewalk but be careful about using identifiable images of children. If you must record, 
+       	try to get shots of the school name or marquee only. However, the best practice is to get permission before 
+       	setting up your camera at a school.</p>
+       	
+       	<p>A private campus, on the other hand, can usually ban recording at its discretion. In a few states, there 
+       	may be a right to record in privately owned areas open to the general public, such as private campus sidewalks 
+       	and lawns, but the general rule is that a private campus can set its own regulations regarding access and 
+       	filming.</p>
+ 	
+ 	<p>The technique of recording students from behind or in a way that would not identify them is a good way 
+ 	to persuade officials to grant permission.</p>
+ 	
+ 	<p>For more information:</p>
+ 	<a href="http://thefire.org/article/9464.html">The Right to Film on Campus</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="research" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Research</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: How can I receive press releases?</b> </p>
+    	
+    	<p><b>A:</b> Most journalists will receive press releases from the contacts they have established or through employer 
+    	institutions. Ask public relations contacts to add you to their contact lists. If there are certain government 
+    	agencies you cover frequently, check their website as there is often a link to sign up to receive press releases. Finally, there are several press release websites that can provide you with multiple releases. </p>
+	
+	<p> For more information: </p>
+	<a href="http://www.responsesource.com/index_journalist.php"> Recieving press releases </a> 
+    	
+       	<p><b>Q: How can a Public Information Officers (PIO) help me?</b></p>
+       	<p><b>A:</b> The primary responsibility of a Public Information Officer (PIO) is to provide information to the 
+       	media and public as required by law and according to the standards of their profession. Many PIOs are former 
+       	journalists, bringing unique and relevant experience to the position. PIOs are often your first point of 
+       	contact with any business or government agency. It's a good idea to develop positive relationships with them, 
+       	as they are your entry point into many stories. During crises and emergencies, PIOs are often identified by 
+       	wearing helmets or vests with the letters "PIO" on them.</p>
+       	
+       	<p><b>Q: Can I use Wikipedia?</b></p>
+       	
+       	<p><b>A:</b> As the "free encyclopedia that anyone can edit," Wikipedia should be used with great caution. If necessary, 
+       	use Wikipedia as a starting point for information. Build on what you’ve read in a Wikipedia article by doing 
+       	further research of the cited works. And remember, use Wikipedia as a start, never as a finish.</p>
+       	
+       	<p>For more information:</p>
+       	<a href="http://www.ajr.org/article.asp?id=4461"> Wikipedia in the newsroom </a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="governmentaccess" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Government Access</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: What information can I get from the Government for a story?</b> </p>
+    	
+    	<p><b>A:</b> The Freedom of Information Act (FOIA) makes government documents available to the public. Technically, 
+    	FOIA only applies to Federal information. FOIA requests must be made in writing (some federal agencies consider 
+    	online submissions as ‘writing’) and can only be used for federal agencies. These requests cannot be used for 
+    	records from Congress, the courts or by state or local government agencies. However, every <b>state</b> has 
+    	its own public access laws that make records available. </p> 
+ 
+	<p>There are nine exemptions that an agency can cite for refusing to release records. The most common reason given for denial is for national security interests.
+	If an agency refuses your request, keep negotiating.</p>   
+ 
+	<p>When filing a FOIA, be sure to cite the federal or state statute concerning public records. Spell out your request clearly, do not simply ask for a vague 
+	number of type of record. The easier the request is to understand, the faster it can be fulfilled.</p>   
+ 
+	<p>Government agencies can impose a fee for completing a FOIA request, however there are limitations on what they can charge. Journalists are often exempt from
+	paying if the information can be proven to be of significant public interest; however it is often quicker and easier to pay a minimal fee. If you are willing to
+	pay a small amount, declare that in your request with a statement such as: "I agree to pay reasonable duplication fees for the processing of this request in an 
+	amount not to exceed $XX.XX. However, please notify me prior to your incurring any expenses in excess of that amount."</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+<!-- /Ethical Dilemmas -->
+
+  <div id="technology" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Technology</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b> Q: How should I behave on Social media?</b> </p>
+    	
+    	<p> <b>A:</b> Be extra cautious of what you do on social media. Posts on Facebook/Twitter are forever etched in your history
+    	and can come back to hurt you in the future. Make sure that whatever you post on social media is acceptable for your
+    	viewing audience and for people who come across your account. These are public forums - don't put any information on 
+    	there that you wouldn't want your audience to see.</p> 
+    	<p>Journalists should do their best to maintain a professional image, which may mean creating an account 
+    	for personal use and another account for professional use. If two accounts are being used, do your best to 
+    	prevent them from overlapping. It is a good idea to make your personal account more private than your 
+    	professional account.</p>
+    	
+    	<p> For more information:</p>
+    	<a href="http://stevebuttry.wordpress.com/2009/02/17/journalism-ethics-in-social-networks/">Ethics in Social Media</a>
+    	
+    	<p><b>Q: What are creative commons images and how do I find them?</b></p>
+       	
+       	<p><b>A:</b> Creative Commons photos or content are a great way to illustrate or flesh out a story free of charge. 
+       	The organization provides six different copyright-licenses, with various restrictions, free of charge to the 
+       	public. The least restrictive requires attribution-only, but the most restrictive requires attribution, 
+       	non-commercial use and use of the work with no alteration whatsoever. Be sure to check the license before 
+       	using an image, as there can be legal consequences to breaking the license requirements.</p>
+       	
+       	<p><a href="http://search.creativecommons.org/">search.creativecommons.org</a> provides a search service that can be used to find Creative Commons licensed 
+       	work and it can be very resourceful when looking for a visual to represent a story. Even with creative commons 
+       	images, it's a good practice to alert the author before publishing, especially if the license does not include 
+       	preferred attribution. It's always best to use a full name and not a screen name in publication.</p>
+       	
+	<p><b>Q: What are the limits on photograph usage?</b></p>
+       	
+       	<p><b>A:</b> Photographers will always own the rights to their photos regardless of whether an actual copyright 
+       	has been applied.</p>
+       	
+       	<p>Copyright of a photograph protects not merely the photographer from direct copying of his work, 
+       	but also from indirect copying to reproduce his work, where a substantial portion of it has been copied.</p>
+       	
+       	<p>Copyright - of any work - lasts for 70 years from the end of the year in which the creator dies.</p>
+       	
+    	<p><b>Q: What can I do in Photoshop and still be ethically responsible?</b> </p>
+    	
+    	<p><b>A:</b> Photoshop ethics consist of one critical question: Do your changes make the photo misleading? With the 
+    	advanced technology of Photoshop, it is easy to be pulled into overusing “quick-fixes," which could ultimately 
+    	change the photo completely. Be mindful of your changes and your commitment to the truth. In other words, stay 
+    	away from using tools that significantly alter content.</p>
+    	
+    	<p>For more information:</p>
+    	<a href="http://www.stinkyjournalism.org/editordetail.php?id=349">Stinky Journalism: The photoshop jungle</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="gifts" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Gifts</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Am I allowed to accept items from news sources?</b> </p>
+    	
+    	<p><b>A:</b> Ethically, it is not a good idea to accept gifts from sources; even a coffee or lunch can be called into question. 
+    	Sometimes it's unavoidable to accept a meal or a drink paid for by a news source (for example, at an official's residence or in a company's private dining room). 
+    	Whenever practical, however, avoid those circumstances and suggest dining where you pay your share or, better, meet in a setting that does not include a meal).</p>
+    	
+      
+       	<p><b>Q: Can I accept items from conferences? </b></p> 
+       	
+       	<p><b>A:</b> Most journalists don't accept swag or gifts, for ethical reasons. Some journalists pride themselves on never accepting a gift 
+       	from a source or at a conference.</p>
+ 
+	<p>Accepting a big-ticket item for covering a story or attending a conference damages credibility. How would a source feel if they
+	knew you had accepted an iPod or nice TV in exchange for covering a story? If you are unsure what to do - err on the side of caution.</p>
+ 
+	<p>A good test when debating whether to accept an item is the "re-sale test." If the swag could be resold for money, say no. 
+	That ballpoint pen with a logo on it? Maybe not a good thing to use when talking to sources, but the resale value is so low that it
+	is not likely to be seen as a bribe for doing your job.</p>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+   
+  <div id="diversity" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Diversity</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: What do I need to know about gender, sexual orientation and ethnicity?</b> </p>
+    	
+    	<p><b>A:</b> <i>Chicago Tribune</i> editor Gerould Kern described his newspapers' approach to this issue as “measured and responsible” when 
+    	it comes to including race in a story. In his article, “When race is relevant in news coverage," he said,
+    	“We do not reference race unless it is a fact that is central to telling the story.”</p>
+ 
+	<p>This is a good guideline to follow and should also be applied when dealing with gender orientation.
+	Always ask yourself: would you mention if the subject was white, or straight? If you would not, it is not 
+	necessary to identify a person by alternate or other labels.</p>
+       	
+       	<p><b>Q: How should I interview people with disabilities? </b></p>
+       	
+       	<p><b>A:</b> The 2000 Census estimated that 49.7 million Americans age five and older have a disability, close to 1 in 5 people.
+       	This means that it is very likely that while reporting, you’ll come across someone who has a disability. Remember, not all disabilities are visible.</p>
+ 
+	<p>One basic rule is to be careful in mentioning if the source has a disability and what that disability is. If the information
+	is not relevant to the story,leave it out.</p> 
+	
+	<p>For more information:</p>
+	<a href="http://ncdj.org/styleguide/">National Center on Disability and Journalism</a>
+	<a href="http://www.spjvideo.org/jtb/archive/disabilityaccessibility-resources/">Resources for journalists interviewing people with disabilities</a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+  <div id="sourcing" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+	<h1>Sourcing</h1>
+     </div>
+       <div data-role="content">	
+    	<p><b>Q: Can I re-quote already published material?</b> </p>
+    	
+    	<p><b>A:</b> Above all, try to confirm the information on your own. Make every effort to get previously published
+    	information by your own efforts, because if the published information is false, you can be held responsible 
+    	for republishing and lose credibility with your readers.</p>
+ 
+	<p>However, if it is absolutely necessary to use published material, <b>always attribute</b> it, giving credit to the
+	publication from which you pulled the information. Never take credit for a quote you did not obtain directly.
+	If you do not attribute, you may get fired or suspend from your job for plagiarism.</p>
+       
+       	<p><b>Q: What can I do with “off the record” information?</b></p>
+       	
+       	<p><b>A:</b> Off the record information is confidential and cannot be published.</p>
+       	
+       	<p>If a source requests to go "off the record" be sure that is established before the interview. 
+       	Make sure you both understand the limitations of any agreement you make. Off the record information
+       	can be useful in uncovering related facts and finding other sources that are willing to speak on the record. 
+       	But it can also severely limit what you can put in a story. Agree to off the record interviews with great caution.
+ 
+	<p>If a source asks to be off the record, try to convince them to go on record. Often, sources don't understand what
+	off the record means or how such designation can be seen as less credible.</p>
+ 
+	<p>Frequently, sources only want to protect their names and not the information they share. This is called "on background." 
+	In this situation it's essential to define with the source how you will identify them in the story, by a description such 
+	as “a senior police official.”</p>
+ 		
+ 	<p>For more information:</p>
+ 	<a href= "http://www.citmedialaw.org/legal-guide/protecting-sources-and-source-material"> Protecting sources and source material </a>
+        
+        <p><b>Q: Should I fix a quote I get from someone?</b> </p>
+    	
+    	<p><b>A:</b> Correct minor grammar mistakes (e.g. replace "gonna" with "going to"), in speech. 
+    	Eliminate unnecessary filler words (e.g. "um," "ah"), or repetitive phrases that are 
+    	meaningless (you could change, "so, for example, um, for instance..." into "For instance..."). 
+    	Never clean up a quote in a way that changes the meaning of the speaker.
+      
+       	<p> For more information: </p>
+       	<a href= "http://j-source.ca/article/cleaning-quotes">Cleaning up quotes </a>
+       	
+       	<p><b>Q: Should I interview children?</b></p>
+       
+        <p><b>A:</b> Avoid interviewing young children, especially if they have witnessed a traumatic event.
+       	It is essential to talk to a child in the presence of a parent and get parental consent before publishing 
+       	or broadcasting the interview. If it is essential to talk to the child do so with an adult present - in a quiet place, 
+       	away from the excitement of the scene. Do not, however, separate a child from his parent or guardian to interview her. 
+       	Before publishing a photo of a child, get permission from a parent or legal guardian.</p>
+ 
+       	<p> For more information:</P>
+       	<a href= "http://dartcenter.org/content/interviewing-children-guide-for-journalists"> Guidelines for Interviewing Children </a>
+       	
+       	<p><b>Q: How do I talk to victims and family of victims?</b></p>
+       	
+       	<p><b>A:</b> When approaching a victim, identify yourself as a reporter but be sure to establish a human connection 
+         by expressing sympathy, condolences etc. Leave all equipment behind. Know what you are going to say in order 
+         to avoid missteps, which can discourage the victim. Emphasize that you are giving them the opportunity to tell 
+         their story. Use silence to allow a response. If they decline, don’t push, but instead ask if they can 
+         recommend any other people to interview. Be sure to leave a business card so that the victim can contact you 
+         if necessary to follow up. Ask for contact information and be sure to call back for afterthoughts or omitted 
+         details.</p>
+       
+         <p>For more information:</p>
+         <a href= "http://victims.jrn.msu.edu/public/articles/tentips.html">Tips for talking to victims </a>
+      </div>
+      	<div data-role="footer" data-position="fixed" data-theme="b">
+	   <img src="footer.png" class="footer_logo">
+  	</div>
+   </div>
+   
+   
+
+  </body>
+</html>
