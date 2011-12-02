@@ -206,20 +206,22 @@ if(search_string.length>0)
     {
     //alert("No Match");
     //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    makeNewWindow()
-    newWindow.focus()
-    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    newWindow.document.close()
+    //makeNewWindow()
+    //newWindow.focus()
+    //newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    //newWindow.document.close()
+    document.getElementById('results_search').innerHTML="No Match";
     }
   }
   else
   {
     //alert("No match");
     //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-       makeNewWindow()
-    newWindow.focus()
-    newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    newWindow.document.close()
+      // makeNewWindow()
+    //newWindow.focus()
+    //newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
+    //newWindow.document.close()
+    document.getElementById('results_search').innerHTML="No Match";
   }
 }
   else
