@@ -54,6 +54,8 @@ function makeNewWindow() {
 
 function load()
 {
+document.getElementById('results_search').innerHTML="";
+
 var prefix ="%3C%21%44%4F%43%54%59%50%45%20%68%74%6D%6C%3E%0A%3C%68%74%6D%6C%3E%0A%20%20%3C%68%65%61%64%3E%0A%20%20%20%20%3C%6D%65%74%61%20%68%74%74%70%2D%65%71%75%69%76%3D%22%43%6F%6E%74%65%6E%74%2D%74%79%70%65%22%20%63%6F%6E%74%65%6E%74%3D%22%74%65%78%74%2F%68%74%6D%6C%3B%20%63%68%61%72%73%65%74%3D%75%74%66%2D%38%22%3E%0A%20%20%20%20%3C%74%69%74%6C%65%3E%50%6F%63%6B%65%74%4A%6F%75%72%6E%6F%3C%2F%74%69%74%6C%65%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%73%74%79%6C%65%73%68%65%65%74%22%20%68%72%65%66%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%63%73%73%22%20%2F%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%73%74%61%72%74%75%70%2D%69%6D%61%67%65%22%20%68%72%65%66%3D%22%73%70%6C%61%73%68%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%6C%69%6E%6B%20%72%65%6C%3D%22%61%70%70%6C%65%2D%74%6F%75%63%68%2D%69%63%6F%6E%22%20%68%72%65%66%3D%22%69%63%6F%6E%2E%6A%70%67%22%3E%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6A%71%75%65%72%79%2D%31%2E%36%2E%34%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%0A%20%20%20%20%3C%73%63%72%69%70%74%20%73%72%63%3D%22%68%74%74%70%3A%2F%2F%63%6F%64%65%2E%6A%71%75%65%72%79%2E%63%6F%6D%2F%6D%6F%62%69%6C%65%2F%31%2E%30%72%63%31%2F%6A%71%75%65%72%79%2E%6D%6F%62%69%6C%65%2D%31%2E%30%72%63%31%2E%6D%69%6E%2E%6A%73%22%3E%3C%2F%73%63%72%69%70%74%3E%0A%20%20%20%20%0A%20%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%73%74%61%74%75%73%2D%62%61%72%2D%73%74%79%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%62%6C%61%63%6B%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%61%70%70%6C%65%2D%6D%6F%62%69%6C%65%2D%77%65%62%2D%61%70%70%2D%63%61%70%61%62%6C%65%22%20%63%6F%6E%74%65%6E%74%3D%22%79%65%73%22%3E%20%0A%20%20%20%20%3C%6D%65%74%61%20%6E%61%6D%65%3D%22%76%69%65%77%70%6F%72%74%22%20%63%6F%6E%74%65%6E%74%3D%22%77%69%64%74%68%3D%64%65%76%69%63%65%2D%77%69%64%74%68%2C%20%69%6E%69%74%69%61%6C%2D%73%63%61%6C%65%3D%31%22%3E%0A%20%20%20%20%20%20%20%20%3C%73%74%79%6C%65%20%74%79%70%65%3D%22%74%65%78%74%2F%63%73%73%22%20%6D%65%64%69%61%3D%22%73%63%72%65%65%6E%22%3E%0A%20%20%20%20%20%20%20%20%69%6D%67%2E%66%6F%6F%74%65%72%5F%6C%6F%67%6F%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%62%6C%6F%63%6B%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%6C%65%66%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%20%20%6D%61%72%67%69%6E%2D%72%69%67%68%74%3A%20%61%75%74%6F%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2E%73%74%61%74%65%63%6F%6E%74%65%6E%74%20%7B%0A%20%20%20%20%20%20%20%20%20%20%64%69%73%70%6C%61%79%3A%20%6E%6F%6E%65%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%3C%2F%73%74%79%6C%65%3E%0A%3C%2F%68%65%61%64%3E";
 
 var pre = "%20%20%3C%62%6F%64%79%3E%0A%3C%64%69%76%20%69%64%3D%22%73%65%61%72%63%68%22%20%64%61%74%61%2D%72%6F%6C%65%3D%22%70%61%67%65%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%68%65%61%64%65%72%22%20%64%61%74%61%2D%74%68%65%6D%65%3D%22%62%22%20%64%61%74%61%2D%70%6F%73%69%74%69%6F%6E%3D%22%66%69%78%65%64%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%68%31%3E%53%65%61%72%63%68%20%52%65%73%75%6C%74%73%3C%2F%68%31%3E%0A%20%20%20%20%20%3C%2F%64%69%76%3E%0A%20%20%20%20%20%20%20%3C%64%69%76%20%64%61%74%61%2D%72%6F%6C%65%3D%22%63%6F%6E%74%65%6E%74%22%3E%20%20%0A%20%20%20%20%20%20";
@@ -126,6 +128,8 @@ if(search_string.length>0)
 
   search_string = search_string.replace(/\s+/g, " ");
   //alert(search_string);
+
+  var splitted_string = new Array();
  
   if(search_string.length>0)
   {
@@ -191,10 +195,11 @@ if(search_string.length>0)
           
         //   document.write(output);
        // alert(window.location.href);
-        makeNewWindow()
-    newWindow.focus()
-    newWindow.document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
-    newWindow.document.close() // close layout stream
+       document.getElementById('results_search').innerHTML=output;
+      //  makeNewWindow()
+    //newWindow.focus()
+    //newWindow.document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
+    //newWindow.document.close() // close layout stream
   
     }
     else 
@@ -238,18 +243,19 @@ if(search_string.length>0)
 
   <body id="wwwd">
     <div id="home" data-role="page" data-theme="b">
-      <div data-role="header" data-theme="b" data-position="fixed">
+      <div data-role="header" data-theme="b" data-position="inline">
         <h1>PocketJourno</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
 
 <!-- Added for search-->
-
+<!--
     <div data-role="fieldcontain">
       <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
       <input type="search" name="password" id="Search" value=""  />
       <input type="submit" onclick="load();" value="Find" data-inline="true" />
     </div>
-
+-->
 <!-- Added for search-->
 
 
@@ -274,6 +280,7 @@ if(search_string.length>0)
     <div id="onthescene" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>On the Scene</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
       <div data-role="content">	
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
@@ -294,6 +301,7 @@ if(search_string.length>0)
     <div id="inthenewsroom" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>In The Newsroom</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
       <div data-role="content">  
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
@@ -310,6 +318,7 @@ if(search_string.length>0)
     <div id="beforeheadingout" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>Before Heading Out</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
       <div data-role="content">  
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
@@ -327,6 +336,7 @@ if(search_string.length>0)
     <div id="ethicaldilemmas" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>Ethical Dilemmas</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
       <div data-role="content">  
         <ul data-role="listview" data-inset="true" data-theme="b" data-dividertheme="e">
@@ -344,6 +354,7 @@ if(search_string.length>0)
 	<div id="nmil" data-role="page" data-theme="b">
       <div data-role="header" data-theme="b" data-position="fixed">
         <h1>About</h1>
+        <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
       <div data-role="content">  
          <p>This application was produced by the <a href="http://nmil.jmc.asu.edu/">The New Media Innovation Lab</a> 
@@ -374,6 +385,7 @@ if(search_string.length>0)
   <div id="emergency" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Emergencies</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
       	 <p><b>Q: How should I go about interviewing an officer about an incident?</b> </p>
@@ -406,6 +418,7 @@ if(search_string.length>0)
   <div id="publicmeeting" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Public Meetings</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
       <div data-role="content">	
     	<p><b>Q: Can bloggers get the same access to public meetings? </b> </p>
@@ -628,6 +641,7 @@ if(search_string.length>0)
   <div id="pressconference" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Press Conferences</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Can a press pass get me into a press conference?   </b> </p>
@@ -646,6 +660,7 @@ if(search_string.length>0)
   <div id="courts" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Courts</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: What can I bring into a court?  </b> </p>
@@ -667,6 +682,7 @@ if(search_string.length>0)
   <div id="schools" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Schools</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Should I interview children?   </b> </p>
@@ -707,6 +723,7 @@ if(search_string.length>0)
   <div id="privateproperty" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Private Property</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Private property vs. public property: Where do they differ? </b> </p>
@@ -758,6 +775,7 @@ if(search_string.length>0)
   <div id="publicproperty" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Public Property</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Private property vs. public property: Where do they differ? </b> </p>
@@ -795,6 +813,7 @@ if(search_string.length>0)
   <div id="interviews" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Interviews</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	
@@ -1027,6 +1046,7 @@ if(search_string.length>0)
   <div id="quotesattribution" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Quotes and Attribution</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Can I re-quote already published material?</b> </p>
@@ -1057,6 +1077,7 @@ if(search_string.length>0)
   <div id="images" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Images</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: What can I do in Photoshop and still be ethically responsible?</b> </p>
@@ -1102,6 +1123,7 @@ if(search_string.length>0)
   <div id="preinterview" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Pre-interview</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: What's the best way to prepare for an interview with public officials?</b> </p>
@@ -1125,6 +1147,7 @@ if(search_string.length>0)
   <div id="permissions" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Permissions</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: When do I need waivers and releases?</b> </p>
@@ -1216,6 +1239,7 @@ if(search_string.length>0)
   <div id="research" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Research</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: How can I receive press releases?</b> </p>
@@ -1252,6 +1276,7 @@ if(search_string.length>0)
   <div id="governmentaccess" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Government Access</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: What information can I get from the Government for a story?</b> </p>
@@ -1283,6 +1308,7 @@ if(search_string.length>0)
   <div id="technology" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Technology</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b> Q: How should I behave on Social media?</b> </p>
@@ -1340,6 +1366,7 @@ if(search_string.length>0)
   <div id="gifts" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Gifts</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Am I allowed to accept items from news sources?</b> </p>
@@ -1370,6 +1397,7 @@ if(search_string.length>0)
   <div id="diversity" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Diversity</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: What do I need to know about gender, sexual orientation and ethnicity?</b> </p>
@@ -1402,6 +1430,7 @@ if(search_string.length>0)
   <div id="sourcing" data-role="page" data-theme="b">
      <div data-role="header" data-theme="b" data-position="fixed">
 	<h1>Sourcing</h1>
+  <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
      </div>
        <div data-role="content">	
     	<p><b>Q: Can I re-quote already published material?</b> </p>
@@ -1472,6 +1501,25 @@ if(search_string.length>0)
   	</div>
    </div>
    
+    <div id="search_page" data-role="page" data-theme="b">
+     <div data-role="header" data-theme="b" data-position="fixed">
+  <h1>Search</h1>
+     </div>
+       <div data-role="content">  
+
+
+           <div data-role="fieldcontain">
+            <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
+            <input type="search" name="password" id="Search" value=""  />
+            <input type="submit" onclick="load();" value="Find" data-inline="true" />
+          </div>
+
+          <div id ="results_search"> </div>
+      </div>
+        <div data-role="footer" data-position="fixed" data-theme="b">
+     <img src="footer.png" class="footer_logo">
+    </div>
+   </div>
    
 
   </body>
