@@ -30,6 +30,20 @@
         }
       });
     </script>
+
+<script>
+$('input').live("keypress", function(e) {
+
+                if (e.keyCode == 13) {
+                    
+                    $("#submit_at_search").click();
+
+                }
+            });
+</script>
+
+
+
      <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,8 +127,7 @@ if(search_string.length>0)
   search_string = search_string.replace(/\s+/g, " ");
 
   var words_to_eliminate = string_after_stopwords.split(" ");
-//alert(string_after_stopwords);
-//alert(search_string);
+
   for (var i=0;i<words_to_eliminate.length;i++)
   {
     if(words_to_eliminate[i].length>0)
@@ -127,7 +140,6 @@ if(search_string.length>0)
   }
 
   search_string = search_string.replace(/\s+/g, " ");
-  //alert(search_string);
 
   var splitted_string = new Array();
  
@@ -169,13 +181,11 @@ if(search_string.length>0)
       } 
       if(flip_flop==1)
       {
-              //alert(num_div[i].id+" "+num_div[i].id.length);
               if(num_div[i].id.length>0)
               {
               var x = val.split("<div data-role=\"content\">");
               var y = x[1].split("</div>");
               var z = y[0].split("<div data-role=\"footer\"");
-              //alert(z[0]);
               output=output+z[0];            
               }
               
@@ -187,48 +197,20 @@ if(search_string.length>0)
   }
     if(parseInt(output.length)>0)
     {
-      //alert("hel12123");
-      //alert(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
-      //document.getElementById('home').innerHTML=output;
-      //document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
-          
-          
-        //   document.write(output);
-       // alert(window.location.href);
        document.getElementById('results_search').innerHTML=output;
-      //  makeNewWindow()
-    //newWindow.focus()
-    //newWindow.document.write(unescape(prefix)+unescape(pre)+output+unescape(suf)+unescape(suffix));
-    //newWindow.document.close() // close layout stream
-  
     }
     else 
     {
-    //alert("No Match");
-    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    //makeNewWindow()
-    //newWindow.focus()
-    //newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    //newWindow.document.close()
     document.getElementById('results_search').innerHTML="No Match";
     }
   }
   else
   {
-    //alert("No match");
-    //document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-      // makeNewWindow()
-    //newWindow.focus()
-    //newWindow.document.write(unescape(prefix)+unescape(pre)+"No match"+unescape(suf)+unescape(suffix));
-    //newWindow.document.close()
     document.getElementById('results_search').innerHTML="No Match";
   }
 }
   else
   {
-    //alert("Problem");
- //document.write(unescape(prefix)+unescape(pre)+"<b>Please enter a query<b>"+unescape(suf)+unescape(suffix));
-
   }
 
 }
@@ -249,18 +231,6 @@ if(search_string.length>0)
         <h1>PocketJourno</h1>
         <a href="index.html#search_page" class="ui-btn-right" data-icon="search">Search</a>
       </div>
-
-<!-- Added for search-->
-<!--
-    <div data-role="fieldcontain">
-      <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
-      <input type="search" name="password" id="Search" value=""  />
-      <input type="submit" onclick="load();" value="Find" data-inline="true" />
-    </div>
--->
-<!-- Added for search-->
-
-
 
       <div data-role="content">	
       <p>A Reporter's Field Guide Answering Journalism's Most Common Questions</p>
@@ -1513,9 +1483,10 @@ if(search_string.length>0)
            <div data-role="fieldcontain">
             <label for="search">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search &nbsp;&nbsp;</label>
             <input type="search" name="password" id="Search" value=""  />
-            <input type="submit" onclick="load();" value="Find" data-inline="true" />
+            <input type="submit" id="submit_at_search" onclick="load();" value="Find" data-inline="true" />
           </div>
 
+ 
           <div id ="results_search"> </div>
       </div>
         <div data-role="footer" data-position="fixed" data-theme="b">
